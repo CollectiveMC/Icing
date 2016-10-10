@@ -1,0 +1,7 @@
+name: Icing
+main: org.cyberpwn.icing.Icing
+version: ${project.version}
+description: ${project.description}
+author: cyberpwn
+depend: [Phantom]
+authors: [cyberpwn]
