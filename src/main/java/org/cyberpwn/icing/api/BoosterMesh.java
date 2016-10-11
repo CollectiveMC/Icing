@@ -1,8 +1,9 @@
 package org.cyberpwn.icing.api;
 
+import org.phantomapi.clust.Configurable;
 import org.phantomapi.lang.GList;
 
-public interface BoosterMesh
+public interface BoosterMesh extends Configurable
 {
 	public int getMaxLevel();
 	
