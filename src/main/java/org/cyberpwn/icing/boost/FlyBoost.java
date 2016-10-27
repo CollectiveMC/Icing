@@ -1,70 +1,49 @@
 package org.cyberpwn.icing.boost;
 
 import org.bukkit.entity.Player;
-import org.cyberpwn.icing.Blizzard;
-import org.cyberpwn.icing.BlizzardInstance;
+import org.bukkit.util.Vector;
 import org.cyberpwn.icing.BoostType;
 import org.phantomapi.Phantom;
-import org.phantomapi.sync.Task;
 import org.phantomapi.vfx.ParticleEffect;
 
-public class FlyBoost extends Blizzard
+public class FlyBoost extends BaseBoost
 {
-	private static final long serialVersionUID = 1L;
-	
 	public FlyBoost()
 	{
-		super(BoostType.FLY.toString().toLowerCase());
+		super(BoostType.FLY);
+		
+		name = "&bFly";
 	}
 	
 	@Override
-	public void onStart()
+	public void onTick(double multiplier)
 	{
-		new Task(10)
+		for(Player i : Phantom.instance().onlinePlayers())
 		{
-			@Override
-			public void run()
+			i.setAllowFlight(true);
+			
+			if(i.isFlying())
 			{
-				if(isExpired())
-				{
-					for(Player i : Phantom.instance().onlinePlayers())
-					{
-						i.setAllowFlight(false);
-					}
-					
-					cancel();
-				}
-				
-				for(Player i : Phantom.instance().onlinePlayers())
-				{
-					if(i.isFlying())
-					{
-						ParticleEffect.CLOUD.display(0.1f, 3, i.getLocation(), 24);
-					}
-					
-					i.setAllowFlight(true);
-				}
+				ParticleEffect.CLOUD.display(new Vector(0, -0.4, 0).add(i.getVelocity().clone().multiply(0.4)), 0.1f, i.getLocation(), 24);
 			}
-		};
+		}
+	}
+	
+	@Override
+	public void onAdded()
+	{
+		for(Player i : Phantom.instance().onlinePlayers())
+		{
+			i.setAllowFlight(true);
+		}
 	}
 	
 	@Override
 	public void onExpire()
 	{
-		
-	}
-	
-	@Override
-	public void onTick()
-	{
-		
-	}
-	
-	@Override
-	public BlizzardInstance copy()
-	{
-		BlizzardInstance i = new FlyBoost();
-		i.getConfiguration().setData(getConfiguration().copy().getData());
-		return i;
+		for(Player i : Phantom.instance().onlinePlayers())
+		{
+			i.setAllowFlight(false);
+		}
 	}
 }
