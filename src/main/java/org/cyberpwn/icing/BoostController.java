@@ -1,67 +1,146 @@
 package org.cyberpwn.icing;
 
-import java.io.File;
 import java.io.IOException;
+import org.cyberpwn.icing.boost.BaseBoost;
+import org.cyberpwn.icing.boost.Boost;
+import org.cyberpwn.icing.boost.ExperienceBoost;
 import org.cyberpwn.icing.boost.FlyBoost;
-import org.phantomapi.Phantom;
-import org.phantomapi.clust.ConfigurableController;
-import org.phantomapi.clust.DataCluster;
-import org.phantomapi.command.Command;
-import org.phantomapi.command.CommandAlias;
+import org.phantomapi.command.CommandController;
 import org.phantomapi.command.PhantomCommand;
-import org.phantomapi.command.PhantomSender;
+import org.phantomapi.command.PhantomCommandSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GList;
+import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GTime;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.transmit.Transmission;
 import org.phantomapi.util.C;
+import org.phantomapi.util.F;
 
-@Ticked(1200)
-public class BoostController extends ConfigurableController
+@Ticked(0)
+public class BoostController extends CommandController
 {
-	private GList<BlizzardInstance> instances;
-	private GList<BlizzardInstance> base;
+	private GMap<BoostType, Double> boosts;
+	private GMap<BoostType, Integer> timeLeft;
+	private GMap<BoostType, Boost> boostMap;
+	private static BoostController inst;
 	
 	public BoostController(Controllable parentController)
 	{
-		super(parentController, "boosters");
+		super(parentController, "boost");
 		
-		instances = new GList<BlizzardInstance>();
-		base = new GList<BlizzardInstance>();
-		
-		base.add(new FlyBoost());
+		inst = this;
+		boosts = new GMap<BoostType, Double>();
+		timeLeft = new GMap<BoostType, Integer>();
+		boostMap = new GMap<BoostType, Boost>();
 	}
 	
-	@Override
-	public void onStart()
+	public void addBoost(BoostType type, Double multiplier, Integer ticks)
 	{
-		getPlugin().getDataFolder().mkdirs();
-		File active = new File(getPlugin().getDataFolder(), "active");
-		File config = new File(getPlugin().getDataFolder(), "types");
-		
-		config.mkdirs();
-		active.mkdirs();
-		
-		for(BlizzardInstance i : base)
+		if(boosts.containsKey(type))
 		{
-			i.getConfiguration().set("boost.type", i.getCodeName());
-			loadCluster(i, "types");
+			boosts.put(type, boosts.get(type) + multiplier);
+			timeLeft.put(type, timeLeft.get(type) + ticks);
 		}
+		
+		else
+		{
+			boosts.put(type, multiplier);
+			timeLeft.put(type, ticks);
+			boostMap.get(type).onAdded();
+		}
+		
+		Transmission t = new Transmission("boost-sync-map")
+		{
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public void onResponse(Transmission tr)
+			{
+				
+			}
+		};
+		
+		for(BoostType i : boosts.k())
+		{
+			t.set("d." + i.toString() + ".multiplier", boosts.get(i));
+			t.set("d." + i.toString() + ".ticks", timeLeft.get(i));
+		}
+		
+		try
+		{
+			t.transmit();
+		}
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void expireBoost(BoostType type)
+	{
+		boostMap.get(type).onExpire();
+		boosts.remove(type);
+		timeLeft.remove(type);
+	}
+	
+	public void tickBoost(BoostType type, double multiplier)
+	{
+		boostMap.get(type).onTick(multiplier);
 	}
 	
 	@Override
 	public void onTick()
 	{
-		for(BlizzardInstance i : instances.copy())
+		for(BoostType i : boosts.k())
 		{
-			if(i.isExpired())
+			timeLeft.put(i, timeLeft.get(i) - 1);
+			
+			if(timeLeft.get(i) <= 0)
 			{
-				instances.remove(i);
+				expireBoost(i);
 			}
 			
-			i.tick();
+			tickBoost(i, boosts.get(i));
+		}
+	}
+	
+	public Boost getBoost(BoostType type)
+	{
+		return boostMap.get(type);
+	}
+	
+	public String getName(BoostType type)
+	{
+		return getBoost(type).getName();
+	}
+	
+	public String getDescription(BoostType type)
+	{
+		return getBoost(type).getDescription();
+	}
+	
+	public static BoostController instance()
+	{
+		return inst;
+	}
+	
+	public static double getMultiple(BoostType type)
+	{
+		return inst.boosts.get(type);
+	}
+	
+	@Override
+	public void onStart()
+	{
+		boostMap.put(BoostType.FLY, new FlyBoost());
+		boostMap.put(BoostType.XP, new ExperienceBoost());
+		
+		for(BoostType i : boostMap.k())
+		{
+			loadCluster((BaseBoost) boostMap.get(i), "boosts");
 		}
 	}
 	
@@ -71,162 +150,60 @@ public class BoostController extends ConfigurableController
 		
 	}
 	
-	public BlizzardInstance create(BlizzardInstance instance, double mult)
+	@Override
+	public boolean onCommand(PhantomCommandSender sender, PhantomCommand cmd)
 	{
-		for(BlizzardInstance i : base)
-		{
-			if(i.getCodeName().equals(instance.getCodeName()))
-			{
-				instance.getConfiguration().setData(i.getConfiguration().copy().getData());
-				setTime(instance, i.getConfiguration().getInt("blizzard.diration"));
-				setMult(instance, mult);
-				
-				return instance;
-			}
-		}
+		sender.setMessageBuilder(new MessageBuilder(this));
 		
-		return null;
-	}
-	
-	public BlizzardInstance getInstance(byte[] b)
-	{
-		try
+		if(cmd.getArgs().length == 0)
 		{
-			DataCluster cc = new DataCluster(b);
+			sender.sendMessage(C.LIGHT_PURPLE + "There are " + boosts.size() + " boosts active.");
 			
-			for(BlizzardInstance i : base)
+			for(BoostType i : boosts.k())
 			{
-				if(cc.getString("blizzard.type").equals(i.getConfiguration().getString("blizzard.type")))
-				{
-					BlizzardInstance ins = i.copy();
-					ins.getConfiguration().setData(cc.getData());
-					return ins;
-				}
+				sender.sendMessage(F.color(getName(i)) + C.GRAY + " - " + F.f(boosts.get(i)) + "x (" + new GTime(50 * timeLeft.get(i)).to(" left") + ")");
 			}
 		}
 		
-		catch(IOException e)
+		else if(cmd.getArgs().length == 2 && sender.hasPermission("boost.god"))
 		{
-			e.printStackTrace();
-		}
-		
-		return null;
-	}
-	
-	@Command("boost")
-	@CommandAlias("booster")
-	public void onBoost(PhantomSender sender, PhantomCommand cmd)
-	{
-		sender.setMessageBuilder(new MessageBuilder(Phantom.instance()));
-		
-		if(sender.hasPermission("boost.god"))
-		{
-			if(cmd.getArgs().length == 0)
-			{
-				sender.sendMessage("There are " + C.WHITE + instances.size() + C.GRAY + " Boosts active");
-				
-				for(BlizzardInstance i : instances)
-				{
-					sender.sendMessage("- " + i.getCodeName() + " " + C.WHITE + new GTime(i.minutesLeft() * 60000).to() + " " + C.GRAY + "x" + getMult(i));
-				}
-			}
+			String type = cmd.getArgs()[0];
+			Double mult = Double.valueOf(cmd.getArgs()[1]);
 			
-			else if(cmd.getArgs().length == 2)
+			for(BoostType i : BoostType.values())
 			{
-				for(BlizzardInstance i : base)
+				if(boostMap.contains(i) && getBoost(i).isEnabled())
 				{
-					if(i.getCodeName().equalsIgnoreCase(cmd.getArgs()[0]))
+					if(i.toString().equalsIgnoreCase(type))
 					{
-						double d = Double.valueOf(cmd.getArgs()[1]);
-						sender.sendMessage("Created Boost");
-						dispatchInject(create(i, d));
-						
-						return;
+						addBoost(i, mult, getBoost(i).getTicks());
+						sender.sendMessage(C.AQUA + "Injected local boost " + i.toString() + " @ " + F.f(mult) + "x");
+						return true;
 					}
 				}
-				
-				sender.sendMessage("Choose a boost type");
-				sender.sendMessage("Then use /boost <TYPE> <MULTIPLIER>");
-				
-				for(BlizzardInstance i : base)
-				{
-					sender.sendMessage(C.YELLOW + i.getCodeName());
-				}
 			}
+			
+			sender.sendMessage(C.RED + "Could not find boost");
 		}
 		
-		else
-		{
-			sender.sendMessage("There are " + C.WHITE + instances.size() + C.GRAY + " Boosts active");
-			
-			for(BlizzardInstance i : instances)
-			{
-				sender.sendMessage("- " + i.getCodeName() + " " + C.WHITE + new GTime(i.minutesLeft() * 60000).to() + " " + C.GRAY + "x" + getMult(i));
-			}
-		}
+		return true;
 	}
 	
-	public void dispatchInject(BlizzardInstance instance)
+	@Override
+	public String getChatTag()
 	{
-		if(Phantom.instance().isBungeecord())
-		{
-			Transmission t = new Transmission("blizzard-dispatch")
-			{
-				private static final long serialVersionUID = 1L;
-				
-				@Override
-				public void onResponse(Transmission r)
-				{
-					
-				}
-			};
-			
-			t.add(instance.getConfiguration());
-			
-			try
-			{
-				t.transmit();
-			}
-			
-			catch(IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
-		
-		inject(instance);
+		return C.DARK_GRAY + "[" + C.AQUA + "Boost" + C.DARK_GRAY + "]: " + C.GRAY;
 	}
 	
-	public void inject(BlizzardInstance instance)
+	@Override
+	public String getChatTagHover()
 	{
-		for(BlizzardInstance i : instances)
-		{
-			if(i.getConfiguration().getString("blizzard.type").equals(instance.getConfiguration().getString("blizzard.type")))
-			{
-				double mult = getMult(i) + getMult(instance);
-				int ml = i.minutesLeft() + instance.minutesLeft();
-				
-				i.getConfiguration().set("blizzard.remaining", ml);
-				setMult(i, mult);
-				return;
-			}
-		}
-		
-		instances.add(instance);
+		return C.AQUA + "Server Boosters";
 	}
 	
-	public double getMult(BlizzardInstance instance)
+	@Override
+	public GList<String> getCommandAliases()
 	{
-		return instance.getConfiguration().getDouble("blizzard.global-multiplier");
-	}
-	
-	public void setTime(BlizzardInstance instance, int time)
-	{
-		instance.getConfiguration().set("blizzard.remaining", time);
-	}
-	
-	public void setMult(BlizzardInstance instance, double mult)
-	{
-		instance.getConfiguration().set("blizzard.global-multiplier", mult);
+		return new GList<String>().qadd("booster").qadd("boosts").qadd("blizzard").qadd("blizzards");
 	}
 }
