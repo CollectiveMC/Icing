@@ -130,21 +130,31 @@ public class CakeController extends Controller
 						Element ex = new PhantomElement(i.getMaterial().getMaterial(), s, i.getName())
 						{
 							@Override
-							public void onClick(Player p, Click c, Window w)
+							public void onClick(Player p, Click ccx, Window wx)
 							{
+								if(eq != null && !eq.equals(i))
+								{
+									cdc.get(p).getEquipped().remove(((Configurable) eq).getCodeName());
+									cdc.get(p).getEquipped().add(((Configurable) i).getCodeName());
+									launchUi(p);
+								}
 								
+								else
+								{
+									cdc.get(p).getEquipped().add(((Configurable) i).getCodeName());
+									launchUi(p);
+								}
 							}
 						};
 						
 						ex.addText(i.getDescription());
 						
-						if(eq.equals(i))
+						if(eq != null && eq.equals(i))
 						{
 							ex.addText(C.GREEN + "Equipped!");
 						}
 						
 						cw.addElement(ex);
-						
 						fi.add(1);
 					}
 					
