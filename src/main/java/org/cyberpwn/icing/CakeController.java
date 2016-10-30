@@ -11,13 +11,16 @@ import org.phantomapi.lang.GMap;
 public class CakeController extends Controller
 {
 	private GMap<CakeType, GList<Cake>> cakes;
+	private CakeDataController cdc;
 	
 	public CakeController(Controllable parentController)
 	{
 		super(parentController);
 		
 		cakes = new GMap<CakeType, GList<Cake>>();
+		cdc = new CakeDataController(this);
 		
+		register(cdc);
 		register(new TeleportEnder(this));
 	}
 	
