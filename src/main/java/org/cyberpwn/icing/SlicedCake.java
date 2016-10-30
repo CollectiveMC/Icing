@@ -1,4 +1,4 @@
-package org.cyberpwn.icing.cosmetic;
+package org.cyberpwn.icing;
 
 import org.phantomapi.clust.Comment;
 import org.phantomapi.clust.ConfigurableController;

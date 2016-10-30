@@ -1,4 +1,4 @@
-package org.cyberpwn.icing.cosmetic;
+package org.cyberpwn.icing;
 
 public enum CakeType
 {
