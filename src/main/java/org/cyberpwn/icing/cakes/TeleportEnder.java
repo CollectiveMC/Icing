@@ -12,7 +12,7 @@ public class TeleportEnder extends TeleportCake
 {
 	public TeleportEnder(Controllable parentController)
 	{
-		super(parentController, "teleport-ender", type, name, description);
+		super(parentController, "teleport-ender", "&dEnder Teleport", "&5Teleport like an enderman.");
 	}
 	
 	@Override
