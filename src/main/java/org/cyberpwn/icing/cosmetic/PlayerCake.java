@@ -4,9 +4,9 @@ import org.phantomapi.construct.Controllable;
 
 public abstract class PlayerCake extends SlicedCake implements PlayerSlice
 {
-	public PlayerCake(Controllable parentController, String codeName, CakeType type, String name, String description)
+	public PlayerCake(Controllable parentController, String codeName, String name, String description)
 	{
-		super(parentController, codeName, type, name, description);
+		super(parentController, codeName, CakeType.PLAYER, name, description);
 	}
 	
 	@Override
