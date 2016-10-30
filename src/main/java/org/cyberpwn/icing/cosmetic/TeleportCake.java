@@ -4,9 +4,9 @@ import org.phantomapi.construct.Controllable;
 
 public abstract class TeleportCake extends SlicedCake implements TeleportSlice
 {
-	public TeleportCake(Controllable parentController, String codeName, CakeType type, String name, String description)
+	public TeleportCake(Controllable parentController, String codeName, String name, String description)
 	{
-		super(parentController, codeName, type, name, description);
+		super(parentController, codeName, CakeType.TELEPORT, name, description);
 	}
 	
 	@Override
