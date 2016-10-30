@@ -1,4 +1,4 @@
-package org.cyberpwn.icing;
+package org.cyberpwn.icing.boost;
 
 import org.bukkit.event.Listener;
 import org.phantomapi.clust.Comment;

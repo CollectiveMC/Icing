@@ -3,9 +3,7 @@ package org.cyberpwn.icing.boost;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.cyberpwn.icing.BaseBoost;
 import org.cyberpwn.icing.BoostController;
-import org.cyberpwn.icing.BoostType;
 import org.phantomapi.Phantom;
 
 public class ExperienceBoost extends BaseBoost
