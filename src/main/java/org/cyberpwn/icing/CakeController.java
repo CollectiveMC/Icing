@@ -1,5 +1,6 @@
 package org.cyberpwn.icing;
 
+import org.cyberpwn.icing.cakes.TeleportEnder;
 import org.cyberpwn.icing.cosmetic.Cake;
 import org.cyberpwn.icing.cosmetic.CakeType;
 import org.phantomapi.construct.Controllable;
@@ -16,6 +17,8 @@ public class CakeController extends Controller
 		super(parentController);
 		
 		cakes = new GMap<CakeType, GList<Cake>>();
+		
+		register(new TeleportEnder(this));
 	}
 	
 	@Override
