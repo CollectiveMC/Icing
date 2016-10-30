@@ -33,6 +33,7 @@ public class CakeController extends Controller
 			{
 				Cake cake = (Cake) i;
 				CakeType cakeType = cake.getType();
+				loadCluster((Configurable) i, cakeType.toString().toLowerCase());
 				
 				if(!cakes.containsKey(cakeType))
 				{
