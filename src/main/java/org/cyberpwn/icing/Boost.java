@@ -1,4 +1,4 @@
-package org.cyberpwn.icing.boost;
+package org.cyberpwn.icing;
 
 public interface Boost
 {

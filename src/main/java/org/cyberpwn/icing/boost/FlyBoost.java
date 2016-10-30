@@ -2,6 +2,7 @@ package org.cyberpwn.icing.boost;
 
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.cyberpwn.icing.BaseBoost;
 import org.cyberpwn.icing.BoostType;
 import org.phantomapi.Phantom;
 import org.phantomapi.vfx.ParticleEffect;

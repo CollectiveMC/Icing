@@ -1,8 +1,6 @@
 package org.cyberpwn.icing;
 
 import java.io.IOException;
-import org.cyberpwn.icing.boost.BaseBoost;
-import org.cyberpwn.icing.boost.Boost;
 import org.cyberpwn.icing.boost.ExperienceBoost;
 import org.cyberpwn.icing.boost.FlyBoost;
 import org.phantomapi.command.CommandController;

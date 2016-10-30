@@ -1,7 +1,6 @@
-package org.cyberpwn.icing.boost;
+package org.cyberpwn.icing;
 
 import org.bukkit.event.Listener;
-import org.cyberpwn.icing.BoostType;
 import org.phantomapi.clust.Comment;
 import org.phantomapi.clust.ConfigurableObject;
 import org.phantomapi.clust.Keyed;
