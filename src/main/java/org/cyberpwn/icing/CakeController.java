@@ -7,8 +7,10 @@ import org.cyberpwn.icing.cakes.TeleportEnder;
 import org.cyberpwn.icing.cosmetic.Cake;
 import org.cyberpwn.icing.cosmetic.CakeType;
 import org.phantomapi.clust.Configurable;
+import org.phantomapi.command.CommandController;
+import org.phantomapi.command.PhantomCommand;
+import org.phantomapi.command.PhantomCommandSender;
 import org.phantomapi.construct.Controllable;
-import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.gui.Click;
 import org.phantomapi.gui.Element;
@@ -24,14 +26,14 @@ import org.phantomapi.util.C;
 import org.phantomapi.util.FinalInteger;
 
 @Ticked(5)
-public class CakeController extends Controller
+public class CakeController extends CommandController
 {
 	private GMap<CakeType, GList<Cake>> cakes;
 	private CakeDataController cdc;
 	
 	public CakeController(Controllable parentController)
 	{
-		super(parentController);
+		super(parentController, "cosmetic");
 		
 		cakes = new GMap<CakeType, GList<Cake>>();
 		cdc = new CakeDataController(this);
@@ -253,4 +255,19 @@ public class CakeController extends Controller
 	{
 		return getEquippedCake(p, type) != null;
 	}
+	
+	@Override
+	public boolean onCommand(PhantomCommandSender sender, PhantomCommand command)
+	{
+		launchUi(sender.getPlayer());
+		
+		return true;
+	}
+	
+	@Override
+	public GList<String> getCommandAliases()
+	{
+		return new GList<String>().qadd("cosmetic").qadd("icing").qadd("ice");
+	}
+	
 }
