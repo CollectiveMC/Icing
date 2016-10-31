@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -25,6 +26,7 @@ import org.cyberpwn.icing.cakes.TeleportNone;
 import org.cyberpwn.icing.cosmetic.ArrowSlice;
 import org.cyberpwn.icing.cosmetic.Cake;
 import org.cyberpwn.icing.cosmetic.CakeType;
+import org.cyberpwn.icing.cosmetic.DeathSlice;
 import org.cyberpwn.icing.cosmetic.KillSlice;
 import org.cyberpwn.icing.cosmetic.PlayerSlice;
 import org.cyberpwn.icing.cosmetic.TeleportSlice;
@@ -483,6 +485,16 @@ public class CakeController extends CommandController
 		}
 	}
 	
+	public void playDeath(Player entity, Player killer)
+	{
+		Cake c = getEquippedCake(entity, CakeType.DEATH);
+		
+		if(c != null)
+		{
+			((DeathSlice) c).onDeath(entity, killer);
+		}
+	}
+	
 	@EventHandler
 	public void on(PlayerTeleportEvent e)
 	{
@@ -493,6 +505,20 @@ public class CakeController extends CommandController
 	public void on(PlayerMovePositionEvent e)
 	{
 		playPlayer(e.getPlayer());
+	}
+	
+	@EventHandler
+	public void on(PlayerDeathEvent e)
+	{
+		try
+		{
+			playDeath(e.getEntity(), e.getEntity().getKiller());
+		}
+		
+		catch(Exception ex)
+		{
+			
+		}
 	}
 	
 	@EventHandler
