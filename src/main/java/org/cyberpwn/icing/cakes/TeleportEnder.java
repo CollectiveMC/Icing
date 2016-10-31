@@ -20,7 +20,8 @@ public class TeleportEnder extends TeleportCake
 	@Override
 	public void onTeleport(Player p)
 	{
-		ParticleEffect.PORTAL.display(0.5f, 12, p.getLocation().clone().add(0, 0.8, 0), 64);
+		ParticleEffect.PORTAL.display(1.5f, 32, p.getLocation().clone().add(0, 0.8, 0), 64);
 		new MFADistortion(4, 1.8f).distort(new GSound(Sound.ENDERMAN_TELEPORT, 1f, 0.4f)).play(p.getLocation());
+		new GSound(Sound.WITHER_SPAWN, 1f, 0.8f).play(p.getLocation());
 	}
 }
