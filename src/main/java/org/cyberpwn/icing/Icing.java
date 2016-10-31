@@ -8,13 +8,16 @@ public class Icing extends Ghost implements TagProvider
 {
 	private static Icing inst;
 	private BoostController bc;
+	private CakeController cc;
 	
 	@Override
 	public void preStart()
 	{
 		inst = this;
 		bc = new BoostController(this);
+		cc = new CakeController(this);
 		register(bc);
+		register(cc);
 	}
 	
 	@Override
