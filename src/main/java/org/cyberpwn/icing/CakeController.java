@@ -318,7 +318,46 @@ public class CakeController extends CommandController
 	{
 		if(cmd.getArgs().length > 0 && sender.hasPermission("icing.god"))
 		{
-			if(cmd.getArgs().length == 3)
+			if(cmd.getArgs().length == 2)
+			{
+				if(cmd.getArgs()[0].equalsIgnoreCase("giveall"))
+				{
+					if(P.canFindPlayer(cmd.getArgs()[1]))
+					{
+						Player p = P.findPlayer(cmd.getArgs()[1]);
+						
+						for(CakeType i : cakes.k())
+						{
+							for(Cake j : cakes.get(i))
+							{
+								if(!getOwnedCakes(p, i).contains(j))
+								{
+									cdc.get(p).getOwned().add(((Configurable) j).getCodeName());
+									p.sendMessage(C.GREEN + "Unlocked Effect " + F.color(j.getName()) + " - " + F.color(j.getDescription()));
+									sender.sendMessage(p.getName() + " " + C.GREEN + "Unlocked Effect " + F.color(j.getName()) + " - " + F.color(j.getDescription()));
+								}
+								
+								else
+								{
+									
+								}
+							}
+						}
+					}
+					
+					else
+					{
+						sender.sendMessage(C.RED + "Cannot find player.");
+					}
+				}
+				
+				else
+				{
+					sender.sendMessage(C.RED + "/icing giveall <player>");
+				}
+			}
+			
+			else if(cmd.getArgs().length == 3)
 			{
 				if(cmd.getArgs()[0].equalsIgnoreCase("give"))
 				{
@@ -358,6 +397,11 @@ public class CakeController extends CommandController
 				{
 					sender.sendMessage(C.RED + "/icing give <player> <cosmetic>");
 				}
+			}
+			
+			else
+			{
+				launchUi(sender.getPlayer());
 			}
 		}
 		
