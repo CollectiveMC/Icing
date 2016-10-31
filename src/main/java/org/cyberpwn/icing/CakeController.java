@@ -3,9 +3,18 @@ package org.cyberpwn.icing;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.cyberpwn.icing.cakes.ArrowNone;
+import org.cyberpwn.icing.cakes.DeathNone;
+import org.cyberpwn.icing.cakes.KillNone;
+import org.cyberpwn.icing.cakes.PlayerNone;
 import org.cyberpwn.icing.cakes.TeleportEnder;
+import org.cyberpwn.icing.cakes.TeleportNone;
 import org.cyberpwn.icing.cosmetic.Cake;
 import org.cyberpwn.icing.cosmetic.CakeType;
+import org.cyberpwn.icing.cosmetic.TeleportSlice;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.command.CommandController;
 import org.phantomapi.command.PhantomCommand;
@@ -22,7 +31,9 @@ import org.phantomapi.gui.Window;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSound;
+import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
+import org.phantomapi.util.F;
 import org.phantomapi.util.FinalInteger;
 import org.phantomapi.util.P;
 
@@ -40,6 +51,13 @@ public class CakeController extends CommandController
 		cdc = new CakeDataController(this);
 		
 		register(cdc);
+		
+		register(new TeleportNone(this));
+		register(new PlayerNone(this));
+		register(new KillNone(this));
+		register(new DeathNone(this));
+		register(new ArrowNone(this));
+		
 		register(new TeleportEnder(this));
 	}
 	
@@ -59,6 +77,7 @@ public class CakeController extends CommandController
 					cakes.put(cakeType, new GList<Cake>());
 				}
 				
+				v("Registering " + cakeType.toString() + " >> " + C.YELLOW + F.color(cake.getName()));
 				cakes.get(cakeType).add(cake);
 			}
 		}
@@ -130,27 +149,32 @@ public class CakeController extends CommandController
 					for(Cake i : caked)
 					{
 						Slot s = new Slot(fi.get());
-						Element ex = new PhantomElement(i.getMaterial().getMaterial(), s, i.getName())
+						Element ex = new PhantomElement(i.getMaterial().getMaterial(), s, F.color(i.getName()))
 						{
 							@Override
 							public void onClick(Player p, Click ccx, Window wx)
 							{
+								cdc.get(p).equipped.removeDuplicates();
+								
 								if(eq != null && !eq.equals(i))
 								{
-									cdc.get(p).getEquipped().remove(((Configurable) eq).getCodeName());
-									cdc.get(p).getEquipped().add(((Configurable) i).getCodeName());
+									cdc.get(p).equipped.remove(((Configurable) eq).getCodeName());
+									cdc.get(p).equipped.add(((Configurable) i).getCodeName());
 									launchUi(p);
 								}
 								
 								else
 								{
-									cdc.get(p).getEquipped().add(((Configurable) i).getCodeName());
+									cdc.get(p).equipped.add(((Configurable) i).getCodeName());
 									launchUi(p);
 								}
+								
+								cdc.get(p).equipped.removeDuplicates();
+								s(cdc.get(p).equipped.toString(", "));
 							}
 						};
 						
-						ex.addText(i.getDescription());
+						ex.addText(F.color(i.getDescription()));
 						
 						if(eq != null && eq.equals(i))
 						{
@@ -224,11 +248,14 @@ public class CakeController extends CommandController
 		
 		for(String i : cdc.get(p).getOwned())
 		{
-			for(Cake j : cakes.get(type))
+			if(cakes.containsKey(type))
 			{
-				if(((Configurable) j).getCodeName().equals(i))
+				for(Cake j : cakes.get(type))
 				{
-					cake.add(j);
+					if(((Configurable) j).getCodeName().equals(i))
+					{
+						cake.add(j);
+					}
 				}
 			}
 		}
@@ -240,11 +267,14 @@ public class CakeController extends CommandController
 	{
 		for(String i : cdc.get(p).getEquipped())
 		{
-			for(Cake j : cakes.get(type))
+			if(cakes.containsKey(type))
 			{
-				if(((Configurable) j).getCodeName().equals(i))
+				for(Cake j : cakes.get(type))
 				{
-					return j;
+					if(((Configurable) j).getCodeName().equals(i))
+					{
+						return j;
+					}
 				}
 			}
 		}
@@ -279,8 +309,8 @@ public class CakeController extends CommandController
 									if(!getOwnedCakes(p, i).contains(j))
 									{
 										cdc.get(p).getOwned().add(((Configurable) j).getCodeName());
-										p.sendMessage(C.GREEN + "Unlocked Effect " + j.getName() + " - " + j.getDescription());
-										sender.sendMessage(p.getName() + " " + C.GREEN + "Unlocked Effect " + j.getName() + " - " + j.getDescription());
+										p.sendMessage(C.GREEN + "Unlocked Effect " + F.color(j.getName()) + " - " + F.color(j.getDescription()));
+										sender.sendMessage(p.getName() + " " + C.GREEN + "Unlocked Effect " + F.color(j.getName()) + " - " + F.color(j.getDescription()));
 									}
 									
 									else
@@ -319,4 +349,76 @@ public class CakeController extends CommandController
 		return new GList<String>().qadd("cosmetic").qadd("icing").qadd("ice");
 	}
 	
+	public void scrub(Player p)
+	{
+		for(CakeType i : cakes.k())
+		{
+			for(Cake j : cakes.get(i))
+			{
+				if(((Configurable) j).getCodeName().endsWith("-none"))
+				{
+					if(!cdc.get(p).getOwned().contains(((Configurable) j).getCodeName()))
+					{
+						cdc.get(p).getOwned().add(((Configurable) j).getCodeName());
+						s("Adding default effect for " + p.getName() + " > " + ((Configurable) j).getCodeName());
+					}
+				}
+			}
+		}
+		
+		for(CakeType i : cakes.k())
+		{
+			if(getEquippedCake(p, i) == null)
+			{
+				for(Cake j : cakes.get(i))
+				{
+					if(((Configurable) j).getCodeName().endsWith("-none"))
+					{
+						s("Equipping default effect for " + p.getName() + " > " + ((Configurable) j).getCodeName());
+						cdc.get(p).getEquipped().add(((Configurable) j).getCodeName());
+						break;
+					}
+				}
+			}
+		}
+		
+		cdc.get(p).getEquipped().removeDuplicates();
+	}
+	
+	public void playTeleport(Player p)
+	{
+		new TaskLater(2)
+		{
+			@Override
+			public void run()
+			{
+				Cake c = getEquippedCake(p, CakeType.TELEPORT);
+				
+				if(c != null)
+				{
+					((TeleportSlice) c).onTeleport(p);
+				}
+			}
+		};
+	}
+	
+	@EventHandler
+	public void on(PlayerTeleportEvent e)
+	{
+		playTeleport(e.getPlayer());
+	}
+	
+	@EventHandler
+	public void on(PlayerJoinEvent e)
+	{
+		new TaskLater(10)
+		{
+			@Override
+			public void run()
+			{
+				scrub(e.getPlayer());
+				playTeleport(e.getPlayer());
+			}
+		};
+	}
 }
