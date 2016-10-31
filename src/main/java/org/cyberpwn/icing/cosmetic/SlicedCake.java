@@ -46,6 +46,12 @@ public abstract class SlicedCake extends ConfigurableController implements Cake
 	}
 	
 	@Override
+	public String getName()
+	{
+		return name;
+	}
+	
+	@Override
 	public MaterialBlock getMaterial()
 	{
 		return W.getMaterialBlock(material);
