@@ -16,6 +16,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.cyberpwn.icing.cakes.ArrowFirework;
 import org.cyberpwn.icing.cakes.ArrowNone;
+import org.cyberpwn.icing.cakes.DeathExplode;
 import org.cyberpwn.icing.cakes.DeathNone;
 import org.cyberpwn.icing.cakes.KillEZ;
 import org.cyberpwn.icing.cakes.KillNone;
@@ -82,6 +83,8 @@ public class CakeController extends CommandController
 		register(new ArrowFirework(this));
 		
 		register(new KillEZ(this));
+		
+		register(new DeathExplode(this));
 	}
 	
 	@Override
