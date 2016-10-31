@@ -24,6 +24,7 @@ import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.util.C;
 import org.phantomapi.util.FinalInteger;
+import org.phantomapi.util.P;
 
 @Ticked(5)
 public class CakeController extends CommandController
@@ -167,7 +168,7 @@ public class CakeController extends CommandController
 			e.setMetadata(c.getMb().getData());
 			e.setCount(caked.size());
 			e.addText(c.getDescription());
-			e.addText(C.getLastColors(c.getDescription()) + "You have unlocked " + caked.size() + " " + c.getName() + C.AQUA + " " + " effects.");
+			e.addText(C.getLastColors(c.getDescription()) + "You have unlocked " + caked.size() + " " + c.getName() + C.getLastColors(c.getDescription()) + " " + " effects.");
 			e.addText(C.getLastColors(c.getDescription()) + "Equipped: " + (eq == null ? C.RED + "None" : eq.getName()));
 			w.addElement(e);
 		}
@@ -257,9 +258,57 @@ public class CakeController extends CommandController
 	}
 	
 	@Override
-	public boolean onCommand(PhantomCommandSender sender, PhantomCommand command)
+	public boolean onCommand(PhantomCommandSender sender, PhantomCommand cmd)
 	{
-		launchUi(sender.getPlayer());
+		if(cmd.getArgs().length > 0 && sender.hasPermission("icing.god"))
+		{
+			if(cmd.getArgs().length == 3)
+			{
+				if(cmd.getArgs()[0].equalsIgnoreCase("give"))
+				{
+					if(P.canFindPlayer(cmd.getArgs()[1]))
+					{
+						Player p = P.findPlayer(cmd.getArgs()[1]);
+						
+						for(CakeType i : cakes.k())
+						{
+							for(Cake j : cakes.get(i))
+							{
+								if(((Configurable) j).getCodeName().equals(cmd.getArgs()[2]))
+								{
+									if(!getOwnedCakes(p, i).contains(j))
+									{
+										cdc.get(p).getOwned().add(((Configurable) j).getCodeName());
+										p.sendMessage(C.GREEN + "Unlocked Effect " + j.getName() + " - " + j.getDescription());
+										sender.sendMessage(p.getName() + " " + C.GREEN + "Unlocked Effect " + j.getName() + " - " + j.getDescription());
+									}
+									
+									else
+									{
+										sender.sendMessage(C.RED + p.getName() + " Already owns that.");
+									}
+								}
+							}
+						}
+					}
+					
+					else
+					{
+						sender.sendMessage(C.RED + "Cannot find player.");
+					}
+				}
+				
+				else
+				{
+					sender.sendMessage(C.RED + "/icing give <player> <cosmetic>");
+				}
+			}
+		}
+		
+		else
+		{
+			launchUi(sender.getPlayer());
+		}
 		
 		return true;
 	}
