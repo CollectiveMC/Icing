@@ -219,7 +219,7 @@ public class CakeController extends CommandController
 			e.setCount(caked.size());
 			e.addText(c.getDescription());
 			e.addText(C.getLastColors(c.getDescription()) + "You have unlocked " + caked.size() + " " + c.getName() + C.getLastColors(c.getDescription()) + " " + " effects.");
-			e.addText(C.LIGHT_PURPLE + "Equipped: " + (eq == null ? C.RED + "None" : eq.getName()));
+			e.addText(C.LIGHT_PURPLE + "Equipped: " + (eq == null ? C.RED + "None" : F.color(eq.getName())));
 			w.addElement(e);
 		}
 		
