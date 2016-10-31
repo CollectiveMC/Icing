@@ -2,18 +2,31 @@ package org.cyberpwn.icing;
 
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.cyberpwn.icing.cakes.ArrowFirework;
 import org.cyberpwn.icing.cakes.ArrowNone;
 import org.cyberpwn.icing.cakes.DeathNone;
+import org.cyberpwn.icing.cakes.KillEZ;
 import org.cyberpwn.icing.cakes.KillNone;
+import org.cyberpwn.icing.cakes.PlayerFrostWalk;
 import org.cyberpwn.icing.cakes.PlayerNone;
 import org.cyberpwn.icing.cakes.TeleportEnder;
 import org.cyberpwn.icing.cakes.TeleportNone;
+import org.cyberpwn.icing.cosmetic.ArrowSlice;
 import org.cyberpwn.icing.cosmetic.Cake;
 import org.cyberpwn.icing.cosmetic.CakeType;
+import org.cyberpwn.icing.cosmetic.KillSlice;
+import org.cyberpwn.icing.cosmetic.PlayerSlice;
 import org.cyberpwn.icing.cosmetic.TeleportSlice;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.command.CommandController;
@@ -21,6 +34,7 @@ import org.phantomapi.command.PhantomCommand;
 import org.phantomapi.command.PhantomCommandSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Ticked;
+import org.phantomapi.event.PlayerMovePositionEvent;
 import org.phantomapi.gui.Click;
 import org.phantomapi.gui.Element;
 import org.phantomapi.gui.Guis;
@@ -31,6 +45,7 @@ import org.phantomapi.gui.Window;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSound;
+import org.phantomapi.sync.Task;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
@@ -59,6 +74,12 @@ public class CakeController extends CommandController
 		register(new ArrowNone(this));
 		
 		register(new TeleportEnder(this));
+		
+		register(new PlayerFrostWalk(this));
+		
+		register(new ArrowFirework(this));
+		
+		register(new KillEZ(this));
 	}
 	
 	@Override
@@ -402,10 +423,150 @@ public class CakeController extends CommandController
 		};
 	}
 	
+	public void playPlayer(Player p)
+	{
+		Cake c = getEquippedCake(p, CakeType.PLAYER);
+		
+		if(c != null)
+		{
+			((PlayerSlice) c).onAmbient(p);
+		}
+	}
+	
+	public void playArrowShoot(Arrow a, Player p)
+	{
+		Cake c = getEquippedCake(p, CakeType.ARROW);
+		
+		if(c != null)
+		{
+			((ArrowSlice) c).onShoot(a, p);
+		}
+	}
+	
+	public void playArrowAmbient(Arrow a, Player p)
+	{
+		Cake c = getEquippedCake(p, CakeType.ARROW);
+		
+		if(c != null)
+		{
+			((ArrowSlice) c).onAmbient(a, p);
+		}
+	}
+	
+	public void playArrowHit(Arrow a, Player p)
+	{
+		Cake c = getEquippedCake(p, CakeType.ARROW);
+		
+		if(c != null)
+		{
+			((ArrowSlice) c).onHit(a, p, a.getLocation());
+		}
+	}
+	
+	public void playArrowHitEntity(Arrow a, Player p, LivingEntity e)
+	{
+		Cake c = getEquippedCake(p, CakeType.ARROW);
+		
+		if(c != null)
+		{
+			((ArrowSlice) c).onHitEntity(a, p, e);
+		}
+	}
+	
+	private void playKill(Player killer, LivingEntity entity)
+	{
+		Cake c = getEquippedCake(killer, CakeType.KILL);
+		
+		if(c != null)
+		{
+			((KillSlice) c).onKilled(killer, entity);
+		}
+	}
+	
 	@EventHandler
 	public void on(PlayerTeleportEvent e)
 	{
 		playTeleport(e.getPlayer());
+	}
+	
+	@EventHandler
+	public void on(PlayerMovePositionEvent e)
+	{
+		playPlayer(e.getPlayer());
+	}
+	
+	@EventHandler
+	public void on(EntityDeathEvent e)
+	{
+		try
+		{
+			playKill(e.getEntity().getKiller(), e.getEntity());
+		}
+		
+		catch(Exception ex)
+		{
+			
+		}
+	}
+	
+	@EventHandler
+	public void on(EntityDamageByEntityEvent e)
+	{
+		if(e.getDamager().getType().equals(EntityType.ARROW) && e.getEntity() instanceof LivingEntity)
+		{
+			Arrow a = (Arrow) e.getDamager();
+			
+			if(a.getShooter() instanceof Player)
+			{
+				Player shooter = (Player) a.getShooter();
+				playArrowHitEntity(a, shooter, (LivingEntity) e.getEntity());
+			}
+		}
+	}
+	
+	@EventHandler
+	public void on(ProjectileHitEvent e)
+	{
+		if(e.getEntity().getType().equals(EntityType.ARROW))
+		{
+			Arrow a = (Arrow) e.getEntity();
+			
+			if(a.getShooter() instanceof Player)
+			{
+				Player shooter = (Player) a.getShooter();
+				playArrowHit(a, shooter);
+			}
+		}
+	}
+	
+	@EventHandler
+	public void on(ProjectileLaunchEvent e)
+	{
+		if(e.getEntity().getType().equals(EntityType.ARROW))
+		{
+			Arrow a = (Arrow) e.getEntity();
+			
+			if(a.getShooter() instanceof Player)
+			{
+				Player shooter = (Player) a.getShooter();
+				playArrowShoot(a, shooter);
+				
+				new Task(0)
+				{
+					@Override
+					public void run()
+					{
+						if(a == null || a.isOnGround() || a.isDead())
+						{
+							cancel();
+							return;
+						}
+						
+						playArrowAmbient(a, shooter);
+					}
+				};
+			}
+		}
 	}
 	
 	@EventHandler
