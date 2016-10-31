@@ -7,7 +7,7 @@ import org.phantomapi.world.MaterialBlock;
 public enum CakeType
 {
 	PLAYER(C.AQUA + "Player FX", C.AQUA + "Ambient effects played near you.", new MaterialBlock(Material.ENCHANTED_BOOK)),
-	ARROW(C.BLUE + "Arrow FX", C.BLACK + "Arrow effects played on the arrow.", new MaterialBlock(Material.ARROW)),
+	ARROW(C.BLUE + "Arrow FX", C.BLUE + "Arrow effects played on the arrow.", new MaterialBlock(Material.ARROW)),
 	KILL(C.GREEN + "Kill FX", C.GREEN + "Effects played when you kill someone.", new MaterialBlock(Material.IRON_SWORD)),
 	DEATH(C.YELLOW + "Death FX", C.YELLOW + "Effects played when you are killed.", new MaterialBlock(Material.GOLD_CHESTPLATE)),
 	TELEPORT(C.GOLD + "Teleport FX", C.GOLD + "Effects played when you teleport.", new MaterialBlock(Material.EYE_OF_ENDER));
