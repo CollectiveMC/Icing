@@ -3,6 +3,7 @@ package org.cyberpwn.icing.cakes;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.cyberpwn.icing.cosmetic.ArrowCake;
 import org.phantomapi.construct.Controllable;
@@ -22,12 +23,6 @@ public class ArrowNone extends ArrowCake
 	}
 	
 	@Override
-	public void onHitPlayer(Arrow a, Player shooter, Player hit)
-	{
-		
-	}
-	
-	@Override
 	public void onHit(Arrow a, Player shooter, Location land)
 	{
 		
@@ -35,6 +30,12 @@ public class ArrowNone extends ArrowCake
 	
 	@Override
 	public void onShoot(Arrow a, Player shooter)
+	{
+		
+	}
+	
+	@Override
+	public void onHitEntity(Arrow a, Player p, LivingEntity e)
 	{
 		
 	}
