@@ -12,7 +12,7 @@ public class XP
 		
 		if(!e.isCancelled())
 		{
-			Icing.inst().getXp().getXpDataController().get(player).setXp(e.getXp());
+			Icing.inst().getXp().getXpDataController().get(player).setXp(e.getXp() + getXp(player));
 		}
 	}
 	
