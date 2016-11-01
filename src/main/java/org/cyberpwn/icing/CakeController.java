@@ -18,8 +18,8 @@ import org.cyberpwn.icing.cakes.ArrowFirework;
 import org.cyberpwn.icing.cakes.ArrowNone;
 import org.cyberpwn.icing.cakes.DeathExplode;
 import org.cyberpwn.icing.cakes.DeathNone;
-import org.cyberpwn.icing.cakes.KillEZ;
 import org.cyberpwn.icing.cakes.KillNone;
+import org.cyberpwn.icing.cakes.KillSoulEater;
 import org.cyberpwn.icing.cakes.PlayerFrostWalk;
 import org.cyberpwn.icing.cakes.PlayerNone;
 import org.cyberpwn.icing.cakes.TeleportEnder;
@@ -82,7 +82,7 @@ public class CakeController extends CommandController
 		
 		register(new ArrowFirework(this));
 		
-		register(new KillEZ(this));
+		register(new KillSoulEater(this));
 		
 		register(new DeathExplode(this));
 	}
