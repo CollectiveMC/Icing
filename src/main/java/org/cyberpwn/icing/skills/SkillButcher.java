@@ -1,5 +1,6 @@
 package org.cyberpwn.icing.skills;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -7,8 +8,9 @@ import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Ticked;
+import org.phantomapi.world.MaterialBlock;
 
-@Ticked(50)
+@Ticked(10)
 public class SkillButcher extends BasicSkill
 {
 	public SkillButcher(Controllable parentController)
@@ -215,5 +217,11 @@ public class SkillButcher extends BasicSkill
 				
 			}
 		}
+	}
+	
+	@Override
+	public MaterialBlock getSkillMaterial()
+	{
+		return new MaterialBlock(Material.STONE_SWORD);
 	}
 }
