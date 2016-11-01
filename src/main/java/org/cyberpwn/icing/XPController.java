@@ -140,6 +140,9 @@ public class XPController extends ConfigurableController implements CommandListe
 			{
 				sender.sendMessage("XP: " + C.GREEN + F.f(XP.getXp(sender.getPlayer())));
 				sender.sendMessage("Boost: " + C.GREEN + "+ " + F.pc(XP.getBoost(sender.getPlayer())));
+				sender.sendMessage("Level: " + C.GREEN + "+ " + F.f(XP.getLevelForXp(XP.getXp(sender.getPlayer()))));
+				sender.sendMessage("XP For Level Up: " + C.GREEN + "+ " + F.f(XP.xpToNextLevel(XP.getXp(sender.getPlayer()))));
+				sender.sendMessage("XP Percent Level Up: " + C.GREEN + "+ " + F.pc(XP.percentToNextLevel(XP.getXp(sender.getPlayer()))));
 			}
 			
 			else
