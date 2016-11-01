@@ -1,6 +1,8 @@
 package org.cyberpwn.icing;
 
 import org.cyberpwn.icing.skill.SkillDataController;
+import org.cyberpwn.icing.skills.SkillButcher;
+import org.cyberpwn.icing.skills.SkillMining;
 import org.phantomapi.clust.ConfigurableController;
 import org.phantomapi.command.CommandListener;
 import org.phantomapi.command.PhantomCommand;
@@ -21,6 +23,9 @@ public class SkillController extends ConfigurableController implements CommandLi
 		skillDataController = new SkillDataController(this);
 		
 		register(skillDataController);
+		
+		register(new SkillMining(this));
+		register(new SkillButcher(this));
 	}
 	
 	@Override
