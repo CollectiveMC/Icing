@@ -1,5 +1,6 @@
 package org.cyberpwn.icing.skills;
 
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -8,6 +9,7 @@ import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.event.FalseBlockBreakEvent;
+import org.phantomapi.world.MaterialBlock;
 
 @Ticked(50)
 public class SkillMining extends BasicSkill
@@ -79,5 +81,11 @@ public class SkillMining extends BasicSkill
 				addReward(e.getPlayer(), xp);
 			}
 		}
+	}
+	
+	@Override
+	public MaterialBlock getSkillMaterial()
+	{
+		return new MaterialBlock(Material.IRON_PICKAXE);
 	}
 }
