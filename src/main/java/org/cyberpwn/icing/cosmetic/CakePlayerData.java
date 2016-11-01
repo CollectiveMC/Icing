@@ -6,7 +6,7 @@ import org.phantomapi.clust.Keyed;
 import org.phantomapi.clust.Tabled;
 import org.phantomapi.lang.GList;
 
-@Tabled("cake_players")
+@Tabled("ice_cake_players")
 public class CakePlayerData extends ConfigurableObject
 {
 	private Player player;
