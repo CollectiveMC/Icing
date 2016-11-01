@@ -1,6 +1,7 @@
 package org.cyberpwn.icing.skill;
 
 import org.bukkit.entity.Player;
+import org.phantomapi.world.MaterialBlock;
 
 public interface Skill
 {
@@ -15,4 +16,10 @@ public interface Skill
 	public long getXpLeft(Player p);
 	
 	public String fancyName();
+	
+	public void popRewardMap();
+	
+	public void addReward(Player p, Integer r);
+	
+	public MaterialBlock getSkillMaterial();
 }
