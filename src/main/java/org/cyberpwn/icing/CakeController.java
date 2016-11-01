@@ -26,6 +26,7 @@ import org.cyberpwn.icing.cakes.TeleportEnder;
 import org.cyberpwn.icing.cakes.TeleportNone;
 import org.cyberpwn.icing.cosmetic.ArrowSlice;
 import org.cyberpwn.icing.cosmetic.Cake;
+import org.cyberpwn.icing.cosmetic.CakeDataController;
 import org.cyberpwn.icing.cosmetic.CakeType;
 import org.cyberpwn.icing.cosmetic.DeathSlice;
 import org.cyberpwn.icing.cosmetic.KillSlice;
