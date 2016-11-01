@@ -58,4 +58,24 @@ public class Icing extends Ghost implements TagProvider
 	{
 		return inst;
 	}
+	
+	public static Icing getInst()
+	{
+		return inst;
+	}
+	
+	public BoostController getBc()
+	{
+		return bc;
+	}
+	
+	public CakeController getCc()
+	{
+		return cc;
+	}
+	
+	public XPController getXp()
+	{
+		return xp;
+	}
 }
