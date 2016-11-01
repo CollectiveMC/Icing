@@ -48,6 +48,11 @@ public abstract class SlicedCake extends ConfigurableController implements Cake
 	@Override
 	public String getName()
 	{
+		if(name == null)
+		{
+			return super.name;
+		}
+		
 		return name;
 	}
 	
