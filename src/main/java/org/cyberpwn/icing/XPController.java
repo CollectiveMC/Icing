@@ -65,19 +65,17 @@ public class XPController extends ConfigurableController implements CommandListe
 			Notification n = new Notification();
 			Title t = new Title();
 			t.setTitle("    ");
-			t.setSubTitle(C.DARK_GRAY + "+ " + C.AQUA + C.BOLD + F.f(e.getXp()) + C.RESET + C.AQUA + " XP");
-			t.setAction(C.DARK_GRAY + "+ " + C.AQUA + C.BOLD + F.f(e.getXp()) + C.RESET + C.AQUA + " XP" + "(" + F.pc(XP.getBoost(e.getPlayer())) + ")" + C.YELLOW + " " + reason.fancy());
+			t.setSubTitle(C.DARK_GRAY + "+ " + C.GREEN + C.BOLD + F.f(e.getXp()) + C.RESET + C.GREEN + " XP");
+			t.setAction(C.DARK_GRAY + "+ " + C.GREEN + C.BOLD + F.f(e.getXp()) + C.RESET + C.GREEN + " XP" + " (" + F.pc(XP.getBoost(e.getPlayer())) + ") " + C.YELLOW + reason.fancy());
 			t.setFadeIn(2);
 			t.setFadeOut(7);
 			t.setStayTime(1);
 			Audio a = new Audio();
-			a.add(new GSound(Sound.ORB_PICKUP, 1f, 1.35f));
-			a.add(new GSound(Sound.ORB_PICKUP, 1f, 1.0f));
-			a.add(new GSound(Sound.ORB_PICKUP, 1f, 1.85f));
+			a.add(new GSound(Sound.SUCCESSFUL_HIT, 1f, 1.95f));
 			n.setAudible(a);
 			n.setTitle(t);
 			n.setPriority(Priority.LOW);
-			Phantom.queueNotification(n);
+			Phantom.queueNotification(e.getPlayer(), n);
 		}
 	}
 	
@@ -149,6 +147,7 @@ public class XPController extends ConfigurableController implements CommandListe
 			{
 				sender.sendMessage("/x give <player> <xp>");
 				sender.sendMessage("/x get <player>");
+				XP.printLeveling(30);
 			}
 		}
 		
