@@ -4,7 +4,9 @@ import org.apache.commons.lang.StringUtils;
 
 public enum XPReason
 {
-	UNKNOWN;
+	UNKNOWN,
+	BUTCHER,
+	MINING;
 	
 	public String fancy()
 	{
