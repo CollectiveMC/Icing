@@ -13,4 +13,6 @@ public interface Skill
 	public double getProgress(Player p);
 	
 	public long getXpLeft(Player p);
+	
+	public String fancyName();
 }
