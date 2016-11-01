@@ -61,12 +61,12 @@ public class XP
 	
 	public static long getXpForLevel(long level)
 	{
-		return (long) Math.pow((double) level, 3);
+		return (long) Math.pow((double) level, 4);
 	}
 	
 	public static long getLevelForXp(long xp)
 	{
-		return (long) Math.cbrt((double) xp);
+		return (long) Math.pow(xp, 0.25);
 	}
 	
 	public static void printLeveling(int maxLevel)
