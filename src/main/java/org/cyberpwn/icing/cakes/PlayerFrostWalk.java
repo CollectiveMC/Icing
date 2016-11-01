@@ -39,8 +39,13 @@ public class PlayerFrostWalk extends PlayerCake
 				@Override
 				public void run()
 				{
-					if(!process.contains(l.getBlock()) && l.getBlock().getType().equals(Material.AIR) && l.getBlock().getRelative(BlockFace.DOWN).getType().isSolid())
+					if(!process.contains(l.getBlock()) && l.getBlock().getType().equals(Material.AIR) && l.getBlock().getRelative(BlockFace.DOWN).getType().isSolid() && !l.getBlock().getRelative(BlockFace.DOWN).getType().isTransparent())
 					{
+						if(l.getBlock().getRelative(BlockFace.DOWN).getType().toString().contains("SLAB") || l.getBlock().getRelative(BlockFace.DOWN).getType().toString().contains("PLATE") || l.getBlock().getRelative(BlockFace.DOWN).getType().toString().contains("FENCE") || l.getBlock().getRelative(BlockFace.DOWN).getType().toString().contains("STEP") || l.getBlock().getRelative(BlockFace.DOWN).getType().toString().contains("STAIR"))
+						{
+							return;
+						}
+						
 						process.add(l.getBlock());
 						
 						for(Player i : a.getNearbyPlayers())
