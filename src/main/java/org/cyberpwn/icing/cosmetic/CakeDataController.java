@@ -1,10 +1,9 @@
-package org.cyberpwn.icing;
+package org.cyberpwn.icing.cosmetic;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.cyberpwn.icing.cosmetic.CakePlayerData;
 import org.phantomapi.clust.DataController;
 import org.phantomapi.construct.Controllable;
 
