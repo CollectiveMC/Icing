@@ -48,7 +48,7 @@ public class XP
 		return cxp / dxp;
 	}
 	
-	public static double xpToNextLevel(long xp)
+	public static long xpToNextLevel(long xp)
 	{
 		double level = getLevelForXp(xp);
 		double axp = getXpForLevel((long) level);
@@ -56,7 +56,7 @@ public class XP
 		double cxp = xp - axp;
 		double dxp = bxp - axp;
 		
-		return dxp - cxp;
+		return (long) (dxp - cxp);
 	}
 	
 	public static long getXpForLevel(long level)
