@@ -10,6 +10,7 @@ public class Icing extends Ghost implements TagProvider
 	private BoostController bc;
 	private CakeController cc;
 	private XPController xp;
+	private SkillController sk;
 	
 	@Override
 	public void preStart()
@@ -18,10 +19,12 @@ public class Icing extends Ghost implements TagProvider
 		bc = new BoostController(this);
 		cc = new CakeController(this);
 		xp = new XPController(this);
+		sk = new SkillController(this);
 		
 		register(bc);
 		register(cc);
 		register(xp);
+		register(sk);
 	}
 	
 	@Override
@@ -77,5 +80,10 @@ public class Icing extends Ghost implements TagProvider
 	public XPController getXp()
 	{
 		return xp;
+	}
+	
+	public SkillController getSk()
+	{
+		return sk;
 	}
 }
