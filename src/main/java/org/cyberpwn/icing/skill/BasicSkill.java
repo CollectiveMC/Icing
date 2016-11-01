@@ -1,28 +1,17 @@
 package org.cyberpwn.icing.skill;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.entity.Player;
 import org.cyberpwn.icing.Icing;
 import org.cyberpwn.icing.xp.XP;
 import org.phantomapi.clust.ConfigurableController;
 import org.phantomapi.construct.Controllable;
 
-public class BasicSkill extends ConfigurableController implements Skill
+public abstract class BasicSkill extends ConfigurableController implements Skill
 {
 	public BasicSkill(Controllable parentController, String codeName)
 	{
 		super(parentController, codeName);
-	}
-	
-	@Override
-	public void onStart()
-	{
-		
-	}
-	
-	@Override
-	public void onStop()
-	{
-		
 	}
 	
 	@Override
@@ -53,5 +42,11 @@ public class BasicSkill extends ConfigurableController implements Skill
 	public long getXpLeft(Player p)
 	{
 		return (long) XP.xpToNextLevel(getXp(p));
+	}
+	
+	@Override
+	public String fancyName()
+	{
+		return StringUtils.capitalize(getCodeName());
 	}
 }
