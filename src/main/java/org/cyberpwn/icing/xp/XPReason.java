@@ -6,6 +6,7 @@ public enum XPReason
 {
 	UNKNOWN,
 	BUTCHER,
+	SMELTING,
 	MINING;
 	
 	public String fancy()
