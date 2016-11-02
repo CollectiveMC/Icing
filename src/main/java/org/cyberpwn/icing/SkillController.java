@@ -5,9 +5,18 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.cyberpwn.icing.skill.Skill;
 import org.cyberpwn.icing.skill.SkillDataController;
+import org.cyberpwn.icing.skills.SkillArchery;
 import org.cyberpwn.icing.skills.SkillButcher;
+import org.cyberpwn.icing.skills.SkillCombat;
+import org.cyberpwn.icing.skills.SkillConstruction;
+import org.cyberpwn.icing.skills.SkillEnchanting;
+import org.cyberpwn.icing.skills.SkillExcavation;
+import org.cyberpwn.icing.skills.SkillFarming;
 import org.cyberpwn.icing.skills.SkillMining;
 import org.cyberpwn.icing.skills.SkillSmelting;
+import org.cyberpwn.icing.skills.SkillSocial;
+import org.cyberpwn.icing.skills.SkillTaming;
+import org.cyberpwn.icing.skills.SkillWoodCutting;
 import org.cyberpwn.icing.xp.XP;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurableController;
@@ -16,6 +25,8 @@ import org.phantomapi.command.PhantomCommand;
 import org.phantomapi.command.PhantomCommandSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
+import org.phantomapi.construct.Ticked;
+import org.phantomapi.currency.ExperienceCurrency;
 import org.phantomapi.gui.Element;
 import org.phantomapi.gui.PhantomElement;
 import org.phantomapi.gui.PhantomWindow;
@@ -28,6 +39,7 @@ import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.FinalInteger;
 
+@Ticked(20)
 public class SkillController extends ConfigurableController implements CommandListener
 {
 	private SkillDataController skillDataController;
@@ -42,6 +54,15 @@ public class SkillController extends ConfigurableController implements CommandLi
 		skills.add(new SkillMining(this));
 		skills.add(new SkillButcher(this));
 		skills.add(new SkillSmelting(this));
+		skills.add(new SkillEnchanting(this));
+		skills.add(new SkillArchery(this));
+		skills.add(new SkillFarming(this));
+		skills.add(new SkillConstruction(this));
+		skills.add(new SkillWoodCutting(this));
+		skills.add(new SkillCombat(this));
+		skills.add(new SkillTaming(this));
+		skills.add(new SkillExcavation(this));
+		skills.add(new SkillSocial(this));
 		
 		register(skillDataController);
 		
@@ -64,6 +85,87 @@ public class SkillController extends ConfigurableController implements CommandLi
 	public void onStop()
 	{
 		
+	}
+	
+	@Override
+	public void onTick()
+	{
+		for(Player i : onlinePlayers())
+		{
+			double b = 0;
+			
+			if(i.getTicksLived() / 20 > 120)
+			{
+				b += 0.02;
+			}
+			
+			if(i.getHealth() < 4)
+			{
+				b += 0.04;
+			}
+			
+			if(i.getFireTicks() > 20)
+			{
+				b += 0.01;
+			}
+			
+			if(i.getFoodLevel() < 5)
+			{
+				b += 0.01;
+			}
+			
+			if(i.getActivePotionEffects().size() > 2)
+			{
+				b += 0.01;
+			}
+			
+			if(onlinePlayers().size() > 40)
+			{
+				b += 0.01;
+			}
+			
+			if(i.getWorld().getName().contains("nether"))
+			{
+				b += 0.04;
+			}
+			
+			if(i.getWorld().getName().contains("end"))
+			{
+				b += 0.04;
+			}
+			
+			if(i.getLocation().getBlockY() < 40)
+			{
+				b += 0.01;
+			}
+			
+			if(new ExperienceCurrency().get(i) > 1000)
+			{
+				b += 0.1;
+			}
+			
+			if(i.hasPermission("boost.a"))
+			{
+				b += 0.05;
+			}
+			
+			if(i.hasPermission("boost.b"))
+			{
+				b += 0.1;
+			}
+			
+			if(i.hasPermission("boost.c"))
+			{
+				b += 0.15;
+			}
+			
+			if(i.hasPermission("boost.d"))
+			{
+				b += 0.2;
+			}
+			
+			XP.setBoost(i, b);
+		}
 	}
 	
 	public SkillDataController getSkillDataController()
@@ -178,11 +280,6 @@ public class SkillController extends ConfigurableController implements CommandLi
 			if(sender.isPlayer())
 			{
 				openSkillView(sender.getPlayer());
-			}
-			
-			else
-			{
-				// TODO skill command help
 			}
 		}
 		
