@@ -24,6 +24,7 @@ import org.cyberpwn.icing.cakes.PlayerFrostWalk;
 import org.cyberpwn.icing.cakes.PlayerNone;
 import org.cyberpwn.icing.cakes.TeleportEnder;
 import org.cyberpwn.icing.cakes.TeleportNone;
+import org.cyberpwn.icing.cakes.TeleportPhantom;
 import org.cyberpwn.icing.cosmetic.ArrowSlice;
 import org.cyberpwn.icing.cosmetic.Cake;
 import org.cyberpwn.icing.cosmetic.CakeDataController;
@@ -78,6 +79,7 @@ public class CakeController extends CommandController
 		register(new ArrowNone(this));
 		
 		register(new TeleportEnder(this));
+		register(new TeleportPhantom(this));
 		
 		register(new PlayerFrostWalk(this));
 		
