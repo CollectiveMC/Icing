@@ -9,6 +9,10 @@ import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
+import org.phantomapi.sfx.Audible;
+import org.phantomapi.sfx.MFADistortion;
+import org.phantomapi.sync.Task;
+import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
 import org.phantomapi.util.D;
 import org.phantomapi.util.F;
@@ -40,11 +44,61 @@ public class XP
 				t.setStayTime(15);
 				t.setFadeOut(20);
 				n.setTitle(t);
-				n.setAudible(new GSound(Sound.WITHER_DEATH, 1f, 1.98f));
+				
+				if(XP.getLevelForXp(getXp(player)) < 15)
+				{
+					n.setAudible(new GSound(Sound.WITHER_DEATH, 1f, 1.98f));
+				}
+				
 				n.setPriority(Priority.LOW);
 				Phantom.queueNotification(player, n);
+				
+				if(XP.getLevelForXp(getXp(player)) > 14)
+				{
+					playBeast(player);
+				}
 			}
 		}
+	}
+	
+	public static void playBeast(Player p)
+	{
+		float[] ix = new float[] {0};
+		
+		new Task(1)
+		{
+			@Override
+			public void run()
+			{
+				Audible a = new GSound(Sound.FIREWORK_LARGE_BLAST);
+				a.setPitch(0.1f + ix[0]);
+				a.setVolume(ix[0]);
+				a = new MFADistortion(12, 1.0f).distort(a);
+				
+				a.play(p);
+				
+				ix[0] += 0.04f;
+				
+				if(ix[0] >= 1.0f)
+				{
+					cancel();
+					
+					new TaskLater(2)
+					{
+						@Override
+						public void run()
+						{
+							Audible a = new GSound(Sound.WITHER_DEATH);
+							p.getWorld().strikeLightningEffect(p.getLocation());
+							a.setPitch(0.7f);
+							a = new MFADistortion(4, 1.8f).distort(a);
+							
+							a.play(p);
+						}
+					};
+				}
+			}
+		};
 	}
 	
 	public static long getXp(Player player)
