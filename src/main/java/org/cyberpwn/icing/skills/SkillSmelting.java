@@ -8,6 +8,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XPReason;
+import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.world.MaterialBlock;
@@ -15,6 +16,9 @@ import org.phantomapi.world.MaterialBlock;
 @Ticked(20)
 public class SkillSmelting extends BasicSkill
 {
+	@Keyed("base")
+	public int base = 12;
+	
 	public SkillSmelting(Controllable parentController)
 	{
 		super(parentController, "smelter", XPReason.SMELTING);
@@ -48,7 +52,7 @@ public class SkillSmelting extends BasicSkill
 				int amt = e.getCurrentItem().getAmount();
 				Player p = (Player) e.getWhoClicked();
 				
-				addReward(p, 12 * amt);
+				addReward(p, base * amt);
 			}
 		}
 	}
