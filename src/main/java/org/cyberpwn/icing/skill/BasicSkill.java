@@ -57,6 +57,7 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 			n.setAudible(new GSound(Sound.LEVEL_UP, 1f, 1.98f));
 			n.setPriority(Priority.LOW);
 			Phantom.queueNotification(p, n);
+			XP.giveXp(p, nextLevel * 30, XPReason.SKILL_PROGRESSION);
 		}
 	}
 	
@@ -84,6 +85,7 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 		return StringUtils.capitalize(getCodeName());
 	}
 	
+	@Override
 	public void addReward(Player p, Integer r)
 	{
 		if(p == null)
@@ -99,6 +101,7 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 		rewardCache.put(p, rewardCache.get(p) + r);
 	}
 	
+	@Override
 	public void popRewardMap()
 	{
 		for(Player i : rewardCache.k())
