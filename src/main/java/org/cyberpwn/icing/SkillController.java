@@ -7,6 +7,7 @@ import org.cyberpwn.icing.skill.Skill;
 import org.cyberpwn.icing.skill.SkillDataController;
 import org.cyberpwn.icing.skills.SkillButcher;
 import org.cyberpwn.icing.skills.SkillMining;
+import org.cyberpwn.icing.skills.SkillSmelting;
 import org.cyberpwn.icing.xp.XP;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurableController;
@@ -40,6 +41,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 		skills = new GList<Skill>();
 		skills.add(new SkillMining(this));
 		skills.add(new SkillButcher(this));
+		skills.add(new SkillSmelting(this));
 		
 		register(skillDataController);
 		
