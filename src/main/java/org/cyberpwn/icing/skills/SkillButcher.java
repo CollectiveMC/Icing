@@ -6,13 +6,17 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XPReason;
+import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.world.MaterialBlock;
 
-@Ticked(10)
+@Ticked(40)
 public class SkillButcher extends BasicSkill
 {
+	@Keyed("health-per-xp")
+	public int hpxp = 1;
+	
 	public SkillButcher(Controllable parentController)
 	{
 		super(parentController, "butcher", XPReason.BUTCHER);
@@ -43,7 +47,7 @@ public class SkillButcher extends BasicSkill
 		{
 			Player p = e.getEntity().getKiller();
 			
-			addReward(p, (int) e.getEntity().getMaxHealth());
+			addReward(p, (int) e.getEntity().getMaxHealth() / hpxp);
 			
 			switch(e.getEntityType())
 			{
@@ -214,7 +218,6 @@ public class SkillButcher extends BasicSkill
 					break;
 				default:
 					break;
-				
 			}
 		}
 	}
