@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XPReason;
+import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.event.FalseBlockBreakEvent;
@@ -14,6 +15,9 @@ import org.phantomapi.world.MaterialBlock;
 @Ticked(50)
 public class SkillMining extends BasicSkill
 {
+	@Keyed("base")
+	public int base = 0;
+	
 	public SkillMining(Controllable parentController)
 	{
 		super(parentController, "miner", XPReason.MINING);
@@ -53,7 +57,7 @@ public class SkillMining extends BasicSkill
 				return;
 			}
 			
-			int xp = 0;
+			int xp = base;
 			
 			switch(e.getBlock().getType())
 			{
