@@ -4,11 +4,13 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.cyberpwn.icing.Icing;
+import org.cyberpwn.icing.xp.SkillCurrency;
 import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.Phantom;
 import org.phantomapi.clust.ConfigurableController;
 import org.phantomapi.construct.Controllable;
+import org.phantomapi.currency.Transaction;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSound;
@@ -41,7 +43,33 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 		long level = XP.getLevelForXp(getXp(p));
 		Icing.inst().getSk().getSkillDataController().get(p).addSkill(getCodeName(), amt);
 		XP.giveXp(p, amt, reason);
+		addBuffer(p, amt);
 		long nextLevel = XP.getLevelForXp(getXp(p));
+		int m = 0;
+		
+		while(getBuffer(p) >= 8192)
+		{
+			takeBuffer(p, 8192);
+			new Transaction(new SkillCurrency(getCodeName())).to(p).amount(1.0).noDiff().commit();
+			m++;
+		}
+		
+		if(m > 0)
+		{
+			Notification n = new Notification();
+			Title t = new Title();
+			t.setTitle("   ");
+			t.setSubTitle(C.DARK_GRAY + "+ " + C.AQUA + m + " " + fancyName() + " Shard");
+			t.setAction(C.AQUA + fancyName() + " Shard Earned!");
+			t.setFadeIn(0);
+			t.setStayTime(0);
+			t.setFadeOut(25);
+			n.setTitle(t);
+			n.setAudible(new GSound(Sound.ORB_PICKUP, 1f, 0.38f));
+			n.setPriority(Priority.LOW);
+			Phantom.queueNotification(p, n);
+			XP.giveXp(p, nextLevel * 30, XPReason.SKILL_PROGRESSION);
+		}
 		
 		if(nextLevel > level)
 		{
@@ -50,8 +78,8 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 			t.setTitle("   ");
 			t.setSubTitle(C.DARK_GRAY + fancyName() + " " + C.LIGHT_PURPLE + nextLevel);
 			t.setAction(C.LIGHT_PURPLE + fancyName() + " Leveled Up!");
-			t.setFadeIn(5);
-			t.setStayTime(15);
+			t.setFadeIn(0);
+			t.setStayTime(0);
 			t.setFadeOut(20);
 			n.setTitle(t);
 			n.setAudible(new GSound(Sound.LEVEL_UP, 1f, 1.98f));
@@ -59,6 +87,26 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 			Phantom.queueNotification(p, n);
 			XP.giveXp(p, nextLevel * 30, XPReason.SKILL_PROGRESSION);
 		}
+	}
+	
+	public long getBuffer(Player player)
+	{
+		return Icing.inst().getSk().getSkillDataController().get(player).getSkillBuff(getCodeName());
+	}
+	
+	public void setBuffer(Player player, long skill)
+	{
+		Icing.inst().getSk().getSkillDataController().get(player).setSkillBuff(getCodeName(), skill);
+	}
+	
+	public void addBuffer(Player player, long skill)
+	{
+		Icing.inst().getSk().getSkillDataController().get(player).addSkillBuff(getCodeName(), skill);
+	}
+	
+	public void takeBuffer(Player player, long skill)
+	{
+		Icing.inst().getSk().getSkillDataController().get(player).takeSkillBuff(getCodeName(), skill);
 	}
 	
 	@Override
