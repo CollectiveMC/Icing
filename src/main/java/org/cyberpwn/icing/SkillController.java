@@ -26,6 +26,7 @@ import org.cyberpwn.icing.skills.SkillSwords;
 import org.cyberpwn.icing.skills.SkillTaming;
 import org.cyberpwn.icing.skills.SkillWoodCutting;
 import org.cyberpwn.icing.xp.XP;
+import org.phantomapi.Phantom;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurableController;
 import org.phantomapi.command.CommandListener;
@@ -38,12 +39,15 @@ import org.phantomapi.currency.ExperienceCurrency;
 import org.phantomapi.gui.Click;
 import org.phantomapi.gui.Element;
 import org.phantomapi.gui.Guis;
+import org.phantomapi.gui.Notification;
 import org.phantomapi.gui.PhantomElement;
 import org.phantomapi.gui.PhantomWindow;
 import org.phantomapi.gui.Slot;
 import org.phantomapi.gui.Window;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GSound;
+import org.phantomapi.lang.Priority;
+import org.phantomapi.lang.Title;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
@@ -315,7 +319,19 @@ public class SkillController extends ConfigurableController implements CommandLi
 						{
 							i.addLevel(p);
 							i.getSkill().takeShards(p, i.getUpgradeCost());
-							// notify upgrade
+							
+							Notification n = new Notification();
+							Title t = new Title();
+							t.setTitle("   ");
+							t.setSubTitle(C.DARK_GRAY + "Improved " + C.AQUA + i.getSkill().fancyName() + " " + i.fancyName());
+							t.setAction(C.AQUA + i.getSkill().fancyName() + " " + i.fancyName() + " increased to level " + i.getLevel(p));
+							t.setFadeIn(0);
+							t.setStayTime(0);
+							t.setFadeOut(25);
+							n.setTitle(t);
+							n.setAudible(new GSound(Sound.FIREWORK_LARGE_BLAST2, 1f, 0.38f));
+							n.setPriority(Priority.LOW);
+							Phantom.queueNotification(p, n);
 						}
 					}
 					
@@ -325,7 +341,19 @@ public class SkillController extends ConfigurableController implements CommandLi
 						{
 							i.addLevel(p);
 							i.getSkill().takeShards(p, i.getUnlockCost());
-							// notify unlock
+							
+							Notification n = new Notification();
+							Title t = new Title();
+							t.setTitle("   ");
+							t.setSubTitle(C.DARK_GRAY + "Unlocked " + C.AQUA + i.getSkill().fancyName() + " " + i.fancyName());
+							t.setAction(C.AQUA + i.getSkill().fancyName() + " " + i.fancyName() + " unlocked!");
+							t.setFadeIn(0);
+							t.setStayTime(0);
+							t.setFadeOut(25);
+							n.setTitle(t);
+							n.setAudible(new GSound(Sound.FIREWORK_LARGE_BLAST2, 1f, 0.38f));
+							n.setPriority(Priority.LOW);
+							Phantom.queueNotification(p, n);
 						}
 					}
 				}
@@ -395,7 +423,16 @@ public class SkillController extends ConfigurableController implements CommandLi
 			
 			if(s != null)
 			{
-				Element pa = new PhantomElement(s.getSkillMaterial().getMaterial(), new Slot(ix.get()), C.GRAY.toString() + C.BOLD + s.fancyName() + C.LIGHT_PURPLE + " " + s.getLevel(p));
+				Skill v = s;
+				Element pa = new PhantomElement(s.getSkillMaterial().getMaterial(), new Slot(ix.get()), C.GRAY.toString() + C.BOLD + s.fancyName() + C.LIGHT_PURPLE + " " + s.getLevel(p))
+				{
+					@Override
+					public void onClick(Player p, Click c, Window w)
+					{
+						showAbilities(p, v);
+					}
+				};
+				
 				pa.addText(C.GRAY + "XP: " + C.LIGHT_PURPLE + F.f(s.getXp(p)));
 				pa.addText(C.GREEN + F.f(s.getXp(p) - XP.getXpForLevel(s.getLevel(p))) + " XP " + C.GRAY + "/ " + C.RED + F.f(XP.getXpForLevel(s.getLevel(p) + 1) - XP.getXpForLevel(s.getLevel(p))) + " XP " + C.YELLOW + "(" + F.pc(s.getProgress(p)) + ")");
 				pa.addText(C.AQUA + "Contains " + F.f(Icing.getInst().getSk().getSkillDataController().get(p).getSkillPoints(((BasicSkill) s).getCodeName())) + " Shards");
