@@ -67,4 +67,10 @@ public class SkillSocial extends BasicSkill
 	{
 		return new MaterialBlock(Material.SIGN);
 	}
+	
+	@Override
+	public void createControllers()
+	{
+		
+	}
 }
