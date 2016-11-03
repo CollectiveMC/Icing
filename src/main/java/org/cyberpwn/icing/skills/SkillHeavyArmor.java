@@ -73,4 +73,10 @@ public class SkillHeavyArmor extends BasicSkill
 	{
 		return new MaterialBlock(Material.IRON_CHESTPLATE);
 	}
+	
+	@Override
+	public void createControllers()
+	{
+		
+	}
 }
