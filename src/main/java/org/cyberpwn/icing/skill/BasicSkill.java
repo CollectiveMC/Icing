@@ -4,14 +4,17 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.cyberpwn.icing.Icing;
+import org.cyberpwn.icing.ability.Ability;
 import org.cyberpwn.icing.xp.SkillCurrency;
 import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.Phantom;
+import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurableController;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.currency.Transaction;
 import org.phantomapi.gui.Notification;
+import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.Priority;
@@ -22,14 +25,32 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 {
 	private GMap<Player, Integer> rewardCache;
 	private XPReason reason;
+	private GList<Ability> abilities;
 	
 	public BasicSkill(Controllable parentController, String codeName, XPReason reason)
 	{
 		super(parentController, codeName);
 		
+		abilities = new GList<Ability>();
 		rewardCache = new GMap<Player, Integer>();
 		this.reason = reason;
+		createControllers();
+		
+		for(Controllable i : getControllers())
+		{
+			if(i instanceof Ability)
+			{
+				abilities.add((Ability) i);
+			}
+			
+			if(i instanceof Configurable)
+			{
+				loadCluster((Configurable) i, "abilities");
+			}
+		}
 	}
+	
+	public abstract void createControllers();
 	
 	@Override
 	public long getXp(Player p)
@@ -113,6 +134,7 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 		Icing.inst().getSk().getSkillDataController().get(player).takeSkillBuff(getCodeName(), skill);
 	}
 	
+	@Override
 	public String name()
 	{
 		return getCodeName();
@@ -167,5 +189,23 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 		}
 		
 		rewardCache.clear();
+	}
+	
+	@Override
+	public GMap<Player, Integer> getRewardCache()
+	{
+		return rewardCache;
+	}
+	
+	@Override
+	public XPReason getReason()
+	{
+		return reason;
+	}
+	
+	@Override
+	public GList<Ability> getAbilities()
+	{
+		return abilities;
 	}
 }
