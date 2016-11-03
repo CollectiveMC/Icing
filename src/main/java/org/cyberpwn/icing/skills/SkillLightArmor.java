@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.cyberpwn.icing.abilities.LightArmorAcrobatics;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
@@ -77,6 +78,6 @@ public class SkillLightArmor extends BasicSkill
 	@Override
 	public void createControllers()
 	{
-		
+		register(new LightArmorAcrobatics(this));
 	}
 }
