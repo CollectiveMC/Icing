@@ -89,24 +89,33 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 		}
 	}
 	
+	@Override
 	public long getBuffer(Player player)
 	{
 		return Icing.inst().getSk().getSkillDataController().get(player).getSkillBuff(getCodeName());
 	}
 	
+	@Override
 	public void setBuffer(Player player, long skill)
 	{
 		Icing.inst().getSk().getSkillDataController().get(player).setSkillBuff(getCodeName(), skill);
 	}
 	
+	@Override
 	public void addBuffer(Player player, long skill)
 	{
 		Icing.inst().getSk().getSkillDataController().get(player).addSkillBuff(getCodeName(), skill);
 	}
 	
+	@Override
 	public void takeBuffer(Player player, long skill)
 	{
 		Icing.inst().getSk().getSkillDataController().get(player).takeSkillBuff(getCodeName(), skill);
+	}
+	
+	public String name()
+	{
+		return getCodeName();
 	}
 	
 	@Override
