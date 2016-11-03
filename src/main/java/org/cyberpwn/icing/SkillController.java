@@ -225,6 +225,27 @@ public class SkillController extends ConfigurableController implements CommandLi
 		return C.GREEN + "CHA-CHING! It's a skill. Get farmed.";
 	}
 	
+	public String getGraph(int len, double pc)
+	{
+		String g = C.GREEN.toString() + C.UNDERLINE;
+		int mc = (int) ((double) len * pc);
+		int vc = len - mc;
+		
+		for(int i = 0; i < mc; i++)
+		{
+			g = g + " ";
+		}
+		
+		g = g + C.DARK_GRAY + C.UNDERLINE;
+		
+		for(int i = 0; i < vc; i++)
+		{
+			g = g + " ";
+		}
+		
+		return g;
+	}
+	
 	public void openSkillView(Player p)
 	{
 		Window w = new PhantomWindow(C.GREEN + "Skills", p)
@@ -263,6 +284,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 				Element pa = new PhantomElement(s.getSkillMaterial().getMaterial(), new Slot(ix.get()), C.GRAY.toString() + C.BOLD + s.fancyName() + C.LIGHT_PURPLE + " " + s.getLevel(p));
 				pa.addText(C.GRAY + "XP: " + C.LIGHT_PURPLE + F.f(s.getXp(p)));
 				pa.addText(C.GREEN + F.f(s.getXp(p) - XP.getXpForLevel(s.getLevel(p))) + " XP " + C.GRAY + "/ " + C.RED + F.f(XP.getXpForLevel(s.getLevel(p) + 1) - XP.getXpForLevel(s.getLevel(p))) + " XP " + C.YELLOW + "(" + F.pc(s.getProgress(p)) + ")");
+				pa.addText(getGraph(32, XP.percentToNextLevel(s.getXp(p))));
 				w.addElement(pa);
 				ix.add(1);
 			}
