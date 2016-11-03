@@ -22,4 +22,14 @@ public interface Skill
 	public void addReward(Player p, Integer r);
 	
 	public MaterialBlock getSkillMaterial();
+	
+	public long getBuffer(Player player);
+	
+	public void setBuffer(Player player, long skill);
+	
+	public void addBuffer(Player player, long skill);
+	
+	public void takeBuffer(Player player, long skill);
+	
+	public String name();
 }
