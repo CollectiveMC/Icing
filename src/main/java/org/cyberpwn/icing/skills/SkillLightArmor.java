@@ -73,4 +73,10 @@ public class SkillLightArmor extends BasicSkill
 	{
 		return new MaterialBlock(Material.LEATHER_CHESTPLATE);
 	}
+	
+	@Override
+	public void createControllers()
+	{
+		
+	}
 }
