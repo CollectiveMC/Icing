@@ -1,0 +1,126 @@
+package org.cyberpwn.icing.abilities;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.cyberpwn.icing.ability.BasicAbility;
+import org.cyberpwn.icing.skill.Skill;
+import org.phantomapi.clust.Comment;
+import org.phantomapi.clust.Keyed;
+import org.phantomapi.lang.GList;
+import org.phantomapi.nms.NMSX;
+import org.phantomapi.sync.Task;
+import org.phantomapi.util.C;
+import org.phantomapi.util.F;
+import org.phantomapi.util.P;
+import org.phantomapi.world.W;
+
+public class ArcheryPrecision extends BasicAbility
+{
+	@Comment("The initial range the rangefinder starts at")
+	@Keyed("initial-range")
+	public int initialRange = 42;
+	
+	@Comment("The range increase per upgrade")
+	@Keyed("range-step")
+	public int rangeStep = 12;
+	
+	private GList<Player> viewing;
+	
+	public ArcheryPrecision(Skill parent, String codeName)
+	{
+		super(parent, codeName);
+		
+		viewing = new GList<Player>();
+	}
+	
+	@EventHandler
+	public void on(ProjectileLaunchEvent e)
+	{
+		if(e.getEntity().getShooter() instanceof Player)
+		{
+			viewing.remove((Player) e.getEntity().getShooter());
+		}
+	}
+	
+	@EventHandler
+	public void on(PlayerInteractEvent e)
+	{
+		if(e.getAction().equals(Action.RIGHT_CLICK_AIR) && e.getPlayer().getItemInHand() != null && e.getPlayer().getItemInHand().getType().equals(Material.BOW) && isUnlocked(e.getPlayer()))
+		{
+			if(viewing.contains(e.getPlayer()))
+			{
+				viewing.remove(e.getPlayer());
+				return;
+			}
+			
+			viewing.add(e.getPlayer());
+			
+			new Task(20)
+			{
+				@Override
+				public void run()
+				{
+					if(!viewing.contains(e.getPlayer()) || e.getPlayer().getItemInHand() == null || !e.getPlayer().getItemInHand().getType().equals(Material.BOW))
+					{
+						viewing.remove(e.getPlayer());
+						cancel();
+						return;
+					}
+					
+					int distance = 0;
+					String targ = "";
+					Entity en = W.getEntityLookingAt(e.getPlayer(), initialRange + (getLevel(e.getPlayer()) * rangeStep), 5);
+					
+					if(en == null)
+					{
+						Location l = P.targetBlock(e.getPlayer(), (int) (initialRange + (getLevel(e.getPlayer()) * rangeStep)));
+						
+						if(!l.getBlock().getType().equals(Material.AIR))
+						{
+							distance = (int) l.distance(e.getPlayer().getLocation());
+							targ = StringUtils.capitalize(l.getBlock().getType().toString().toLowerCase());
+						}
+					}
+					
+					else
+					{
+						distance = (int) en.getLocation().distance(e.getPlayer().getLocation());
+						
+						if(en instanceof Player)
+						{
+							targ = StringUtils.capitalize(((Player) en).getName());
+						}
+						
+						else
+						{
+							targ = StringUtils.capitalize(en.getType().toString().toLowerCase());
+						}
+					}
+					
+					String text = "";
+					
+					if(distance > 0)
+					{
+						text = C.LIGHT_PURPLE + F.f(distance) + "m ";
+						text = text + C.GREEN + "[" + targ + "]";
+						
+					}
+					
+					else
+					{
+						text = C.RED + "> " + F.f(distance) + "m ";
+					}
+					
+					NMSX.sendActionBar(e.getPlayer(), text);
+				}
+			};
+		}
+	}
+}
