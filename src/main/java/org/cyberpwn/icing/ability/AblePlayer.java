@@ -37,7 +37,7 @@ public class AblePlayer extends ConfigurableObject
 		getConfiguration().set(ability, level);
 	}
 	
-	public void addSkill(String ability, long level)
+	public void addAbilityLevel(String ability, long level)
 	{
 		setAbilityLevel(ability, level + getAbilityLevel(ability));
 	}
