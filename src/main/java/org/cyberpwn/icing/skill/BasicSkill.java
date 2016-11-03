@@ -147,6 +147,12 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 	}
 	
 	@Override
+	public long getShards(Player p)
+	{
+		return Icing.getInst().getSk().getSkillDataController().get(p).getSkillPoints(getCodeName());
+	}
+	
+	@Override
 	public double getProgress(Player p)
 	{
 		return XP.percentToNextLevel(getXp(p));
@@ -207,5 +213,23 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 	public GList<Ability> getAbilities()
 	{
 		return abilities;
+	}
+	
+	@Override
+	public void addShards(Player p, long amt)
+	{
+		Icing.getInst().getSk().getSkillDataController().get(p).addSkillPoints(getCodeName(), amt);
+	}
+	
+	@Override
+	public void takeShards(Player p, long amt)
+	{
+		Icing.getInst().getSk().getSkillDataController().get(p).takeSkillPoints(getCodeName(), amt);
+	}
+	
+	@Override
+	public void setShards(Player p, long amt)
+	{
+		Icing.getInst().getSk().getSkillDataController().get(p).setSkillPoints(getCodeName(), amt);
 	}
 }
