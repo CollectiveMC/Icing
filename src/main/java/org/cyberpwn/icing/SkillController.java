@@ -313,7 +313,9 @@ public class SkillController extends ConfigurableController implements CommandLi
 					{
 						if(i.getSkill().getShards(p) >= i.getUpgradeCost() && i.getSkill().getLevel(p) >= i.getMinimumUpgradeLevel(p))
 						{
-							i.getSkill().i.addLevel(p);
+							i.addLevel(p);
+							i.getSkill().takeShards(p, i.getUpgradeCost());
+							// notify upgrade
 						}
 					}
 					
@@ -321,7 +323,9 @@ public class SkillController extends ConfigurableController implements CommandLi
 					{
 						if(i.getSkill().getShards(p) >= i.getUnlockCost() && i.getSkill().getLevel(p) >= i.getLevel())
 						{
-							
+							i.addLevel(p);
+							i.getSkill().takeShards(p, i.getUnlockCost());
+							// notify unlock
 						}
 					}
 				}
