@@ -34,12 +34,16 @@ public class ArcheryPrecision extends BasicAbility
 	
 	private GList<Player> viewing;
 	
-	public ArcheryPrecision(Skill parent, String codeName)
+	public ArcheryPrecision(Skill parent)
 	{
-		super(parent, codeName);
+		super(parent, "precision");
 		
 		viewing = new GList<Player>();
 		maxLevel = 30;
+		level = 5;
+		levelStep = 1;
+		upgradeCost = 1;
+		unlockCost = 3;
 	}
 	
 	@EventHandler
@@ -78,7 +82,7 @@ public class ArcheryPrecision extends BasicAbility
 					
 					int distance = 0;
 					String targ = "";
-					Entity en = W.getEntityLookingAt(e.getPlayer(), initialRange + (getLevel(e.getPlayer()) * rangeStep), 5);
+					Entity en = W.getEntityLookingAt(e.getPlayer(), initialRange + (getLevel(e.getPlayer()) * rangeStep), 1);
 					
 					if(en == null)
 					{
@@ -111,19 +115,24 @@ public class ArcheryPrecision extends BasicAbility
 					if(distance > 0)
 					{
 						text = C.LIGHT_PURPLE + F.f(distance) + "m ";
-						text = text + C.GREEN + "[" + targ + "]";
+						text = text + C.AQUA + "[" + targ + "]";
 						
 					}
 					
 					else
 					{
-						text = C.RED + "> " + F.f(distance) + "m ";
+						text = C.RED + "> " + F.f((int) (initialRange + (getLevel(e.getPlayer()) * rangeStep))) + "m ";
 					}
 					
 					NMSX.sendActionBar(e.getPlayer(), text);
 				}
 			};
 		}
+	}
+	
+	public int getRange(int level)
+	{
+		return (int) (initialRange + (level * rangeStep));
 	}
 	
 	@Override
@@ -135,7 +144,7 @@ public class ArcheryPrecision extends BasicAbility
 	@Override
 	public String getDescription()
 	{
-		return "Displays distance and type of target while preparing arrow.";
+		return "Displays distance and type of target";
 	}
 	
 	@Override
@@ -148,5 +157,16 @@ public class ArcheryPrecision extends BasicAbility
 	public void onStop()
 	{
 		
+	}
+	
+	@Override
+	public String getStatGraph(Player p)
+	{
+		if(getLevel() == getMaxLevel())
+		{
+			return C.LIGHT_PURPLE + F.f(getRange(1)) + "m " + getAbilityGraph(33, (double) getLevel(p) / (double) getMaxLevel(), "") + C.LIGHT_PURPLE + " " + F.f(getRange(getMaxLevel())) + "m";
+		}
+		
+		return C.LIGHT_PURPLE + F.f(getRange(1)) + "m " + getAbilityGraph(33, (double) getLevel(p) / (double) getMaxLevel(), F.f(getRange((int) getLevel(p))) + "m") + C.LIGHT_PURPLE + " " + F.f(getRange(getMaxLevel())) + "m";
 	}
 }
