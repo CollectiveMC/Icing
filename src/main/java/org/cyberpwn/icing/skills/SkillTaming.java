@@ -59,4 +59,10 @@ public class SkillTaming extends BasicSkill
 	{
 		return new MaterialBlock(Material.BONE);
 	}
+	
+	@Override
+	public void createControllers()
+	{
+		
+	}
 }
