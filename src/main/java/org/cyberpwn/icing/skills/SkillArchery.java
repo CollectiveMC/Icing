@@ -17,10 +17,10 @@ import org.phantomapi.world.MaterialBlock;
 public class SkillArchery extends BasicSkill
 {
 	@Keyed("blocks-per-xp")
-	public int blocksPerXp = 2;
+	public int blocksPerXp = 1;
 	
 	@Keyed("initial")
-	public int initial = 4;
+	public int initial = 3;
 	
 	@Keyed("initial-non-critical")
 	public int initialnc = 1;
@@ -63,7 +63,7 @@ public class SkillArchery extends BasicSkill
 				
 				if(a.isCritical())
 				{
-					addReward(p, initial + dis);
+					addReward(p, (initial + dis));
 				}
 				
 				else
@@ -83,6 +83,6 @@ public class SkillArchery extends BasicSkill
 	@Override
 	public void createControllers()
 	{
-		register(new ArcheryPrecision(this, "precision"));
+		register(new ArcheryPrecision(this));
 	}
 }
