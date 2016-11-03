@@ -9,6 +9,7 @@ import org.phantomapi.clust.Comment;
 import org.phantomapi.clust.ConfigurableController;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controller;
+import org.phantomapi.util.C;
 
 public abstract class BasicAbility extends ConfigurableController implements Ability
 {
@@ -70,6 +71,29 @@ public abstract class BasicAbility extends ConfigurableController implements Abi
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public String getAbilityGraph(int len, double pc, String c)
+	{
+		String g = C.LIGHT_PURPLE.toString() + C.STRIKETHROUGH;
+		int mc = (int) ((double) len * pc);
+		int vc = len - mc;
+		
+		for(int i = 0; i < mc; i++)
+		{
+			g = g + " ";
+		}
+		
+		g = g + C.RESET + C.AQUA + C.BOLD + " " + c + " ";
+		g = g + C.DARK_GRAY + C.STRIKETHROUGH;
+		
+		for(int i = 0; i < vc; i++)
+		{
+			g = g + " ";
+		}
+		
+		return g;
 	}
 	
 	@Override
