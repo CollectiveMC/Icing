@@ -99,7 +99,7 @@ public class CakeController extends CommandController
 			{
 				Cake cake = (Cake) i;
 				CakeType cakeType = cake.getType();
-				loadCluster((Configurable) i, cakeType.toString().toLowerCase());
+				loadCluster((Configurable) i, "cake");
 				
 				if(!cakes.containsKey(cakeType))
 				{
