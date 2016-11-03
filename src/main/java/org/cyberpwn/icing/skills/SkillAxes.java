@@ -59,4 +59,10 @@ public class SkillAxes extends BasicSkill
 	{
 		return new MaterialBlock(Material.DIAMOND_AXE);
 	}
+	
+	@Override
+	public void createControllers()
+	{
+		
+	}
 }
