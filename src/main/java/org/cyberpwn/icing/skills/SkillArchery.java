@@ -78,4 +78,10 @@ public class SkillArchery extends BasicSkill
 	{
 		return new MaterialBlock(Material.BOW);
 	}
+	
+	@Override
+	public void createControllers()
+	{
+		
+	}
 }
