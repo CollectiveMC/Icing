@@ -57,4 +57,10 @@ public class SkillVoter extends BasicSkill
 	{
 		return new MaterialBlock(Material.PAPER);
 	}
+	
+	@Override
+	public void createControllers()
+	{
+		
+	}
 }
