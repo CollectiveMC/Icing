@@ -72,6 +72,9 @@ public class SkillController extends ConfigurableController implements CommandLi
 		skills.add(new SkillSocial(this));
 		skills.add(new SkillHeavyArmor(this));
 		skills.add(new SkillLightArmor(this));
+		skills.add(new SkillSwords(this));
+		skills.add(new SkillAxes(this));
+		skills.add(new SkillFishing(this));
 		
 		register(skillDataController);
 		
