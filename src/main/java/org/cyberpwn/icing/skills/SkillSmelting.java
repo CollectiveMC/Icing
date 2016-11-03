@@ -62,4 +62,10 @@ public class SkillSmelting extends BasicSkill
 	{
 		return new MaterialBlock(Material.COAL);
 	}
+	
+	@Override
+	public void createControllers()
+	{
+		
+	}
 }
