@@ -3,6 +3,7 @@ package org.cyberpwn.icing;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.cyberpwn.icing.ability.AbilityDataController;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.skill.Skill;
 import org.cyberpwn.icing.skill.SkillDataController;
@@ -50,6 +51,7 @@ import org.phantomapi.util.Players;
 public class SkillController extends ConfigurableController implements CommandListener
 {
 	private SkillDataController skillDataController;
+	private AbilityDataController abilityDataController;
 	private GList<Skill> skills;
 	
 	public SkillController(Controllable parentController)
@@ -76,6 +78,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 		skills.add(new SkillAxes(this));
 		skills.add(new SkillFishing(this));
 		
+		register(abilityDataController);
 		register(skillDataController);
 		
 		for(Skill i : skills)
@@ -389,5 +392,15 @@ public class SkillController extends ConfigurableController implements CommandLi
 	public GList<String> getCommandAliases()
 	{
 		return new GList<String>().qadd("sk").qadd("ski").qadd("skills").qadd("perk").qadd("perks");
+	}
+	
+	public AbilityDataController getAbilityDataController()
+	{
+		return abilityDataController;
+	}
+	
+	public GList<Skill> getSkills()
+	{
+		return skills;
 	}
 }
