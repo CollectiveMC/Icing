@@ -69,4 +69,10 @@ public class SkillEnchanting extends BasicSkill
 		
 		return message;
 	}
+	
+	@Override
+	public void createControllers()
+	{
+		
+	}
 }
