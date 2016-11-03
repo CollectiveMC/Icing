@@ -92,4 +92,10 @@ public class SkillMining extends BasicSkill
 	{
 		return new MaterialBlock(Material.IRON_PICKAXE);
 	}
+	
+	@Override
+	public void createControllers()
+	{
+		
+	}
 }
