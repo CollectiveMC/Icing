@@ -66,6 +66,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 		super(parentController, "skill");
 		
 		skillDataController = new SkillDataController(this);
+		abilityDataController = new AbilityDataController(this);
 		skills = new GList<Skill>();
 		skills.add(new SkillMining(this));
 		skills.add(new SkillButcher(this));
@@ -308,7 +309,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 		for(Ability i : s.getAbilities())
 		{
 			Slot sl = slots.pop();
-			Element e = new PhantomElement(Material.BARRIER, sl, C.RED + i.name())
+			Element e = new PhantomElement(Material.BARRIER, sl, C.RED + i.fancyName())
 			{
 				@Override
 				public void onClick(Player p, Click c, Window w)
@@ -332,6 +333,8 @@ public class SkillController extends ConfigurableController implements CommandLi
 							n.setAudible(new GSound(Sound.FIREWORK_LARGE_BLAST2, 1f, 0.38f));
 							n.setPriority(Priority.LOW);
 							Phantom.queueNotification(p, n);
+							w.close();
+							showAbilities(p, s);
 						}
 					}
 					
@@ -354,6 +357,8 @@ public class SkillController extends ConfigurableController implements CommandLi
 							n.setAudible(new GSound(Sound.FIREWORK_LARGE_BLAST2, 1f, 0.38f));
 							n.setPriority(Priority.LOW);
 							Phantom.queueNotification(p, n);
+							w.close();
+							showAbilities(p, s);
 						}
 					}
 				}
@@ -369,7 +374,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 				e.setCount((int) i.getLevel(p));
 				e.addText(C.GRAY + "Upgrade Cost: " + (i.getSkill().getShards(p) >= i.getUpgradeCost() ? C.LIGHT_PURPLE.toString() : C.RED.toString()) + i.getUpgradeCost() + " " + i.getSkill().fancyName() + " Shards");
 				e.addText(C.GRAY + "Upgrade Requires: " + (i.getSkill().getLevel(p) >= i.getMinimumUpgradeLevel(p) ? C.LIGHT_PURPLE.toString() : C.RED.toString()) + i.getSkill().fancyName() + " " + i.getMinimumUpgradeLevel(p));
-				e.addText(getAbilityGraph(30, (double) i.getLevel(p) / (double) i.getMaxLevel()));
+				e.addText(i.getStatGraph(p));
 			}
 			
 			else
