@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.cyberpwn.icing.Icing;
 import org.inventivetalent.bossbar.BossBarAPI;
 import org.phantomapi.Phantom;
+import org.phantomapi.currency.Transaction;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.Priority;
@@ -29,9 +30,25 @@ public class XP
 		{
 			long level = getLevelForXp(getXp(player));
 			Icing.inst().getXp().getXpDataController().get(player).setXp(e.getXp() + getXp(player));
+			addBuffer(player, xp);
 			long levelNext = getLevelForXp(getXp(player));
-			BossBarAPI.removeAllBars(player);
-			BossBarAPI.setMessage(player, C.LIGHT_PURPLE + "Level " + XP.getLevelForXp(getXp(player)), (float) ((float) XP.percentToNextLevel(getXp(player)) * 100.0), -1);
+			
+			try
+			{
+				BossBarAPI.removeAllBars(player);
+				BossBarAPI.setMessage(player, C.LIGHT_PURPLE + "Level " + XP.getLevelForXp(getXp(player)), (float) ((float) XP.percentToNextLevel(getXp(player)) * 100.0), -1);
+			}
+			
+			catch(Exception xe)
+			{
+				
+			}
+			
+			while(XP.getBuffer(player) >= 8192)
+			{
+				XP.takeBuffer(player, 8192);
+				new Transaction(new SkillCurrency()).to(player).amount(1.0).commit();
+			}
 			
 			if(levelNext > level)
 			{
@@ -99,6 +116,46 @@ public class XP
 				}
 			}
 		};
+	}
+	
+	public static long getSkill(Player player)
+	{
+		return Icing.inst().getXp().getXpDataController().get(player).getSkill();
+	}
+	
+	public static void setSkill(Player player, long skill)
+	{
+		Icing.inst().getXp().getXpDataController().get(player).setSkill(skill);
+	}
+	
+	public static void addSkill(Player player, long skill)
+	{
+		Icing.inst().getXp().getXpDataController().get(player).addSkill(skill);
+	}
+	
+	public static void takeSkill(Player player, long skill)
+	{
+		Icing.inst().getXp().getXpDataController().get(player).takeSkill(skill);
+	}
+	
+	public static long getBuffer(Player player)
+	{
+		return Icing.inst().getXp().getXpDataController().get(player).getBuffer();
+	}
+	
+	public static void setBuffer(Player player, long skill)
+	{
+		Icing.inst().getXp().getXpDataController().get(player).setBuffer(skill);
+	}
+	
+	public static void addBuffer(Player player, long skill)
+	{
+		Icing.inst().getXp().getXpDataController().get(player).addBuff(skill);
+	}
+	
+	public static void takeBuffer(Player player, long skill)
+	{
+		Icing.inst().getXp().getXpDataController().get(player).takeBuff(skill);
 	}
 	
 	public static long getXp(Player player)
