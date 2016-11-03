@@ -16,6 +16,12 @@ public class XPPlayer extends ConfigurableObject
 	@Keyed("b")
 	public double boost = 0;
 	
+	@Keyed("s")
+	public long skill = 0;
+	
+	@Keyed("l")
+	public long buffer = 0;
+	
 	public XPPlayer(Player player)
 	{
 		super(player.getUniqueId().toString());
@@ -56,5 +62,45 @@ public class XPPlayer extends ConfigurableObject
 	public void modBoost(double amt)
 	{
 		setBoost(getBoost() + amt);
+	}
+	
+	public long getSkill()
+	{
+		return skill;
+	}
+	
+	public void setSkill(long skill)
+	{
+		this.skill = skill;
+	}
+	
+	public void addSkill(long amt)
+	{
+		skill = skill + amt;
+	}
+	
+	public void takeSkill(long amt)
+	{
+		skill = skill - amt;
+	}
+	
+	public void addBuff(long amt)
+	{
+		buffer = buffer + amt;
+	}
+	
+	public void takeBuff(long amt)
+	{
+		buffer = buffer - amt;
+	}
+	
+	public long getBuffer()
+	{
+		return buffer;
+	}
+	
+	public void setBuffer(long buffer)
+	{
+		this.buffer = buffer;
 	}
 }
