@@ -11,8 +11,10 @@ import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
+import org.phantomapi.construct.ControllerMessage;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GMap;
+import org.phantomapi.util.Players;
 import org.phantomapi.world.MaterialBlock;
 
 @Ticked(20)
@@ -88,5 +90,18 @@ public class SkillConstruction extends BasicSkill
 	public MaterialBlock getSkillMaterial()
 	{
 		return new MaterialBlock(Material.STICK);
+	}
+	
+	@Override
+	public ControllerMessage onControllerMessageRecieved(ControllerMessage message)
+	{
+		if(message.contains("e.player"))
+		{
+			Player p = Players.getPlayer(message.getString("e.player"));
+			int level = message.getInt("e.level");
+			addReward(p, level);
+		}
+		
+		return message;
 	}
 }
