@@ -2,6 +2,7 @@ package org.cyberpwn.icing.ability;
 
 import org.bukkit.entity.Player;
 import org.cyberpwn.icing.skill.Skill;
+import org.phantomapi.world.MaterialBlock;
 
 public interface Ability
 {
@@ -28,4 +29,10 @@ public interface Ability
 	public String name();
 	
 	public String fancyName();
+	
+	public MaterialBlock getMaterialBlock();
+	
+	public String getDescription();
+	
+	public int getMaxLevel();
 }
