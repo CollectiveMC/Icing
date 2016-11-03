@@ -59,4 +59,10 @@ public class SkillSwords extends BasicSkill
 	{
 		return new MaterialBlock(Material.DIAMOND_SWORD);
 	}
+	
+	@Override
+	public void createControllers()
+	{
+		
+	}
 }
