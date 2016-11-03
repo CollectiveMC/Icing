@@ -19,6 +19,7 @@ import org.phantomapi.sync.Task;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.P;
+import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.W;
 
 public class ArcheryPrecision extends BasicAbility
@@ -38,6 +39,7 @@ public class ArcheryPrecision extends BasicAbility
 		super(parent, codeName);
 		
 		viewing = new GList<Player>();
+		maxLevel = 30;
 	}
 	
 	@EventHandler
@@ -122,5 +124,29 @@ public class ArcheryPrecision extends BasicAbility
 				}
 			};
 		}
+	}
+	
+	@Override
+	public MaterialBlock getMaterialBlock()
+	{
+		return new MaterialBlock(Material.COMPASS);
+	}
+	
+	@Override
+	public String getDescription()
+	{
+		return "Displays distance and type of target while preparing arrow.";
+	}
+	
+	@Override
+	public void onStart()
+	{
+		
+	}
+	
+	@Override
+	public void onStop()
+	{
+		
 	}
 }
