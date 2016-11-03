@@ -40,6 +40,7 @@ import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.FinalInteger;
+import org.phantomapi.util.Players;
 
 @Ticked(20)
 public class SkillController extends ConfigurableController implements CommandListener
@@ -311,9 +312,55 @@ public class SkillController extends ConfigurableController implements CommandLi
 		
 		else if(sender.hasPermission("x.god"))
 		{
-			// TODO Commands
-			// /skill give <player> <skill> <xp>
-			// /skill get <player> [skill]
+			if(cmd.getArgs().length == 1 && cmd.getArgs()[0].equalsIgnoreCase("list"))
+			{
+				for(Skill i : skills)
+				{
+					sender.sendMessage(((Configurable) i).getCodeName());
+				}
+			}
+			
+			if(cmd.getArgs().length > 1)
+			{
+				Player p = Players.getPlayer(cmd.getArgs()[1]);
+				
+				if(p == null)
+				{
+					sender.sendMessage(C.RED + "Cannot Find Player");
+					return true;
+				}
+				
+				if(cmd.getArgs()[0].equalsIgnoreCase("get"))
+				{
+					if(cmd.getArgs().length == 2)
+					{
+						for(String i : skillDataController.get(p).getKnownSkills())
+						{
+							sender.sendMessage(i + ": " + C.GREEN + F.f(skillDataController.get(p).getSkill(i)) + " XP " + C.YELLOW + F.f(XP.getLevelForXp(skillDataController.get(p).getSkill(i))));
+						}
+					}
+					
+					else
+					{
+						sender.sendMessage(C.RED + "/skill get <player> <skill>");
+					}
+				}
+				
+				if(cmd.getArgs()[0].equalsIgnoreCase("give") && cmd.getArgs().length == 4)
+				{
+					String skill = cmd.getArgs()[2];
+					Integer xp = Integer.valueOf(cmd.getArgs()[3]);
+					
+					for(Skill i : skills)
+					{
+						if(skill.equalsIgnoreCase(((Configurable) i).getCodeName()) || skill.replaceAll("-", " ").equalsIgnoreCase(((Configurable) i).getCodeName()))
+						{
+							sender.sendMessage("Reward Dispatched");
+							i.addReward(p, xp);
+						}
+					}
+				}
+			}
 		}
 		
 		else
