@@ -74,4 +74,10 @@ public class SkillExcavation extends BasicSkill
 	{
 		return new MaterialBlock(Material.IRON_SPADE);
 	}
+	
+	@Override
+	public void createControllers()
+	{
+		
+	}
 }
