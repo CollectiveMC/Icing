@@ -104,4 +104,10 @@ public class SkillConstruction extends BasicSkill
 		
 		return message;
 	}
+	
+	@Override
+	public void createControllers()
+	{
+		
+	}
 }
