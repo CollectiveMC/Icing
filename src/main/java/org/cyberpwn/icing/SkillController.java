@@ -3,6 +3,7 @@ package org.cyberpwn.icing;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.cyberpwn.icing.ability.Ability;
 import org.cyberpwn.icing.ability.AbilityDataController;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.skill.Skill;
@@ -34,7 +35,9 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.currency.ExperienceCurrency;
+import org.phantomapi.gui.Click;
 import org.phantomapi.gui.Element;
+import org.phantomapi.gui.Guis;
 import org.phantomapi.gui.PhantomElement;
 import org.phantomapi.gui.PhantomWindow;
 import org.phantomapi.gui.Slot;
@@ -255,6 +258,102 @@ public class SkillController extends ConfigurableController implements CommandLi
 		}
 		
 		return g;
+	}
+	
+	public String getAbilityGraph(int len, double pc)
+	{
+		String g = C.LIGHT_PURPLE.toString() + C.UNDERLINE;
+		int mc = (int) ((double) len * pc);
+		int vc = len - mc;
+		
+		for(int i = 0; i < mc; i++)
+		{
+			g = g + " ";
+		}
+		
+		g = g + C.DARK_GRAY + C.UNDERLINE;
+		
+		for(int i = 0; i < vc; i++)
+		{
+			g = g + " ";
+		}
+		
+		return g;
+	}
+	
+	public void showAbilities(Player p, Skill s)
+	{
+		Window w = new PhantomWindow(C.LIGHT_PURPLE + s.fancyName() + " Abilities", p)
+		{
+			@Override
+			public boolean onClick(Element element, Player p)
+			{
+				new GSound(Sound.CLICK, 1f, 1.6f).play(p);
+				return true;
+			}
+			
+			@Override
+			public void onClose(Window w, Player p)
+			{
+				new GSound(Sound.FIREWORK_LARGE_BLAST2, 1f, 0.1f).play(p);
+			}
+		};
+		
+		GList<Slot> slots = Guis.getCentered(s.getAbilities().size(), 2);
+		
+		for(Ability i : s.getAbilities())
+		{
+			Slot sl = slots.pop();
+			Element e = new PhantomElement(Material.BARRIER, sl, C.RED + i.name())
+			{
+				@Override
+				public void onClick(Player p, Click c, Window w)
+				{
+					if(i.isUnlocked(p))
+					{
+						if(i.getSkill().getShards(p) >= i.getUpgradeCost() && i.getSkill().getLevel(p) >= i.getMinimumUpgradeLevel(p))
+						{
+							i.getSkill().i.addLevel(p);
+						}
+					}
+					
+					else
+					{
+						if(i.getSkill().getShards(p) >= i.getUnlockCost() && i.getSkill().getLevel(p) >= i.getLevel())
+						{
+							
+						}
+					}
+				}
+			};
+			
+			e.addText(C.GRAY + i.getDescription());
+			
+			if(i.isUnlocked(p))
+			{
+				e.setType(i.getMaterialBlock().getMaterial());
+				e.setMetadata(i.getMaterialBlock().getData());
+				e.setTitle(C.AQUA + i.fancyName() + " " + i.getLevel(p));
+				e.setCount((int) i.getLevel(p));
+				e.addText(C.GRAY + "Upgrade Cost: " + (i.getSkill().getShards(p) >= i.getUpgradeCost() ? C.LIGHT_PURPLE.toString() : C.RED.toString()) + i.getUpgradeCost() + " " + i.getSkill().fancyName() + " Shards");
+				e.addText(C.GRAY + "Upgrade Requires: " + (i.getSkill().getLevel(p) >= i.getMinimumUpgradeLevel(p) ? C.LIGHT_PURPLE.toString() : C.RED.toString()) + i.getSkill().fancyName() + " " + i.getMinimumUpgradeLevel(p));
+				e.addText(getAbilityGraph(30, (double) i.getLevel(p) / (double) i.getMaxLevel()));
+			}
+			
+			else
+			{
+				e.addText(C.GRAY + "Unlock Cost: " + (i.getSkill().getShards(p) >= i.getUnlockCost() ? C.LIGHT_PURPLE.toString() : C.RED.toString()) + i.getUpgradeCost() + " " + i.getSkill().fancyName() + " Shards");
+				e.addText(C.GRAY + "Unlock Requires: " + (i.getSkill().getLevel(p) >= i.getLevel() ? C.LIGHT_PURPLE.toString() : C.RED.toString()) + i.getSkill().fancyName() + " " + i.getMinimumUpgradeLevel(p));
+			}
+			
+			w.addElement(e);
+		}
+		
+		Element bg = new PhantomElement(Material.STAINED_GLASS_PANE, new Slot(0), "  ");
+		bg.setMetadata((byte) 15);
+		w.setBackground(bg);
+		w.setViewport(3);
+		w.open();
 	}
 	
 	public void openSkillView(Player p)
