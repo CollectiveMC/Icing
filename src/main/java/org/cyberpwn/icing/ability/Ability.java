@@ -12,6 +12,10 @@ public interface Ability
 	
 	public void addLevel(Player p);
 	
+	public String getStatGraph(Player p);
+	
+	public String getAbilityGraph(int len, double pc, String c);
+	
 	public Skill getSkill();
 	
 	public boolean canUpgradeOrUnlock(Player p);
