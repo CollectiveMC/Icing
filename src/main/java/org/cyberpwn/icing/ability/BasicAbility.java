@@ -1,9 +1,14 @@
 package org.cyberpwn.icing.ability;
 
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.entity.Player;
+import org.cyberpwn.icing.Icing;
+import org.cyberpwn.icing.skill.Skill;
+import org.cyberpwn.icing.xp.XP;
 import org.phantomapi.clust.Comment;
 import org.phantomapi.clust.ConfigurableController;
 import org.phantomapi.clust.Keyed;
-import org.phantomapi.construct.Controllable;
+import org.phantomapi.construct.Controller;
 
 public class BasicAbility extends ConfigurableController implements Ability
 {
@@ -23,9 +28,81 @@ public class BasicAbility extends ConfigurableController implements Ability
 	@Keyed("ability.cost")
 	public int upgradeCost = 2;
 	
-	public BasicAbility(Controllable parentController, String codeName)
+	public BasicAbility(Skill parent, String codeName)
 	{
-		super(parentController, codeName);
+		super((Controller) parent, codeName);
+	}
+	
+	public boolean isUnlocked(Player p)
+	{
+		return Icing.getInst().getSk().getAbilityDataController().get(p).getUnlockedAbilities().contains(getCodeName());
+	}
+	
+	public long getLevel(Player p)
+	{
+		return Icing.getInst().getSk().getAbilityDataController().get(p).getAbilityLevel(getCodeName());
+	}
+	
+	public void addLevel(Player p)
+	{
+		Icing.getInst().getSk().getAbilityDataController().get(p).addAbilityLevel(getCodeName(), 1);
+	}
+	
+	public Skill getSkill()
+	{
+		return (Skill) parentController;
+	}
+	
+	public boolean canUpgradeOrUnlock(Player p)
+	{
+		if(getSkill().getLevel(p) >= getMinimumUpgradeLevel(p) && XP.getLevelForXp(XP.getXp(p)) >= getMinimumUpgradeLevel(p))
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public long getMinimumUpgradeLevel(Player p)
+	{
+		long alevel = getLevel(p);
+		
+		if(alevel < 1)
+		{
+			return level;
+		}
+		
+		return level + ((alevel + 1) * levelStep);
+	}
+	
+	public int getLevel()
+	{
+		return level;
+	}
+	
+	public int getLevelStep()
+	{
+		return levelStep;
+	}
+	
+	public int getUnlockCost()
+	{
+		return unlockCost;
+	}
+	
+	public int getUpgradeCost()
+	{
+		return upgradeCost;
+	}
+	
+	public String name()
+	{
+		return getCodeName();
+	}
+	
+	public String fancyName()
+	{
+		return StringUtils.capitalize(getCodeName());
 	}
 	
 	@Override
