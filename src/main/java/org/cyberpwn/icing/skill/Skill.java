@@ -1,6 +1,10 @@
 package org.cyberpwn.icing.skill;
 
 import org.bukkit.entity.Player;
+import org.cyberpwn.icing.ability.Ability;
+import org.cyberpwn.icing.xp.XPReason;
+import org.phantomapi.lang.GList;
+import org.phantomapi.lang.GMap;
 import org.phantomapi.world.MaterialBlock;
 
 public interface Skill
@@ -32,4 +36,10 @@ public interface Skill
 	public void takeBuffer(Player player, long skill);
 	
 	public String name();
+	
+	public GMap<Player, Integer> getRewardCache();
+	
+	public XPReason getReason();
+	
+	public GList<Ability> getAbilities();
 }
