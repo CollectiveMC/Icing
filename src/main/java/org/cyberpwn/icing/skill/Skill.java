@@ -15,6 +15,14 @@ public interface Skill
 	
 	public long getLevel(Player p);
 	
+	public long getShards(Player p);
+	
+	public void addShards(Player p, long amt);
+	
+	public void takeShards(Player p, long amt);
+	
+	public void setShards(Player p, long amt);
+	
 	public double getProgress(Player p);
 	
 	public long getXpLeft(Player p);
