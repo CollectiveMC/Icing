@@ -227,4 +227,10 @@ public class SkillButcher extends BasicSkill
 	{
 		return new MaterialBlock(Material.STONE_SWORD);
 	}
+	
+	@Override
+	public void createControllers()
+	{
+		
+	}
 }
