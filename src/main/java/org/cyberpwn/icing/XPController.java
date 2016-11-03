@@ -67,9 +67,9 @@ public class XPController extends ConfigurableController implements CommandListe
 			t.setTitle("    ");
 			t.setSubTitle(C.DARK_GRAY + "+ " + C.GREEN + C.BOLD + F.f(e.getXp()) + C.RESET + C.GREEN + " XP");
 			t.setAction(C.DARK_GRAY + "+ " + C.GREEN + C.BOLD + F.f(e.getXp()) + C.RESET + C.GREEN + " XP" + " (" + F.pc(XP.getBoost(e.getPlayer())) + ") " + C.YELLOW + reason.fancy());
-			t.setFadeIn(2);
-			t.setFadeOut(7);
-			t.setStayTime(1);
+			t.setFadeIn(0);
+			t.setFadeOut(8);
+			t.setStayTime(0);
 			Audio a = new Audio();
 			a.add(new GSound(Sound.SUCCESSFUL_HIT, 1f, 1.95f));
 			n.setAudible(a);
@@ -137,7 +137,6 @@ public class XPController extends ConfigurableController implements CommandListe
 			if(sender.isPlayer())
 			{
 				sender.sendMessage("XP: " + C.GREEN + F.f(XP.getXp(sender.getPlayer())));
-				sender.sendMessage("Skill: " + C.GREEN + F.f(XP.getSkill(sender.getPlayer())));
 				sender.sendMessage("Boost: " + C.GREEN + "+ " + F.pc(XP.getBoost(sender.getPlayer())));
 				sender.sendMessage("Level: " + C.GREEN + "+ " + F.f(XP.getLevelForXp(XP.getXp(sender.getPlayer()))));
 				sender.sendMessage("XP For Level Up: " + C.GREEN + "+ " + F.f(XP.xpToNextLevel(XP.getXp(sender.getPlayer()))));
