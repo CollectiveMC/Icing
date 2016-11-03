@@ -83,4 +83,10 @@ public class SkillFarming extends BasicSkill
 	{
 		return new MaterialBlock(Material.WHEAT);
 	}
+	
+	@Override
+	public void createControllers()
+	{
+		
+	}
 }
