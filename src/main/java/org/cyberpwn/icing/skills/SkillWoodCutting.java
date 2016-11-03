@@ -63,4 +63,10 @@ public class SkillWoodCutting extends BasicSkill
 	{
 		return new MaterialBlock(Material.IRON_AXE);
 	}
+	
+	@Override
+	public void createControllers()
+	{
+		
+	}
 }
