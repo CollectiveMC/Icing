@@ -60,6 +60,7 @@ public class SkillArchery extends BasicSkill
 				Player p = (Player) a.getShooter();
 				int dis = (int) a.getLocation().distance(p.getLocation());
 				dis /= blocksPerXp;
+				dis *= 2;
 				
 				if(a.isCritical())
 				{
