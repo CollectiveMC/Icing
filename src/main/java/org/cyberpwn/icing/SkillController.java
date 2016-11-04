@@ -24,6 +24,7 @@ import org.cyberpwn.icing.skills.SkillSmelting;
 import org.cyberpwn.icing.skills.SkillSocial;
 import org.cyberpwn.icing.skills.SkillSwords;
 import org.cyberpwn.icing.skills.SkillTaming;
+import org.cyberpwn.icing.skills.SkillUnarmed;
 import org.cyberpwn.icing.skills.SkillWoodCutting;
 import org.cyberpwn.icing.xp.XP;
 import org.phantomapi.Phantom;
@@ -85,6 +86,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 		skills.add(new SkillSwords(this));
 		skills.add(new SkillAxes(this));
 		skills.add(new SkillFishing(this));
+		skills.add(new SkillUnarmed(this));
 		
 		register(abilityDataController);
 		register(skillDataController);
@@ -316,7 +318,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 				{
 					if(i.isUnlocked(p))
 					{
-						if(i.getSkill().getShards(p) >= i.getUpgradeCost() && i.getSkill().getLevel(p) >= i.getMinimumUpgradeLevel(p))
+						if(i.getLevel(p) < i.getMaxLevel() && i.getSkill().getShards(p) >= i.getUpgradeCost() && i.getSkill().getLevel(p) >= i.getMinimumUpgradeLevel(p))
 						{
 							i.addLevel(p);
 							i.getSkill().takeShards(p, i.getUpgradeCost());
@@ -340,7 +342,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 					
 					else
 					{
-						if(i.getSkill().getShards(p) >= i.getUnlockCost() && i.getSkill().getLevel(p) >= i.getLevel())
+						if(i.getLevel(p) < i.getMaxLevel() && i.getSkill().getShards(p) >= i.getUnlockCost() && i.getSkill().getLevel(p) >= i.getLevel())
 						{
 							i.addLevel(p);
 							i.getSkill().takeShards(p, i.getUnlockCost());
