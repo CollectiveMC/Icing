@@ -61,6 +61,7 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 	@Override
 	public void addXp(Player p, long amt)
 	{
+		amt = (long) (amt + (amt * XP.getBoost(p)));
 		long level = XP.getLevelForXp(getXp(p));
 		Icing.inst().getSk().getSkillDataController().get(p).addSkill(getCodeName(), amt);
 		XP.giveXp(p, amt, reason);
