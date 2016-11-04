@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.inventory.ItemStack;
 import org.cyberpwn.icing.ability.BasicAbility;
 import org.cyberpwn.icing.skill.Skill;
 import org.phantomapi.clust.Comment;
@@ -41,7 +42,21 @@ public class LightArmorAcrobatics extends BasicAbility
 				
 				if(isUnlocked(p))
 				{
-					e.setDamage(e.getDamage() - (e.getDamage() * getMitigation((int) getLevel(p))));
+					double splitDamage = e.getDamage() / 4;
+					
+					int v = 0;
+					
+					for(ItemStack i : p.getInventory().getArmorContents())
+					{
+						if(i.getType().toString().contains("CHAINMAIL") || i.getType().toString().contains("LEATHER"))
+						{
+							v++;
+						}
+					}
+					
+					double fd = splitDamage * v;
+					
+					e.setDamage(e.getDamage() - (fd * getMitigation((int) getLevel(p))));
 				}
 			}
 		}
@@ -81,9 +96,9 @@ public class LightArmorAcrobatics extends BasicAbility
 	{
 		if(getLevel() == getMaxLevel())
 		{
-			return C.LIGHT_PURPLE + F.pc(getMitigation(1)) + " " + getAbilityGraph(33, (double) getLevel(p) / (double) getMaxLevel(), "") + C.LIGHT_PURPLE + " " + F.pc(getMitigation(getMaxLevel())) + " Reduction";
+			return C.LIGHT_PURPLE + F.pc(getMitigation(1)) + " " + getAbilityGraph(20, (double) getLevel(p) / (double) getMaxLevel(), "") + C.LIGHT_PURPLE + " " + F.pc(getMitigation(getMaxLevel())) + " Reduction";
 		}
 		
-		return C.LIGHT_PURPLE + F.pc(getMitigation(1)) + " " + getAbilityGraph(33, (double) getLevel(p) / (double) getMaxLevel(), F.pc(getMitigation((int) getLevel(p)))) + C.LIGHT_PURPLE + " " + F.pc(getMitigation(getMaxLevel())) + "Reduction";
+		return C.LIGHT_PURPLE + F.pc(getMitigation(1)) + " " + getAbilityGraph(20, (double) getLevel(p) / (double) getMaxLevel(), F.pc(getMitigation((int) getLevel(p)))) + C.LIGHT_PURPLE + " " + F.pc(getMitigation(getMaxLevel())) + " Reduction";
 	}
 }
