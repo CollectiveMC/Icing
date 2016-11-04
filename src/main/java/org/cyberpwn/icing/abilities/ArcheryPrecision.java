@@ -164,9 +164,9 @@ public class ArcheryPrecision extends BasicAbility
 	{
 		if(getLevel() == getMaxLevel())
 		{
-			return C.LIGHT_PURPLE + F.f(getRange(1)) + "m " + getAbilityGraph(33, (double) getLevel(p) / (double) getMaxLevel(), "") + C.LIGHT_PURPLE + " " + F.f(getRange(getMaxLevel())) + "m";
+			return C.LIGHT_PURPLE + F.f(getRange(1)) + "m " + getAbilityGraph(20, (double) getLevel(p) / (double) getMaxLevel(), "") + C.LIGHT_PURPLE + " " + F.f(getRange(getMaxLevel())) + "m";
 		}
 		
-		return C.LIGHT_PURPLE + F.f(getRange(1)) + "m " + getAbilityGraph(33, (double) getLevel(p) / (double) getMaxLevel(), F.f(getRange((int) getLevel(p))) + "m") + C.LIGHT_PURPLE + " " + F.f(getRange(getMaxLevel())) + "m";
+		return C.LIGHT_PURPLE + F.f(getRange(1)) + "m " + getAbilityGraph(20, (double) getLevel(p) / (double) getMaxLevel(), F.f(getRange((int) getLevel(p))) + "m") + C.LIGHT_PURPLE + " " + F.f(getRange(getMaxLevel())) + "m";
 	}
 }
