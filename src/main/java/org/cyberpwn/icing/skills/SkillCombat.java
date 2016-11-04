@@ -55,37 +55,45 @@ public class SkillCombat extends BasicSkill
 	@EventHandler
 	public void on(EntityDamageByEntityEvent e)
 	{
-		if(e.getEntity() instanceof Player)
+		try
 		{
-			Player p = (Player) e.getEntity();
-			Player d = null;
-			
-			if(e.getDamager() instanceof Player)
+			if(e.getEntity() instanceof Player)
 			{
-				d = (Player) e.getDamager();
+				Player p = (Player) e.getEntity();
+				Player d = null;
+				
+				if(e.getDamager() instanceof Player)
+				{
+					d = (Player) e.getDamager();
+				}
+				
+				else if(e.getDamager() instanceof Arrow)
+				{
+					d = (Player) ((Arrow) e.getDamager()).getShooter();
+				}
+				
+				else
+				{
+					return;
+				}
+				
+				if(!assists.containsKey(p))
+				{
+					assists.put(p, new GMap<Player, Double>());
+				}
+				
+				if(!assists.get(p).containsKey(d))
+				{
+					assists.get(p).put(d, 0.0);
+				}
+				
+				assists.get(p).put(d, assists.get(p).get(d) + e.getDamage());
 			}
+		}
+		
+		catch(Exception ex)
+		{
 			
-			else if(e.getDamager() instanceof Arrow)
-			{
-				d = (Player) ((Arrow) e.getDamager()).getShooter();
-			}
-			
-			else
-			{
-				return;
-			}
-			
-			if(!assists.containsKey(p))
-			{
-				assists.put(p, new GMap<Player, Double>());
-			}
-			
-			if(!assists.get(p).containsKey(d))
-			{
-				assists.get(p).put(d, 0.0);
-			}
-			
-			assists.get(p).put(d, assists.get(p).get(d) + e.getDamage());
 		}
 	}
 	
