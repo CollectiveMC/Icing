@@ -68,9 +68,9 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 		long nextLevel = XP.getLevelForXp(getXp(p));
 		int m = 0;
 		
-		while(getBuffer(p) >= 8192)
+		while(getBuffer(p) >= 4096)
 		{
-			takeBuffer(p, 8192);
+			takeBuffer(p, 4096);
 			new Transaction(new SkillCurrency(getCodeName())).to(p).amount(1.0).noDiff().commit();
 			m++;
 		}
