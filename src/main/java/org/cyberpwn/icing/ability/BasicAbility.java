@@ -53,6 +53,11 @@ public abstract class BasicAbility extends ConfigurableController implements Abi
 	@Override
 	public void addLevel(Player p)
 	{
+		if(getLevel(p) >= getMaxLevel())
+		{
+			return;
+		}
+		
 		Icing.getInst().getSk().getAbilityDataController().get(p).addAbilityLevel(getCodeName(), 1);
 	}
 	
