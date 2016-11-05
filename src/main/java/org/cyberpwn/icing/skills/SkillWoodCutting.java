@@ -2,6 +2,7 @@ package org.cyberpwn.icing.skills;
 
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XPReason;
@@ -39,9 +40,14 @@ public class SkillWoodCutting extends BasicSkill
 		
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(BlockBreakEvent e)
 	{
+		if(e.isCancelled())
+		{
+			return;
+		}
+		
 		if(e.getBlock().getType().equals(Material.LOG))
 		{
 			addReward(e.getPlayer(), 4);
