@@ -36,7 +36,7 @@ public class ArcheryPowerShot extends BasicAbility
 			{
 				Player p = (Player) a.getShooter();
 				
-				if(isUnlocked(p))
+				if(isUnlocked(p) && a.isCritical())
 				{
 					int level = (int) getLevel(p);
 					double boost = getBoost(level);
@@ -46,7 +46,7 @@ public class ArcheryPowerShot extends BasicAbility
 						@Override
 						public void run()
 						{
-							a.setVelocity(a.getLocation().getDirection().clone().multiply(boost + 1));
+							a.setVelocity(p.getLocation().getDirection().clone().multiply(((boost + 1) * 2) + 1.3));
 						}
 					};
 				}
@@ -91,6 +91,6 @@ public class ArcheryPowerShot extends BasicAbility
 			return C.LIGHT_PURPLE + F.pc(getBoost(1)) + getAbilityGraph(20, (double) getLevel(p) / (double) getMaxLevel(), "") + C.LIGHT_PURPLE + " " + F.pc(getBoost(getMaxLevel()));
 		}
 		
-		return C.LIGHT_PURPLE + F.pc(getBoost(1)) + getAbilityGraph(20, (double) getLevel(p) / (double) getMaxLevel(), F.pc(getBoost((int) getLevel(p))) + "m") + C.LIGHT_PURPLE + " " + F.pc(getBoost(getMaxLevel()));
+		return C.LIGHT_PURPLE + F.pc(getBoost(1)) + getAbilityGraph(20, (double) getLevel(p) / (double) getMaxLevel(), F.pc(getBoost((int) getLevel(p)))) + C.LIGHT_PURPLE + " " + F.pc(getBoost(getMaxLevel()));
 	}
 }
