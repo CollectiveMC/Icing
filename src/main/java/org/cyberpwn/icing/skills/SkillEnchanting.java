@@ -3,6 +3,7 @@ package org.cyberpwn.icing.skills;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XPReason;
@@ -51,9 +52,14 @@ public class SkillEnchanting extends BasicSkill
 		return new MaterialBlock(Material.ENCHANTED_BOOK);
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(EnchantItemEvent e)
 	{
+		if(e.isCancelled())
+		{
+			return;
+		}
+		
 		addReward(e.getEnchanter(), e.getExpLevelCost() * base2);
 	}
 	
