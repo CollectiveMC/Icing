@@ -3,6 +3,7 @@ package org.cyberpwn.icing.skills;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -53,9 +54,14 @@ public class SkillConstruction extends BasicSkill
 		
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(InventoryClickEvent e)
 	{
+		if(e.isCancelled())
+		{
+			return;
+		}
+		
 		if(e.getInventory().getType().equals(InventoryType.WORKBENCH))
 		{
 			if(e.getSlotType().equals(SlotType.RESULT))
@@ -69,9 +75,14 @@ public class SkillConstruction extends BasicSkill
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(BlockPlaceEvent e)
 	{
+		if(e.isCancelled())
+		{
+			return;
+		}
+		
 		if(!exc.containsKey(e.getPlayer()))
 		{
 			exc.put(e.getPlayer(), 0);
