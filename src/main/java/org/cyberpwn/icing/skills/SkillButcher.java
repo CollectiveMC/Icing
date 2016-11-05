@@ -3,6 +3,7 @@ package org.cyberpwn.icing.skills;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XPReason;
@@ -40,7 +41,7 @@ public class SkillButcher extends BasicSkill
 		
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(EntityDeathEvent e)
 	{
 		if(e.getEntity().getKiller() != null)
