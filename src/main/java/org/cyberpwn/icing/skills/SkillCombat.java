@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.cyberpwn.icing.skill.BasicSkill;
@@ -52,9 +53,14 @@ public class SkillCombat extends BasicSkill
 		
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(EntityDamageByEntityEvent e)
 	{
+		if(e.isCancelled())
+		{
+			return;
+		}
+		
 		try
 		{
 			if(e.getEntity() instanceof Player)
@@ -97,7 +103,7 @@ public class SkillCombat extends BasicSkill
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(PlayerDeathEvent e)
 	{
 		try
