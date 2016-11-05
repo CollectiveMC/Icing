@@ -3,6 +3,7 @@ package org.cyberpwn.icing.skills;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XPReason;
@@ -45,9 +46,14 @@ public class SkillSocial extends BasicSkill
 		
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(AsyncPlayerChatEvent e)
 	{
+		if(e.isCancelled())
+		{
+			return;
+		}
+		
 		if(!exc.containsKey(e.getPlayer()))
 		{
 			exc.put(e.getPlayer(), 0);
