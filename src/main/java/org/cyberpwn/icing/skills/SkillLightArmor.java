@@ -3,6 +3,7 @@ package org.cyberpwn.icing.skills;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.cyberpwn.icing.abilities.LightArmorAcrobatics;
@@ -42,9 +43,14 @@ public class SkillLightArmor extends BasicSkill
 		
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(EntityDamageEvent e)
 	{
+		if(e.isCancelled())
+		{
+			return;
+		}
+		
 		if(e.getEntity() instanceof Player)
 		{
 			Player p = (Player) e.getEntity();
