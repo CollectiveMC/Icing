@@ -2,6 +2,7 @@ package org.cyberpwn.icing.skills;
 
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -42,9 +43,14 @@ public class SkillFarming extends BasicSkill
 	}
 	
 	@SuppressWarnings("deprecation")
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(PlayerInteractEvent e)
 	{
+		if(e.isCancelled())
+		{
+			return;
+		}
+		
 		if(e.getItem() != null && e.getItem().getType().equals(Material.INK_SACK) && e.getItem().getData().getData() == 15)
 		{
 			if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
@@ -57,9 +63,14 @@ public class SkillFarming extends BasicSkill
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(BlockBreakEvent e)
 	{
+		if(e.isCancelled())
+		{
+			return;
+		}
+		
 		if(e.getBlock().getType().equals(Material.CROPS))
 		{
 			@SuppressWarnings("deprecation")
