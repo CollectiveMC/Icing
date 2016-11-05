@@ -3,6 +3,7 @@ package org.cyberpwn.icing.skills;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XPReason;
@@ -41,15 +42,25 @@ public class SkillMining extends BasicSkill
 		
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(FalseBlockBreakEvent e)
 	{
+		if(e.isCancelled())
+		{
+			return;
+		}
+		
 		on(new BlockBreakEvent(e.getBlock(), e.getPlayer()));
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(BlockBreakEvent e)
 	{
+		if(e.isCancelled())
+		{
+			return;
+		}
+		
 		if(e.getBlock().getType().toString().endsWith("_ORE") && e.getPlayer().getItemInHand() != null && e.getPlayer().getItemInHand().getType().toString().endsWith("_PICKAXE"))
 		{
 			if(e.getPlayer().getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH))
