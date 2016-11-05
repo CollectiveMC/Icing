@@ -5,6 +5,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.cyberpwn.icing.abilities.ArcheryPowerShot;
 import org.cyberpwn.icing.abilities.ArcheryPrecision;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XPReason;
@@ -85,5 +86,6 @@ public class SkillArchery extends BasicSkill
 	public void createControllers()
 	{
 		register(new ArcheryPrecision(this));
+		register(new ArcheryPowerShot(this));
 	}
 }
