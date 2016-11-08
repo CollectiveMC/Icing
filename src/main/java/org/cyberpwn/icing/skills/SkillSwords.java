@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.cyberpwn.icing.abilities.SwordsBlocking;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
@@ -69,6 +70,6 @@ public class SkillSwords extends BasicSkill
 	@Override
 	public void createControllers()
 	{
-		
+		register(new SwordsBlocking(this));
 	}
 }
