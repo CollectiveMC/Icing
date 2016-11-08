@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityTameEvent;
+import org.cyberpwn.icing.abilities.TamingTrainingStrength;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
@@ -69,6 +70,6 @@ public class SkillTaming extends BasicSkill
 	@Override
 	public void createControllers()
 	{
-		
+		register(new TamingTrainingStrength(this));
 	}
 }
