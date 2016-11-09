@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.cyberpwn.icing.skill.BasicSkill;
+import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
@@ -49,6 +50,8 @@ public class SkillButcher extends BasicSkill
 			Player p = e.getEntity().getKiller();
 			
 			addReward(p, (int) e.getEntity().getMaxHealth() / hpxp);
+			
+			XP.dropRandom(p.getLocation());
 			
 			switch(e.getEntityType())
 			{
