@@ -7,6 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.cyberpwn.icing.abilities.UnarmedForce;
 import org.cyberpwn.icing.skill.BasicSkill;
+import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
@@ -57,6 +58,7 @@ public class SkillUnarmed extends BasicSkill
 			if(p.getItemInHand() == null || p.getItemInHand().getType().equals(Material.AIR))
 			{
 				addReward(p, (int) (initial * e.getDamage()));
+				XP.dropRandom(p.getLocation());
 			}
 		}
 	}
