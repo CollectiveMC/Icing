@@ -8,6 +8,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.cyberpwn.icing.abilities.FarmingTiller;
 import org.cyberpwn.icing.skill.BasicSkill;
+import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
@@ -58,6 +59,7 @@ public class SkillFarming extends BasicSkill
 			{
 				if(e.getClickedBlock().getType().equals(Material.GRASS) || e.getClickedBlock().getType().equals(Material.CROPS) || e.getClickedBlock().getType().equals(Material.SAPLING))
 				{
+					XP.dropRandom(e.getPlayer().getLocation());
 					addReward(e.getPlayer(), 1);
 				}
 			}
@@ -77,16 +79,19 @@ public class SkillFarming extends BasicSkill
 			@SuppressWarnings("deprecation")
 			int l = e.getBlock().getData();
 			addReward(e.getPlayer(), 2 + (l * mul));
+			XP.dropRandom(e.getBlock().getLocation());
 		}
 		
 		if(e.getBlock().getType().equals(Material.MELON_BLOCK))
 		{
 			addReward(e.getPlayer(), 1);
+			XP.dropRandom(e.getBlock().getLocation());
 		}
 		
 		if(e.getBlock().getType().equals(Material.PUMPKIN))
 		{
 			addReward(e.getPlayer(), 1);
+			XP.dropRandom(e.getBlock().getLocation());
 		}
 	}
 	
