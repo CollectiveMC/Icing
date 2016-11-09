@@ -8,6 +8,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.cyberpwn.icing.abilities.LightArmorAcrobatics;
 import org.cyberpwn.icing.skill.BasicSkill;
+import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
@@ -71,6 +72,7 @@ public class SkillLightArmor extends BasicSkill
 			if(l > 0)
 			{
 				addReward(p, l);
+				XP.dropRandom(p.getLocation());
 			}
 		}
 	}
