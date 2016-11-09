@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.cyberpwn.icing.skill.BasicSkill;
+import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
@@ -52,6 +53,8 @@ public class SkillAxes extends BasicSkill
 		if(e.getDamager() instanceof Player)
 		{
 			Player p = (Player) e.getDamager();
+			
+			XP.dropRandom(p.getLocation());
 			
 			if(p.getItemInHand() != null && p.getItemInHand().getType().toString().contains("_AXE"))
 			{
