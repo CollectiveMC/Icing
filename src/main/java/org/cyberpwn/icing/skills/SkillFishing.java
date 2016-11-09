@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.cyberpwn.icing.skill.BasicSkill;
+import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
@@ -54,6 +55,7 @@ public class SkillFishing extends BasicSkill
 		if(e.getCaught() != null)
 		{
 			addReward(p, initial);
+			XP.dropRandom(e.getPlayer().getLocation());
 		}
 		
 		else
