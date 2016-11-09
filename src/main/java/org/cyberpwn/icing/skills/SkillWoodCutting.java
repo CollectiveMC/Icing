@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.cyberpwn.icing.skill.BasicSkill;
+import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
@@ -51,16 +52,19 @@ public class SkillWoodCutting extends BasicSkill
 		if(e.getBlock().getType().equals(Material.LOG))
 		{
 			addReward(e.getPlayer(), 4);
+			XP.dropRandom(e.getBlock().getLocation());
 		}
 		
 		if(e.getBlock().getType().equals(Material.LOG_2))
 		{
 			addReward(e.getPlayer(), 4);
+			XP.dropRandom(e.getBlock().getLocation());
 		}
 		
 		if(e.getBlock().getType().equals(Material.LEAVES))
 		{
 			addReward(e.getPlayer(), 1);
+			XP.dropRandom(e.getBlock().getLocation());
 		}
 	}
 	
