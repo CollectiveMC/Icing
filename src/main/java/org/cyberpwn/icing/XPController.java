@@ -359,7 +359,16 @@ public class XPController extends ConfigurableController implements CommandListe
 			n.setPriority(Priority.LOW);
 			n.play(e.getPlayer());
 			e.setCancelled(true);
-			e.getPlayer().getInventory().remove(e.getItem());
+			
+			if(e.getPlayer().getItemInHand().getAmount() > 1)
+			{
+				e.getPlayer().getItemInHand().setAmount(e.getPlayer().getItemInHand().getAmount() - 1);
+			}
+			
+			else
+			{
+				e.getPlayer().setItemInHand(null);
+			}
 		}
 	}
 }
