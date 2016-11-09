@@ -3,6 +3,7 @@ package org.cyberpwn.icing.skills;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.cyberpwn.icing.skill.BasicSkill;
+import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
@@ -47,6 +48,7 @@ public class SkillVoter extends BasicSkill
 		{
 			Player p = Players.getPlayer(message.getString("e.player"));
 			addReward(p, base);
+			XP.dropRandom(p.getLocation());
 		}
 		
 		return message;
