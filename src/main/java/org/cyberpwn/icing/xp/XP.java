@@ -1,7 +1,9 @@
 package org.cyberpwn.icing.xp;
 
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.cyberpwn.icing.Icing;
 import org.inventivetalent.bossbar.BossBarAPI;
 import org.phantomapi.Phantom;
@@ -16,6 +18,8 @@ import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
 import org.phantomapi.util.D;
 import org.phantomapi.util.F;
+import org.phantomapi.util.M;
+import org.phantomapi.vfx.ParticleEffect;
 
 public class XP
 {
@@ -53,19 +57,9 @@ public class XP
 				t.setStayTime(0);
 				t.setFadeOut(25);
 				n.setTitle(t);
-				
-				if(XP.getLevelForXp(getXp(player)) < 15)
-				{
-					n.setAudible(new GSound(Sound.WITHER_DEATH, 1f, 1.98f));
-				}
-				
+				n.setAudible(new GSound(Sound.WITHER_DEATH, 1f, 1.98f));
 				n.setPriority(Priority.LOW);
 				Phantom.queueNotification(player, n);
-				
-				if(XP.getLevelForXp(getXp(player)) > 14)
-				{
-					playBeast(player);
-				}
 			}
 		}
 	}
@@ -108,6 +102,16 @@ public class XP
 				}
 			}
 		};
+	}
+	
+	public static void dropRandom(Location l)
+	{
+		if(M.r(0.001))
+		{
+			ParticleEffect.CLOUD.display(0.1f, 4, l, 32);
+			ItemStack is = Icing.inst().getXp().createBoost((int) (12000 * Math.random()), 2.5 * Math.random());
+			l.getWorld().dropItem(l, is);
+		}
 	}
 	
 	public static long getXp(Player player)
