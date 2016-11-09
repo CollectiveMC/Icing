@@ -21,12 +21,12 @@ import org.cyberpwn.icing.skills.SkillHeavyArmor;
 import org.cyberpwn.icing.skills.SkillLightArmor;
 import org.cyberpwn.icing.skills.SkillMining;
 import org.cyberpwn.icing.skills.SkillSmelting;
-import org.cyberpwn.icing.skills.SkillSocial;
 import org.cyberpwn.icing.skills.SkillSwords;
 import org.cyberpwn.icing.skills.SkillTaming;
 import org.cyberpwn.icing.skills.SkillUnarmed;
 import org.cyberpwn.icing.skills.SkillWoodCutting;
 import org.cyberpwn.icing.xp.XP;
+import org.cyberpwn.icing.xp.XPPlayer;
 import org.phantomapi.Phantom;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurableController;
@@ -49,6 +49,7 @@ import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
+import org.phantomapi.sfx.Audio;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
@@ -80,7 +81,6 @@ public class SkillController extends ConfigurableController implements CommandLi
 		skills.add(new SkillCombat(this));
 		skills.add(new SkillTaming(this));
 		skills.add(new SkillExcavation(this));
-		skills.add(new SkillSocial(this));
 		skills.add(new SkillHeavyArmor(this));
 		skills.add(new SkillLightArmor(this));
 		skills.add(new SkillSwords(this));
@@ -117,6 +117,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 	{
 		for(Player i : onlinePlayers())
 		{
+			XPPlayer xpp = Icing.inst().getXp().getXpDataController().get(i);
 			double b = 0;
 			
 			if(i.getTicksLived() / 20 > 120)
@@ -193,8 +194,37 @@ public class SkillController extends ConfigurableController implements CommandLi
 				b += (Math.random() * 0.2);
 			}
 			
-			b += (Math.random() * 0.1);
+			if(xpp.getBoosterTicks() > 0)
+			{
+				xpp.setBoosterTicks(xpp.getBoosterTicks() - 20);
+				b += xpp.getBoosterAmount();
+				
+				if(xpp.getBoosterTicks() <= 0)
+				{
+					Notification n = new Notification();
+					Title t = new Title();
+					t.setTitle(C.RED + "Boost Expired!");
+					t.setSubTitle(C.DARK_GRAY + "XP Boost has expired");
+					t.setAction("  .  ");
+					t.setFadeIn(3);
+					t.setFadeOut(80);
+					t.setStayTime(40);
+					Audio a = new Audio();
+					a.add(new GSound(Sound.EXPLODE, 1f, 1.95f));
+					n.setAudible(a);
+					n.setTitle(t);
+					n.setPriority(Priority.LOW);
+					Phantom.queueNotification(i, n);
+				}
+			}
 			
+			else
+			{
+				xpp.setBoosterTicks(0);
+				xpp.setBoosterAmount(0);
+			}
+			
+			b += (Math.random() * 0.1);
 			XP.setBoost(i, b);
 		}
 	}
