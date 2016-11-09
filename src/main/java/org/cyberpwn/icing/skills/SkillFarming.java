@@ -6,6 +6,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.cyberpwn.icing.abilities.FarmingTiller;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
@@ -98,6 +99,6 @@ public class SkillFarming extends BasicSkill
 	@Override
 	public void createControllers()
 	{
-		
+		register(new FarmingTiller(this));
 	}
 }
