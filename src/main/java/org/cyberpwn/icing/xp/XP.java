@@ -106,7 +106,7 @@ public class XP
 	
 	public static void dropRandom(Location l)
 	{
-		if(M.r(0.001))
+		if(M.r(0.0001))
 		{
 			ParticleEffect.CLOUD.display(0.1f, 4, l, 32);
 			ItemStack is = Icing.inst().getXp().createBoost((int) (12000 * Math.random()), 2.5 * Math.random());
