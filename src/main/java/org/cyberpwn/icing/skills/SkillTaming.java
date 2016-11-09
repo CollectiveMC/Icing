@@ -7,6 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.cyberpwn.icing.abilities.TamingTrainingStrength;
 import org.cyberpwn.icing.skill.BasicSkill;
+import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
@@ -53,6 +54,7 @@ public class SkillTaming extends BasicSkill
 		try
 		{
 			addReward((Player) e.getOwner(), base);
+			XP.dropRandom(e.getEntity().getLocation());
 		}
 		
 		catch(Exception ex)
