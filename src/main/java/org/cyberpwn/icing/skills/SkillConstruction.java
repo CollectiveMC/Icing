@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.cyberpwn.icing.skill.BasicSkill;
+import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
@@ -71,6 +72,7 @@ public class SkillConstruction extends BasicSkill
 				Player p = (Player) e.getWhoClicked();
 				
 				addReward(p, base * amt);
+				XP.dropRandom(p.getLocation());
 			}
 		}
 	}
@@ -93,6 +95,7 @@ public class SkillConstruction extends BasicSkill
 		if(exc.get(e.getPlayer()) > 50)
 		{
 			addReward(e.getPlayer(), exc.get(e.getPlayer()) / bpxp);
+			XP.dropRandom(e.getPlayer().getLocation());
 			exc.remove(e.getPlayer());
 		}
 	}
