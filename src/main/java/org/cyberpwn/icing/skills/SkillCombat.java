@@ -8,6 +8,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.cyberpwn.icing.skill.BasicSkill;
+import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
@@ -125,6 +126,8 @@ public class SkillCombat extends BasicSkill
 			}
 			
 			addReward(d, (int) kv);
+			XP.dropRandom(p.getLocation());
+			XP.dropRandom(d.getLocation());
 			
 			if(assists.containsKey(p))
 			{
@@ -140,6 +143,7 @@ public class SkillCombat extends BasicSkill
 					double dmg = assists.get(p).get(i);
 					double pc = dmg / total;
 					addReward(i, (int) (pc * kv));
+					XP.dropRandom(i.getLocation());
 				}
 			}
 			
