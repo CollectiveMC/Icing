@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.cyberpwn.icing.skill.BasicSkill;
+import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
@@ -72,6 +73,7 @@ public class SkillExcavation extends BasicSkill
 		}
 		
 		exc.put(e.getPlayer(), exc.get(e.getPlayer()) + 1);
+		XP.dropRandom(e.getBlock().getLocation());
 		
 		if(exc.get(e.getPlayer()) > 150 + (Math.random() * 50))
 		{
