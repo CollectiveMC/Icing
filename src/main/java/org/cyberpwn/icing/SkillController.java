@@ -172,22 +172,29 @@ public class SkillController extends ConfigurableController implements CommandLi
 			if(i.hasPermission("boost.a"))
 			{
 				b += 0.05;
+				b += (Math.random() * 0.05);
 			}
 			
 			if(i.hasPermission("boost.b"))
 			{
 				b += 0.1;
+				b += (Math.random() * 0.1);
 			}
 			
 			if(i.hasPermission("boost.c"))
 			{
 				b += 0.15;
+				b += (Math.random() * 0.15);
 			}
 			
 			if(i.hasPermission("boost.d"))
 			{
 				b += 0.2;
+				b += (Math.random() * 0.2);
 			}
+			
+			b += (Math.random() * 0.25);
+			b -= (Math.random() * 0.25);
 			
 			XP.setBoost(i, b);
 		}
