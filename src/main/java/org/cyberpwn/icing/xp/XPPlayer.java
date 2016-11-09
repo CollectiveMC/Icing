@@ -16,6 +16,12 @@ public class XPPlayer extends ConfigurableObject
 	@Keyed("b")
 	public double boost = 0;
 	
+	@Keyed("bt")
+	public int boosterTicks = 0;
+	
+	@Keyed("ba")
+	public double boosterAmount = 0;
+	
 	public XPPlayer(Player player)
 	{
 		super(player.getUniqueId().toString());
@@ -56,5 +62,25 @@ public class XPPlayer extends ConfigurableObject
 	public void modBoost(double amt)
 	{
 		setBoost(getBoost() + amt);
+	}
+	
+	public int getBoosterTicks()
+	{
+		return boosterTicks;
+	}
+	
+	public void setBoosterTicks(int boosterTicks)
+	{
+		this.boosterTicks = boosterTicks;
+	}
+	
+	public double getBoosterAmount()
+	{
+		return boosterAmount;
+	}
+	
+	public void setBoosterAmount(double boosterAmount)
+	{
+		this.boosterAmount = boosterAmount;
 	}
 }
