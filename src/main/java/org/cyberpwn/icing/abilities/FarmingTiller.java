@@ -125,6 +125,6 @@ public class FarmingTiller extends BasicAbility
 			return C.LIGHT_PURPLE + vs(1) + " " + getAbilityGraph(20, (double) getLevel(p) / (double) getMaxLevel(), "") + C.LIGHT_PURPLE + " " + vs(getMaxLevel());
 		}
 		
-		return C.LIGHT_PURPLE + vs(1) + " " + getAbilityGraph(20, (double) getLevel(p) / (double) getMaxLevel(), vs((int) getLevel(p)) + C.LIGHT_PURPLE + " " + vs(getMaxLevel()));
+		return C.LIGHT_PURPLE + vs(1) + " " + getAbilityGraph(20, (double) getLevel(p) / (double) getMaxLevel(), vs((int) getLevel(p))) + C.LIGHT_PURPLE + " " + vs(getMaxLevel());
 	}
 }
