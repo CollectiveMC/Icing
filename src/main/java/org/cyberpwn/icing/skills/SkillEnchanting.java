@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.cyberpwn.icing.skill.BasicSkill;
+import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
@@ -61,6 +62,7 @@ public class SkillEnchanting extends BasicSkill
 		}
 		
 		addReward(e.getEnchanter(), e.getExpLevelCost() * base2);
+		XP.dropRandom(e.getEnchanter().getLocation());
 	}
 	
 	@Override
