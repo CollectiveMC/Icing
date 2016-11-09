@@ -28,9 +28,9 @@ public class FarmingTiller extends BasicAbility
 		super(parent, "tiller");
 		
 		maxLevel = 3;
-		level = 5;
-		levelStep = 1;
-		upgradeCost = 2;
+		level = 9;
+		levelStep = 6;
+		upgradeCost = 4;
 		unlockCost = 2;
 	}
 	
@@ -56,7 +56,6 @@ public class FarmingTiller extends BasicAbility
 	public void till(Player p, Block center, int level)
 	{
 		GList<Block> br = W.blockRadius(center, (getWidth(level) + 1) / 2);
-		br.add(W.blockRadius(center.getRelative(BlockFace.DOWN), level));
 		br.shuffle();
 		PhantomWorldQueue q = new PhantomWorldQueue();
 		
