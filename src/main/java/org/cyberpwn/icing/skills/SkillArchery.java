@@ -9,6 +9,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.cyberpwn.icing.abilities.ArcheryPowerShot;
 import org.cyberpwn.icing.abilities.ArcheryPrecision;
 import org.cyberpwn.icing.skill.BasicSkill;
+import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
@@ -65,6 +66,7 @@ public class SkillArchery extends BasicSkill
 			if(a.getShooter() instanceof Player)
 			{
 				Player p = (Player) a.getShooter();
+				XP.dropRandom(p.getLocation());
 				int dis = (int) a.getLocation().distance(p.getLocation());
 				dis /= blocksPerXp;
 				dis *= 2;
