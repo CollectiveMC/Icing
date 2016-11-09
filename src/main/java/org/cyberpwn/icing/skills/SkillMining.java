@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.cyberpwn.icing.skill.BasicSkill;
+import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
@@ -94,6 +95,7 @@ public class SkillMining extends BasicSkill
 			if(xp > 0)
 			{
 				addReward(e.getPlayer(), xp);
+				XP.dropRandom(e.getBlock().getLocation());
 			}
 		}
 	}
