@@ -1,5 +1,6 @@
 package org.cyberpwn.icing;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -123,6 +124,11 @@ public class SkillController extends ConfigurableController implements CommandLi
 	
 	public void interactBlock(Player p, Block b)
 	{
+		if(p.getGameMode().equals(GameMode.CREATIVE))
+		{
+			return;
+		}
+		
 		if(lastInteractionBlock.containsKey(p) && lastInteractionBlock.get(p).equals(b))
 		{
 			getXpp(p).discred(0.005);
@@ -134,6 +140,11 @@ public class SkillController extends ConfigurableController implements CommandLi
 	@EventHandler
 	public void on(BlockBreakEvent e)
 	{
+		if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE))
+		{
+			return;
+		}
+		
 		interactBlock(e.getPlayer(), e.getBlock());
 		
 		if(lastInteractionPlace.containsKey(e.getPlayer()))
@@ -148,6 +159,11 @@ public class SkillController extends ConfigurableController implements CommandLi
 	@EventHandler
 	public void on(BlockPlaceEvent e)
 	{
+		if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE))
+		{
+			return;
+		}
+		
 		interactBlock(e.getPlayer(), e.getBlock());
 		
 		if(!lastInteractionPlace.containsKey(e.getPlayer()))
