@@ -19,6 +19,12 @@ public class SkillWoodCutting extends BasicSkill
 	@Keyed("base")
 	public int base = 0;
 	
+	@Keyed("leaves")
+	public int le = 1;
+	
+	@Keyed("logs")
+	public int lo = 4;
+	
 	public SkillWoodCutting(Controllable parentController)
 	{
 		super(parentController, "woodcutting", XPReason.WOOD_CUTTING);
@@ -57,25 +63,29 @@ public class SkillWoodCutting extends BasicSkill
 		
 		if(e.getBlock().getType().equals(Material.LOG))
 		{
-			addReward(e.getPlayer(), 4);
+			addReward(e.getPlayer(), lo);
+			addReward(e.getPlayer(), base);
 			XP.dropRandom(e.getBlock().getLocation());
 		}
 		
 		if(e.getBlock().getType().equals(Material.LOG_2))
 		{
-			addReward(e.getPlayer(), 4);
+			addReward(e.getPlayer(), lo);
+			addReward(e.getPlayer(), base);
 			XP.dropRandom(e.getBlock().getLocation());
 		}
 		
 		if(e.getBlock().getType().equals(Material.LEAVES))
 		{
-			addReward(e.getPlayer(), 1);
+			addReward(e.getPlayer(), le);
+			addReward(e.getPlayer(), base);
 			XP.dropRandom(e.getBlock().getLocation());
 		}
 		
 		if(e.getBlock().getType().equals(Material.LEAVES_2))
 		{
-			addReward(e.getPlayer(), 1);
+			addReward(e.getPlayer(), le);
+			addReward(e.getPlayer(), base);
 			XP.dropRandom(e.getBlock().getLocation());
 		}
 	}
