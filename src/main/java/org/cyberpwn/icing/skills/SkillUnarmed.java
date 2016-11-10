@@ -1,5 +1,6 @@
 package org.cyberpwn.icing.skills;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -54,6 +55,11 @@ public class SkillUnarmed extends BasicSkill
 		if(e.getDamager() instanceof Player)
 		{
 			Player p = (Player) e.getDamager();
+			
+			if(p.getGameMode().equals(GameMode.CREATIVE))
+			{
+				return;
+			}
 			
 			if(p.getItemInHand() == null || p.getItemInHand().getType().equals(Material.AIR))
 			{
