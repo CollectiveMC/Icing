@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.cyberpwn.icing.ability.Ability;
 import org.cyberpwn.icing.ability.AbilityDataController;
@@ -71,6 +72,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 	private AbilityDataController abilityDataController;
 	private GList<Skill> skills;
 	private GMap<Player, Block> lastInteractionBlock;
+	private GMap<Player, Block> lastInteractionEntity;
 	private GMap<Player, GList<Block>> lastInteractionPlace;
 	
 	public SkillController(Controllable parentController)
@@ -107,6 +109,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 		}
 		
 		lastInteractionBlock = new GMap<Player, Block>();
+		lastInteractionEntity = new GMap<Player, Block>();
 		lastInteractionPlace = new GMap<Player, GList<Block>>();
 	}
 	
@@ -135,6 +138,32 @@ public class SkillController extends ConfigurableController implements CommandLi
 		}
 		
 		lastInteractionBlock.put(p, b);
+	}
+	
+	public void interactEntity(Player p, Block b)
+	{
+		if(p.getGameMode().equals(GameMode.CREATIVE))
+		{
+			return;
+		}
+		
+		if(lastInteractionEntity.containsKey(p) && lastInteractionEntity.get(p).equals(b))
+		{
+			getXpp(p).discred(0.02);
+		}
+		
+		lastInteractionEntity.put(p, b);
+	}
+	
+	@EventHandler
+	public void on(EntityDamageByEntityEvent e)
+	{
+		if(e.getDamager() instanceof Player)
+		{
+			Player p = (Player) e.getDamager();
+			
+			interactEntity(p, e.getEntity().getLocation().getBlock());
+		}
 	}
 	
 	@EventHandler
