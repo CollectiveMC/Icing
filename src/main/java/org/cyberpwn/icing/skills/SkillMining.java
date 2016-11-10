@@ -68,6 +68,12 @@ public class SkillMining extends BasicSkill
 			return;
 		}
 		
+		if(e.getBlock().getType().equals(Material.GLOWSTONE))
+		{
+			addReward(e.getPlayer(), 4);
+			return;
+		}
+		
 		if(e.getBlock().getType().toString().endsWith("_ORE") && e.getPlayer().getItemInHand() != null && e.getPlayer().getItemInHand().getType().toString().endsWith("_PICKAXE"))
 		{
 			if(e.getPlayer().getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH))
@@ -81,6 +87,9 @@ public class SkillMining extends BasicSkill
 			{
 				case DIAMOND_ORE:
 					xp = 48;
+					break;
+				case QUARTZ_ORE:
+					xp = 8;
 					break;
 				case REDSTONE_ORE:
 					xp = 12;
