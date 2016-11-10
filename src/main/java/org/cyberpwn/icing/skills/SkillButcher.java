@@ -1,5 +1,6 @@
 package org.cyberpwn.icing.skills;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -48,6 +49,11 @@ public class SkillButcher extends BasicSkill
 		if(e.getEntity().getKiller() != null)
 		{
 			Player p = e.getEntity().getKiller();
+			
+			if(p.getGameMode().equals(GameMode.CREATIVE))
+			{
+				return;
+			}
 			
 			addReward(p, (int) e.getEntity().getMaxHealth() / hpxp);
 			
