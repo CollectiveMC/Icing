@@ -179,12 +179,12 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 	@Override
 	public void addReward(Player p, Integer r)
 	{
-		if(r <= 0)
+		if(p == null)
 		{
 			return;
 		}
 		
-		if(p == null)
+		if(r <= 0)
 		{
 			return;
 		}
