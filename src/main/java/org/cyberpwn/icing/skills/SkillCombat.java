@@ -1,5 +1,6 @@
 package org.cyberpwn.icing.skills;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
@@ -72,11 +73,21 @@ public class SkillCombat extends BasicSkill
 				if(e.getDamager() instanceof Player)
 				{
 					d = (Player) e.getDamager();
+					
+					if(d.getGameMode().equals(GameMode.CREATIVE))
+					{
+						return;
+					}
 				}
 				
 				else if(e.getDamager() instanceof Arrow)
 				{
 					d = (Player) ((Arrow) e.getDamager()).getShooter();
+					
+					if(d.getGameMode().equals(GameMode.CREATIVE))
+					{
+						return;
+					}
 				}
 				
 				else
