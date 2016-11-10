@@ -32,6 +32,7 @@ import org.cyberpwn.icing.skills.SkillUnarmed;
 import org.cyberpwn.icing.skills.SkillWoodCutting;
 import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPPlayer;
+import org.phantomapi.Phantom;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurableController;
 import org.phantomapi.command.CommandListener;
@@ -54,6 +55,7 @@ import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
+import org.phantomapi.nms.NMSX;
 import org.phantomapi.sfx.Audio;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.util.C;
@@ -303,7 +305,60 @@ public class SkillController extends ConfigurableController implements CommandLi
 			}
 			
 			XP.setBoost(i, b);
+			
+			if(Phantom.instance().isBungeecord())
+			{
+				NMSX.sendTabTitle(i, C.AQUA + "" + C.BOLD + "Glacial" + C.DARK_AQUA + "" + C.BOLD + "Realms\n" + C.AQUA + C.BOLD + F.f(Phantom.getNetworkCount()) + " Online" + C.DARK_AQUA + C.BOLD + " (" + F.f(Phantom.instance().onlinePlayers().size()) + " on " + Phantom.getBungeeNameName() + ") " + ping(i), C.GREEN + "" + C.UNDERLINE + F.f(XP.getLevelForXp(XP.getXp(i))) + " " + getGraph(20, XP.percentToNextLevel(XP.getXp(i))) + " " + F.f(XP.getLevelForXp(XP.getXp(i)) + 1) + "\n\n" + C.RESET + C.GREEN + C.BOLD + F.f(XP.xpToNextLevel(XP.getXp(i))) + " XP" + C.DARK_GRAY + " to level " + C.GREEN + C.BOLD + F.f(XP.getLevelForXp(XP.getXp(i)) + 1));
+			}
+			
+			else
+			{
+				NMSX.sendTabTitle(i, C.AQUA + "" + C.BOLD + "Glacial" + C.DARK_AQUA + "" + C.BOLD + "Realms\n" + C.AQUA + C.BOLD + F.f(Phantom.instance().onlinePlayers().size()) + " Online " + ping(i), C.GREEN + "" + C.UNDERLINE + F.f(XP.getLevelForXp(XP.getXp(i))) + " " + getGraph(20, XP.percentToNextLevel(XP.getXp(i))) + " " + F.f(XP.getLevelForXp(XP.getXp(i)) + 1) + "\n\n" + C.RESET + C.GREEN + C.BOLD + F.f(XP.xpToNextLevel(XP.getXp(i))) + " XP" + C.DARK_GRAY + " to level " + C.GREEN + C.BOLD + F.f(XP.getLevelForXp(XP.getXp(i)) + 1));
+			}
 		}
+	}
+	
+	public String ping(Player p)
+	{
+		int ping = NMSX.ping(p);
+		String v = "";
+		
+		if(ping > 1000)
+		{
+			v = C.RED + "" + C.BOLD + F.f((double) ping / 1000.0, 1) + "s";
+		}
+		
+		else if(ping > 500)
+		{
+			v = C.RED + "" + C.BOLD + ping + "ms";
+		}
+		
+		else if(ping > 300)
+		{
+			v = C.GOLD + "" + C.BOLD + ping + "ms";
+		}
+		
+		else if(ping > 150)
+		{
+			v = C.YELLOW + "" + C.BOLD + ping + "ms";
+		}
+		
+		else if(ping > 100)
+		{
+			v = C.GREEN + "" + C.BOLD + ping + "ms";
+		}
+		
+		else if(ping > 50)
+		{
+			v = C.AQUA + "" + C.BOLD + ping + "ms";
+		}
+		
+		else
+		{
+			v = C.LIGHT_PURPLE + "" + C.BOLD + ping + "ms";
+		}
+		
+		return C.DARK_GRAY + "\u2770 " + v + C.RESET + C.DARK_GRAY + " \u2771";
 	}
 	
 	public SkillDataController getSkillDataController()
@@ -366,7 +421,6 @@ public class SkillController extends ConfigurableController implements CommandLi
 			pc = 0;
 		}
 		
-		len = 24;
 		String g = C.GREEN.toString() + C.UNDERLINE;
 		int mc = (int) ((double) len * pc);
 		int vc = len - mc;
