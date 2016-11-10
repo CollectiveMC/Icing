@@ -1,5 +1,6 @@
 package org.cyberpwn.icing.skills;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -58,6 +59,11 @@ public class SkillAxes extends BasicSkill
 			
 			if(p.getItemInHand() != null && p.getItemInHand().getType().toString().contains("_AXE"))
 			{
+				if(p.getGameMode().equals(GameMode.CREATIVE))
+				{
+					return;
+				}
+				
 				addReward(p, (int) (e.getDamage() * xpPerHp));
 			}
 		}
