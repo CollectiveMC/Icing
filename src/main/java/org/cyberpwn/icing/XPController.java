@@ -34,6 +34,7 @@ import org.phantomapi.util.Players;
 public class XPController extends ConfigurableController implements CommandListener
 {
 	private XPDataController xpDataController;
+	private PlaceholderController pc;
 	
 	public XPController(Controllable parentController)
 	{
@@ -42,6 +43,9 @@ public class XPController extends ConfigurableController implements CommandListe
 		xpDataController = new XPDataController(this);
 		
 		register(xpDataController);
+		
+		pc = new PlaceholderController();
+		pc.hook();
 	}
 	
 	@Override
@@ -53,7 +57,7 @@ public class XPController extends ConfigurableController implements CommandListe
 	@Override
 	public void onStop()
 	{
-		
+		pc.unhook();
 	}
 	
 	public XPDataController getXpDataController()
