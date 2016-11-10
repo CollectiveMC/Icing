@@ -1,5 +1,6 @@
 package org.cyberpwn.icing.skills;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -57,6 +58,11 @@ public class SkillEnchanting extends BasicSkill
 	public void on(EnchantItemEvent e)
 	{
 		if(e.isCancelled())
+		{
+			return;
+		}
+		
+		if(e.getEnchanter().getGameMode().equals(GameMode.CREATIVE))
 		{
 			return;
 		}
