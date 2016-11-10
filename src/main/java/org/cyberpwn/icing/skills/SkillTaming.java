@@ -1,5 +1,6 @@
 package org.cyberpwn.icing.skills;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -53,6 +54,11 @@ public class SkillTaming extends BasicSkill
 		
 		try
 		{
+			if(((Player) e.getOwner()).getGameMode().equals(GameMode.CREATIVE))
+			{
+				return;
+			}
+			
 			addReward((Player) e.getOwner(), base);
 			XP.dropRandom(e.getEntity().getLocation());
 		}
