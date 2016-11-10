@@ -22,6 +22,12 @@ public class XPPlayer extends ConfigurableObject
 	@Keyed("ba")
 	public double boosterAmount = 0;
 	
+	@Keyed("d")
+	public double discredit = 0;
+	
+	@Keyed("s")
+	public boolean stfu = false;
+	
 	public XPPlayer(Player player)
 	{
 		super(player.getUniqueId().toString());
@@ -82,5 +88,35 @@ public class XPPlayer extends ConfigurableObject
 	public void setBoosterAmount(double boosterAmount)
 	{
 		this.boosterAmount = boosterAmount;
+	}
+	
+	public double getDiscredit()
+	{
+		return discredit;
+	}
+	
+	public void setDiscredit(double discredit)
+	{
+		this.discredit = discredit;
+	}
+	
+	public void discred(double amt)
+	{
+		discredit += (amt * getBoost()) > amt ? (amt * getBoost()) : amt;
+		
+		if(discredit > 20)
+		{
+			discredit = 20;
+		}
+	}
+	
+	public boolean isStfu()
+	{
+		return stfu;
+	}
+	
+	public void setStfu(boolean stfu)
+	{
+		this.stfu = stfu;
 	}
 }
