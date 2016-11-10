@@ -14,7 +14,6 @@ import org.cyberpwn.icing.xp.XPDataController;
 import org.cyberpwn.icing.xp.XPEvent;
 import org.cyberpwn.icing.xp.XPPlayer;
 import org.cyberpwn.icing.xp.XPReason;
-import org.phantomapi.Phantom;
 import org.phantomapi.clust.ConfigurableController;
 import org.phantomapi.command.CommandListener;
 import org.phantomapi.command.PhantomCommand;
@@ -68,6 +67,13 @@ public class XPController extends ConfigurableController implements CommandListe
 		if(!e.isCancelled())
 		{
 			e.setXp((long) (e.getXp() + (e.getXp() * XP.getBoost(e.getPlayer()))));
+			
+			if(e.getXp() < 0)
+			{
+				e.setXp(0);
+				return;
+			}
+			
 			XPReason reason = e.getReason();
 			Notification n = new Notification();
 			Title t = new Title();
@@ -82,7 +88,7 @@ public class XPController extends ConfigurableController implements CommandListe
 			n.setAudible(a);
 			n.setTitle(t);
 			n.setPriority(Priority.LOW);
-			Phantom.queueNotification(e.getPlayer(), n);
+			XP.q(e.getPlayer(), n);
 		}
 	}
 	
@@ -139,13 +145,19 @@ public class XPController extends ConfigurableController implements CommandListe
 	{
 		sender.setMessageBuilder(new MessageBuilder(this));
 		
+		if(cmd.getArgs().length == 1 && cmd.getArgs()[0].equalsIgnoreCase("stfu"))
+		{
+			Icing.getInst().getSk().getXpp(sender.getPlayer()).setStfu(!Icing.getInst().getSk().getXpp(sender.getPlayer()).isStfu());
+			sender.sendMessage("Silent: " + Icing.getInst().getSk().getXpp(sender.getPlayer()).isStfu());
+		}
+		
 		if(cmd.getArgs().length == 0)
 		{
 			if(sender.isPlayer())
 			{
 				XPPlayer xpp = Icing.inst().getXp().getXpDataController().get(sender.getPlayer());
 				sender.sendMessage("XP: " + C.GREEN + F.f(XP.getXp(sender.getPlayer())));
-				sender.sendMessage("Boost: " + C.GREEN + "+ " + F.pc(XP.getBoost(sender.getPlayer())));
+				sender.sendMessage("Boost: " + C.GREEN + "+ " + F.pc(XP.getBoost(sender.getPlayer())) + " " + C.RED + "(Discred: " + F.pc(xpp.getDiscredit()) + ")");
 				sender.sendMessage("Booster Time Left: " + C.GREEN + new GTime(50 * xpp.getBoosterTicks()).to("left"));
 				sender.sendMessage("Level: " + C.GREEN + "+ " + F.f(XP.getLevelForXp(XP.getXp(sender.getPlayer()))));
 				sender.sendMessage("XP For Level Up: " + C.GREEN + "+ " + F.f(XP.xpToNextLevel(XP.getXp(sender.getPlayer()))));
