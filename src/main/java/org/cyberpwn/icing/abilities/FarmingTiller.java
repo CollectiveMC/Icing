@@ -70,14 +70,22 @@ public class FarmingTiller extends BasicAbility
 					return;
 				}
 				
-				Block b = br.pop();
-				
-				if(b.getRelative(BlockFace.UP).getType().equals(Material.AIR) && (b.getType().equals(Material.DIRT) || b.getType().equals(Material.GRASS)) && Blocks.canModify(p, b))
+				for(int i = 0; i < 6; i++)
 				{
-					q.set(b.getLocation(), Material.SOIL);
-					q.flush();
-					new GSound(Sound.DIG_GRAVEL, 1f, 0.5f).play(b.getLocation());
-					NMSX.breakParticles(b.getLocation().add(0.5, 1, 0.5), Material.SOIL, 12);
+					if(br.isEmpty())
+					{
+						return;
+					}
+					
+					Block b = br.pop();
+					
+					if(b.getRelative(BlockFace.UP).getType().equals(Material.AIR) && (b.getType().equals(Material.DIRT) || b.getType().equals(Material.GRASS)) && Blocks.canModify(p, b))
+					{
+						q.set(b.getLocation(), Material.SOIL);
+						q.flush();
+						new GSound(Sound.DIG_GRAVEL, 1f, 0.5f).play(b.getLocation());
+						NMSX.breakParticles(b.getLocation().add(0.5, 1, 0.5), Material.SOIL, 12);
+					}
 				}
 			}
 		};
