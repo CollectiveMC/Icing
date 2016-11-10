@@ -1,5 +1,6 @@
 package org.cyberpwn.icing.skills;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -60,6 +61,12 @@ public class SkillFarming extends BasicSkill
 				if(e.getClickedBlock().getType().equals(Material.GRASS) || e.getClickedBlock().getType().equals(Material.CROPS) || e.getClickedBlock().getType().equals(Material.SAPLING))
 				{
 					XP.dropRandom(e.getPlayer().getLocation());
+					
+					if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE))
+					{
+						return;
+					}
+					
 					addReward(e.getPlayer(), 1);
 				}
 			}
@@ -70,6 +77,11 @@ public class SkillFarming extends BasicSkill
 	public void on(BlockBreakEvent e)
 	{
 		if(e.isCancelled())
+		{
+			return;
+		}
+		
+		if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE))
 		{
 			return;
 		}
