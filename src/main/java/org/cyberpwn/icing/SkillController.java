@@ -2,7 +2,12 @@ package org.cyberpwn.icing;
 
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.cyberpwn.icing.ability.Ability;
 import org.cyberpwn.icing.ability.AbilityDataController;
 import org.cyberpwn.icing.skill.BasicSkill;
@@ -27,7 +32,6 @@ import org.cyberpwn.icing.skills.SkillUnarmed;
 import org.cyberpwn.icing.skills.SkillWoodCutting;
 import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPPlayer;
-import org.phantomapi.Phantom;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurableController;
 import org.phantomapi.command.CommandListener;
@@ -46,6 +50,7 @@ import org.phantomapi.gui.PhantomWindow;
 import org.phantomapi.gui.Slot;
 import org.phantomapi.gui.Window;
 import org.phantomapi.lang.GList;
+import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
@@ -62,6 +67,8 @@ public class SkillController extends ConfigurableController implements CommandLi
 	private SkillDataController skillDataController;
 	private AbilityDataController abilityDataController;
 	private GList<Skill> skills;
+	private GMap<Player, Block> lastInteractionBlock;
+	private GMap<Player, GList<Block>> lastInteractionPlace;
 	
 	public SkillController(Controllable parentController)
 	{
@@ -94,6 +101,64 @@ public class SkillController extends ConfigurableController implements CommandLi
 		for(Skill i : skills)
 		{
 			register((Controller) i);
+		}
+		
+		lastInteractionBlock = new GMap<Player, Block>();
+		lastInteractionPlace = new GMap<Player, GList<Block>>();
+	}
+	
+	@EventHandler
+	public void on(PlayerQuitEvent e)
+	{
+		lastInteractionBlock.remove(e.getPlayer());
+		lastInteractionPlace.remove(e.getPlayer());
+	}
+	
+	public XPPlayer getXpp(Player p)
+	{
+		return Icing.inst().getXp().getXpDataController().get(p);
+	}
+	
+	public void interactBlock(Player p, Block b)
+	{
+		if(lastInteractionBlock.containsKey(p) && lastInteractionBlock.get(p).equals(b))
+		{
+			getXpp(p).discred(0.005);
+		}
+		
+		lastInteractionBlock.put(p, b);
+	}
+	
+	@EventHandler
+	public void on(BlockBreakEvent e)
+	{
+		interactBlock(e.getPlayer(), e.getBlock());
+		
+		if(lastInteractionPlace.containsKey(e.getPlayer()))
+		{
+			if(lastInteractionPlace.get(e.getPlayer()).contains(e.getBlock()))
+			{
+				getXpp(e.getPlayer()).discred(0.005);
+			}
+		}
+	}
+	
+	@EventHandler
+	public void on(BlockPlaceEvent e)
+	{
+		interactBlock(e.getPlayer(), e.getBlock());
+		
+		if(!lastInteractionPlace.containsKey(e.getPlayer()))
+		{
+			lastInteractionPlace.put(e.getPlayer(), new GList<Block>());
+		}
+		
+		lastInteractionPlace.get(e.getPlayer()).add(e.getBlock());
+		lastInteractionPlace.get(e.getPlayer()).removeDuplicates();
+		
+		while(lastInteractionPlace.get(e.getPlayer()).size() > 12)
+		{
+			lastInteractionPlace.get(e.getPlayer()).pop();
 		}
 	}
 	
@@ -214,7 +279,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 					n.setAudible(a);
 					n.setTitle(t);
 					n.setPriority(Priority.LOW);
-					Phantom.queueNotification(i, n);
+					XP.q(i, n);
 				}
 			}
 			
@@ -225,6 +290,18 @@ public class SkillController extends ConfigurableController implements CommandLi
 			}
 			
 			b += (Math.random() * 0.1);
+			b -= xpp.getDiscredit();
+			
+			if(xpp.getDiscredit() > 0)
+			{
+				xpp.setDiscredit(xpp.getDiscredit() - (Math.random() * 0.042));
+			}
+			
+			if(xpp.getDiscredit() < 0)
+			{
+				xpp.setDiscredit(0);
+			}
+			
 			XP.setBoost(i, b);
 		}
 	}
@@ -284,6 +361,12 @@ public class SkillController extends ConfigurableController implements CommandLi
 	
 	public String getGraph(int len, double pc)
 	{
+		if(pc < 0)
+		{
+			pc = 0;
+		}
+		
+		len = 24;
 		String g = C.GREEN.toString() + C.UNDERLINE;
 		int mc = (int) ((double) len * pc);
 		int vc = len - mc;
@@ -305,6 +388,12 @@ public class SkillController extends ConfigurableController implements CommandLi
 	
 	public String getAbilityGraph(int len, double pc)
 	{
+		if(pc < 0)
+		{
+			pc = 0;
+		}
+		
+		len = 24;
 		String g = C.LIGHT_PURPLE.toString() + C.UNDERLINE;
 		int mc = (int) ((double) len * pc);
 		int vc = len - mc;
@@ -370,7 +459,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 							n.setTitle(t);
 							n.setAudible(new GSound(Sound.FIREWORK_LARGE_BLAST2, 1f, 0.38f));
 							n.setPriority(Priority.LOW);
-							Phantom.queueNotification(p, n);
+							XP.q(p, n);
 							w.close();
 							showAbilities(p, s);
 						}
@@ -394,7 +483,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 							n.setTitle(t);
 							n.setAudible(new GSound(Sound.FIREWORK_LARGE_BLAST2, 1f, 0.38f));
 							n.setPriority(Priority.LOW);
-							Phantom.queueNotification(p, n);
+							XP.q(p, n);
 							w.close();
 							showAbilities(p, s);
 						}
@@ -479,7 +568,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 				pa.addText(C.GRAY + "XP: " + C.LIGHT_PURPLE + F.f(s.getXp(p)));
 				pa.addText(C.GREEN + F.f(s.getXp(p) - XP.getXpForLevel(s.getLevel(p))) + " XP " + C.GRAY + "/ " + C.RED + F.f(XP.getXpForLevel(s.getLevel(p) + 1) - XP.getXpForLevel(s.getLevel(p))) + " XP " + C.YELLOW + "(" + F.pc(s.getProgress(p)) + ")");
 				pa.addText(C.AQUA + "Contains " + F.f(Icing.getInst().getSk().getSkillDataController().get(p).getSkillPoints(((BasicSkill) s).getCodeName())) + " Shards");
-				pa.addText(getGraph(32, XP.percentToNextLevel(s.getXp(p))));
+				pa.addText(getGraph(18, XP.percentToNextLevel(s.getXp(p))));
 				w.addElement(pa);
 				ix.add(1);
 			}
