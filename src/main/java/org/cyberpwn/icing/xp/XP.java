@@ -31,6 +31,11 @@ public class XP
 		
 		if(!e.isCancelled())
 		{
+			if(e.getXp() <= 0)
+			{
+				return;
+			}
+			
 			long level = getLevelForXp(getXp(player));
 			Icing.inst().getXp().getXpDataController().get(player).setXp(e.getXp() + getXp(player));
 			long levelNext = getLevelForXp(getXp(player));
@@ -59,7 +64,7 @@ public class XP
 				n.setTitle(t);
 				n.setAudible(new GSound(Sound.WITHER_DEATH, 1f, 1.98f));
 				n.setPriority(Priority.LOW);
-				Phantom.queueNotification(player, n);
+				q(player, n);
 			}
 		}
 	}
@@ -163,6 +168,16 @@ public class XP
 	public static long getLevelForXp(long xp)
 	{
 		return (long) Math.pow(xp, 0.25);
+	}
+	
+	public static void q(Player p, Notification n)
+	{
+		if(Icing.getInst().getSk().getXpp(p).isStfu())
+		{
+			return;
+		}
+		
+		Phantom.queueNotification(p, n);
 	}
 	
 	public static void printLeveling(int maxLevel)
