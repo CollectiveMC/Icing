@@ -8,7 +8,6 @@ import org.cyberpwn.icing.ability.Ability;
 import org.cyberpwn.icing.xp.SkillCurrency;
 import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
-import org.phantomapi.Phantom;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurableController;
 import org.phantomapi.construct.Controllable;
@@ -59,12 +58,18 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 	}
 	
 	@Override
-	public void addXp(Player p, long amt)
+	public void addXp(Player p, long aam)
 	{
-		amt = (long) (amt + (amt * XP.getBoost(p)));
+		long amt = (long) (aam + (aam * XP.getBoost(p)));
+		
+		if(amt <= 0)
+		{
+			return;
+		}
+		
 		long level = XP.getLevelForXp(getXp(p));
 		Icing.inst().getSk().getSkillDataController().get(p).addSkill(getCodeName(), amt);
-		XP.giveXp(p, amt, reason);
+		XP.giveXp(p, aam, reason);
 		addBuffer(p, amt);
 		long nextLevel = XP.getLevelForXp(getXp(p));
 		int m = 0;
@@ -89,7 +94,7 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 			n.setTitle(t);
 			n.setAudible(new GSound(Sound.ORB_PICKUP, 1f, 0.38f));
 			n.setPriority(Priority.LOW);
-			Phantom.queueNotification(p, n);
+			XP.q(p, n);
 			XP.giveXp(p, nextLevel * 30, XPReason.SKILL_PROGRESSION);
 		}
 		
@@ -106,7 +111,7 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 			n.setTitle(t);
 			n.setAudible(new GSound(Sound.LEVEL_UP, 1f, 1.98f));
 			n.setPriority(Priority.LOW);
-			Phantom.queueNotification(p, n);
+			XP.q(p, n);
 			XP.giveXp(p, nextLevel * 30, XPReason.SKILL_PROGRESSION);
 		}
 	}
@@ -174,6 +179,11 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 	@Override
 	public void addReward(Player p, Integer r)
 	{
+		if(r <= 0)
+		{
+			return;
+		}
+		
 		if(p == null)
 		{
 			return;
@@ -192,6 +202,11 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 	{
 		for(Player i : rewardCache.k())
 		{
+			if(rewardCache.get(i) <= 0)
+			{
+				continue;
+			}
+			
 			addXp(i, rewardCache.get(i));
 		}
 		
