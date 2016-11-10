@@ -1,6 +1,9 @@
 package org.cyberpwn.icing.xp;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.phantomapi.clust.DataController;
 import org.phantomapi.construct.Controllable;
 
@@ -40,4 +43,15 @@ public class XPDataController extends DataController<XPPlayer, Player>
 		saveAll();
 	}
 	
+	@EventHandler
+	public void on(PlayerQuitEvent e)
+	{
+		save(e.getPlayer());
+	}
+	
+	@EventHandler
+	public void on(PlayerJoinEvent e)
+	{
+		load(e.getPlayer());
+	}
 }
