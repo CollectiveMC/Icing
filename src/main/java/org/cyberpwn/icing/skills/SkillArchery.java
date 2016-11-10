@@ -29,6 +29,9 @@ public class SkillArchery extends BasicSkill
 	@Keyed("initial-non-critical")
 	public int initialnc = 1;
 	
+	@Keyed("initial-multiple")
+	public double initialm = 2;
+	
 	public SkillArchery(Controllable parentController)
 	{
 		super(parentController, "archer", XPReason.ARCHERY);
@@ -76,7 +79,7 @@ public class SkillArchery extends BasicSkill
 				XP.dropRandom(p.getLocation());
 				int dis = (int) a.getLocation().distance(p.getLocation());
 				dis /= blocksPerXp;
-				dis *= 2;
+				dis *= initialm;
 				
 				if(a.isCritical())
 				{
