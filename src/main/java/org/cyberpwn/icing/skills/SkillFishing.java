@@ -1,5 +1,6 @@
 package org.cyberpwn.icing.skills;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -51,6 +52,11 @@ public class SkillFishing extends BasicSkill
 		}
 		
 		Player p = e.getPlayer();
+		
+		if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE))
+		{
+			return;
+		}
 		
 		if(e.getCaught() != null)
 		{
