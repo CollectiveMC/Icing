@@ -131,7 +131,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 		
 		if(lastInteractionBlock.containsKey(p) && lastInteractionBlock.get(p).equals(b))
 		{
-			getXpp(p).discred(0.005);
+			getXpp(p).discred(0.03);
 		}
 		
 		lastInteractionBlock.put(p, b);
@@ -151,7 +151,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 		{
 			if(lastInteractionPlace.get(e.getPlayer()).contains(e.getBlock()))
 			{
-				getXpp(e.getPlayer()).discred(0.005);
+				getXpp(e.getPlayer()).discred(0.03);
 			}
 		}
 	}
@@ -312,7 +312,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 			
 			if(xpp.getDiscredit() > 0)
 			{
-				xpp.setDiscredit(xpp.getDiscredit() - (Math.random() * 0.042));
+				xpp.setDiscredit(xpp.getDiscredit() - (Math.random() * 0.012));
 			}
 			
 			if(xpp.getDiscredit() < 0)
