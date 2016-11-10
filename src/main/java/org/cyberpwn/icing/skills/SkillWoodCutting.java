@@ -72,6 +72,12 @@ public class SkillWoodCutting extends BasicSkill
 			addReward(e.getPlayer(), 1);
 			XP.dropRandom(e.getBlock().getLocation());
 		}
+		
+		if(e.getBlock().getType().equals(Material.LEAVES_2))
+		{
+			addReward(e.getPlayer(), 1);
+			XP.dropRandom(e.getBlock().getLocation());
+		}
 	}
 	
 	@Override
