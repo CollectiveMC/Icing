@@ -2,6 +2,8 @@ package org.cyberpwn.icing.skills;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
@@ -15,6 +17,7 @@ import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.world.MaterialBlock;
+import org.phantomapi.world.W;
 
 @Ticked(40)
 public class SkillFarming extends BasicSkill
@@ -103,6 +106,52 @@ public class SkillFarming extends BasicSkill
 		if(e.getBlock().getType().equals(Material.PUMPKIN))
 		{
 			addReward(e.getPlayer(), 1);
+			XP.dropRandom(e.getBlock().getLocation());
+		}
+		
+		if(e.getBlock().getType().equals(Material.CACTUS))
+		{
+			int f = 1;
+			Block c = W.toAsync(e.getBlock());
+			
+			while(f < 256)
+			{
+				if(c.getRelative(BlockFace.UP).getType().equals(Material.CACTUS))
+				{
+					f++;
+					c = c.getRelative(BlockFace.UP);
+				}
+				
+				else
+				{
+					break;
+				}
+			}
+			
+			addReward(e.getPlayer(), 2 * f);
+			XP.dropRandom(e.getBlock().getLocation());
+		}
+		
+		if(e.getBlock().getType().equals(Material.SUGAR_CANE_BLOCK))
+		{
+			int f = 1;
+			Block c = W.toAsync(e.getBlock());
+			
+			while(f < 256)
+			{
+				if(c.getRelative(BlockFace.UP).getType().equals(Material.SUGAR_CANE_BLOCK))
+				{
+					f++;
+					c = c.getRelative(BlockFace.UP);
+				}
+				
+				else
+				{
+					break;
+				}
+			}
+			
+			addReward(e.getPlayer(), 2 * f);
 			XP.dropRandom(e.getBlock().getLocation());
 		}
 	}
