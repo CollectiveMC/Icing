@@ -1,5 +1,6 @@
 package org.cyberpwn.icing.skills;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
@@ -66,6 +67,12 @@ public class SkillArchery extends BasicSkill
 			if(a.getShooter() instanceof Player)
 			{
 				Player p = (Player) a.getShooter();
+				
+				if(p.getGameMode().equals(GameMode.CREATIVE))
+				{
+					return;
+				}
+				
 				XP.dropRandom(p.getLocation());
 				int dis = (int) a.getLocation().distance(p.getLocation());
 				dis /= blocksPerXp;
