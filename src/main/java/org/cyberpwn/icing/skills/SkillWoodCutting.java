@@ -1,5 +1,6 @@
 package org.cyberpwn.icing.skills;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -45,6 +46,11 @@ public class SkillWoodCutting extends BasicSkill
 	public void on(BlockBreakEvent e)
 	{
 		if(e.isCancelled())
+		{
+			return;
+		}
+		
+		if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE))
 		{
 			return;
 		}
