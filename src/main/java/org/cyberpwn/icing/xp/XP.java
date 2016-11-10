@@ -5,7 +5,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.cyberpwn.icing.Icing;
-import org.inventivetalent.bossbar.BossBarAPI;
 import org.phantomapi.Phantom;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GSound;
@@ -23,7 +22,6 @@ import org.phantomapi.vfx.ParticleEffect;
 
 public class XP
 {
-	@SuppressWarnings("deprecation")
 	public static void giveXp(Player player, long xp, XPReason reason)
 	{
 		XPEvent e = new XPEvent(player, xp, reason);
@@ -39,17 +37,6 @@ public class XP
 			long level = getLevelForXp(getXp(player));
 			Icing.inst().getXp().getXpDataController().get(player).setXp(e.getXp() + getXp(player));
 			long levelNext = getLevelForXp(getXp(player));
-			
-			try
-			{
-				BossBarAPI.removeAllBars(player);
-				BossBarAPI.setMessage(player, C.LIGHT_PURPLE + "Level " + XP.getLevelForXp(getXp(player)), (float) ((float) XP.percentToNextLevel(getXp(player)) * 100.0), -1);
-			}
-			
-			catch(Exception xe)
-			{
-				
-			}
 			
 			if(levelNext > level)
 			{
