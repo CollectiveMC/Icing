@@ -1,5 +1,6 @@
 package org.cyberpwn.icing.skills;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
@@ -57,6 +58,11 @@ public class SkillMining extends BasicSkill
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(BlockBreakEvent e)
 	{
+		if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE))
+		{
+			return;
+		}
+		
 		if(e.isCancelled())
 		{
 			return;
