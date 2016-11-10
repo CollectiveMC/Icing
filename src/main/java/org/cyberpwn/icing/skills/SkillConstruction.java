@@ -1,5 +1,6 @@
 package org.cyberpwn.icing.skills;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -70,6 +71,11 @@ public class SkillConstruction extends BasicSkill
 				
 				int amt = e.getCurrentItem().getAmount();
 				Player p = (Player) e.getWhoClicked();
+				
+				if(p.getGameMode().equals(GameMode.CREATIVE))
+				{
+					return;
+				}
 				
 				addReward(p, base * amt);
 				XP.dropRandom(p.getLocation());
