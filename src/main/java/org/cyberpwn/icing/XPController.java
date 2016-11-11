@@ -20,6 +20,7 @@ import org.phantomapi.command.PhantomCommand;
 import org.phantomapi.command.PhantomCommandSender;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.gui.Notification;
+import org.phantomapi.inventory.PhantomInventory;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.GTime;
@@ -194,6 +195,35 @@ public class XPController extends ConfigurableController implements CommandListe
 					catch(Exception e)
 					{
 						sender.sendMessage(C.RED + "Looking for a number. Not Garbage.");
+						return true;
+					}
+				}
+				
+				if(cmd.getArgs().length >= 4 && cmd.getArgs()[0].equalsIgnoreCase("giveboost"))
+				{
+					try
+					{
+						double boost = Double.valueOf(cmd.getArgs()[1]);
+						int ticks = Integer.valueOf(cmd.getArgs()[2]);
+						Player p = Players.getPlayer(cmd.getArgs()[3]);
+						ItemStack is = createBoost(ticks, boost);
+						
+						if(new PhantomInventory(p.getInventory()).hasSpace())
+						{
+							p.getInventory().addItem(is);
+						}
+						
+						else
+						{
+							p.getLocation().getWorld().dropItem(p.getLocation(), is);
+						}
+						
+						return true;
+					}
+					
+					catch(Exception e)
+					{
+						sender.sendMessage(C.RED + "Looking for a number & player. Not Garbage.");
 						return true;
 					}
 				}
