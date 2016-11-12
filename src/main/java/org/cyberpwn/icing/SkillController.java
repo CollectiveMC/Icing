@@ -28,6 +28,7 @@ import org.cyberpwn.icing.skills.SkillHeavyArmor;
 import org.cyberpwn.icing.skills.SkillLightArmor;
 import org.cyberpwn.icing.skills.SkillMining;
 import org.cyberpwn.icing.skills.SkillSmelting;
+import org.cyberpwn.icing.skills.SkillStealth;
 import org.cyberpwn.icing.skills.SkillSwords;
 import org.cyberpwn.icing.skills.SkillTaming;
 import org.cyberpwn.icing.skills.SkillUnarmed;
@@ -99,6 +100,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 		skills.add(new SkillAxes(this));
 		skills.add(new SkillFishing(this));
 		skills.add(new SkillUnarmed(this));
+		skills.add(new SkillStealth(this));
 		
 		register(abilityDataController);
 		register(skillDataController);
