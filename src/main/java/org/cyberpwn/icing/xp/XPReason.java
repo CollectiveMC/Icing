@@ -17,6 +17,7 @@ public enum XPReason
 	FISHING,
 	SWORDS,
 	AXES,
+	STEALTH,
 	LIGHT_ARMOR,
 	HEAVY_ARMOR,
 	COMBAT,
