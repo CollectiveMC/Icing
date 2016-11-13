@@ -58,7 +58,7 @@ public class ArcheryPrecision extends BasicAbility
 	@EventHandler
 	public void on(PlayerInteractEvent e)
 	{
-		if(e.getAction().equals(Action.RIGHT_CLICK_AIR) && e.getPlayer().getItemInHand() != null && e.getPlayer().getItemInHand().getType().equals(Material.BOW) && isUnlocked(e.getPlayer()))
+		if(e.getAction().equals(Action.RIGHT_CLICK_AIR) && e.getPlayer().getItemInHand() != null && e.getPlayer().getItemInHand().getType().equals(Material.BOW) && isEnabled(e.getPlayer()) && isUnlocked(e.getPlayer()))
 		{
 			if(viewing.contains(e.getPlayer()))
 			{
