@@ -51,4 +51,19 @@ public class AblePlayer extends ConfigurableObject
 		
 		return 0;
 	}
+	
+	public boolean isEnabled(String codeName)
+	{
+		if(!getConfiguration().contains(codeName + "-e"))
+		{
+			return true;
+		}
+		
+		return getConfiguration().getBoolean(codeName + "-e");
+	}
+	
+	public void setEnabled(String codeName, boolean e)
+	{
+		getConfiguration().set(codeName + "-e", e);
+	}
 }
