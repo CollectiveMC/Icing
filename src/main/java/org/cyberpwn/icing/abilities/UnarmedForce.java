@@ -63,6 +63,11 @@ public class UnarmedForce extends BasicAbility
 		return "Increases Unarmed Damage.";
 	}
 	
+	public String getV(int level)
+	{
+		return getDamage(level) + 1.0 + " dmg";
+	}
+	
 	@Override
 	public void onStart()
 	{
@@ -84,5 +89,23 @@ public class UnarmedForce extends BasicAbility
 		}
 		
 		return C.LIGHT_PURPLE + F.f(getDamage(1), 1) + " " + getAbilityGraph(20, (double) getLevel(p) / (double) getMaxLevel(), F.f(getDamage((int) getLevel(p)), 1)) + C.LIGHT_PURPLE + " " + F.f(getDamage(getMaxLevel()), 1) + " Damage";
+	}
+	
+	@Override
+	public String getGraphInitial()
+	{
+		return getV(1);
+	}
+	
+	@Override
+	public String getGraphMax()
+	{
+		return getV(getMaxLevel());
+	}
+	
+	@Override
+	public String getGraphCurrent(int level)
+	{
+		return getV(level);
 	}
 }
