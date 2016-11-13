@@ -40,7 +40,7 @@ public class LightArmorAcrobatics extends BasicAbility
 			{
 				Player p = (Player) e.getEntity();
 				
-				if(isUnlocked(p))
+				if(isUnlocked(p) && isEnabled(p))
 				{
 					double splitDamage = e.getDamage() / 4;
 					
