@@ -135,4 +135,22 @@ public class FarmingTiller extends BasicAbility
 		
 		return C.LIGHT_PURPLE + vs(1) + " " + getAbilityGraph(20, (double) getLevel(p) / (double) getMaxLevel(), vs((int) getLevel(p))) + C.LIGHT_PURPLE + " " + vs(getMaxLevel());
 	}
+	
+	@Override
+	public String getGraphInitial()
+	{
+		return vs(1);
+	}
+	
+	@Override
+	public String getGraphMax()
+	{
+		return vs(getMaxLevel());
+	}
+	
+	@Override
+	public String getGraphCurrent(int level)
+	{
+		return vs(level);
+	}
 }
