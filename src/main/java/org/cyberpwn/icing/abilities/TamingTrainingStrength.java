@@ -32,9 +32,14 @@ public class TamingTrainingStrength extends BasicAbility
 			
 			if(isUnlocked(p) && isUnlocked(p))
 			{
-				e.getEntity().setMaxHealth(e.getEntity().getMaxHealth() + (e.getEntity().getMaxHealth() * getBoost((int) getLevel(p))));
+				e.getEntity().setMaxHealth(e.getEntity().getMaxHealth() + (getLevel(p) * 2));
 			}
 		}
+	}
+	
+	public String getV(int level)
+	{
+		return "+" + level + " \u2665";
 	}
 	
 	public double getBoost(int level)
@@ -75,5 +80,23 @@ public class TamingTrainingStrength extends BasicAbility
 		}
 		
 		return C.LIGHT_PURPLE + F.pc(getBoost(1)) + getAbilityGraph(20, (double) getLevel(p) / (double) getMaxLevel(), F.pc(getBoost((int) getLevel(p)))) + C.LIGHT_PURPLE + " " + F.pc(getBoost(getMaxLevel()));
+	}
+	
+	@Override
+	public String getGraphInitial()
+	{
+		return getV(1);
+	}
+	
+	@Override
+	public String getGraphMax()
+	{
+		return getV(getMaxLevel());
+	}
+	
+	@Override
+	public String getGraphCurrent(int level)
+	{
+		return getV(level);
 	}
 }
