@@ -1,6 +1,7 @@
 package org.cyberpwn.icing.abilities;
 
 import java.awt.Color;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -63,7 +64,7 @@ public class StealthChameleon extends BasicAbility implements Monitorable
 	@Override
 	public String getDescription()
 	{
-		return "Leather armor changes color to your surroundings. Become harder to see.";
+		return "Leather armor changes color to your surroundings.";
 	}
 	
 	@Override
@@ -90,13 +91,17 @@ public class StealthChameleon extends BasicAbility implements Monitorable
 		
 		for(Player i : onlinePlayers())
 		{
-			if(isUnlocked(i))
+			if(isUnlocked(i) && isEnabled(i))
 			{
 				for(ItemStack j : i.getInventory().getArmorContents())
 				{
 					if(j != null && j.getType().toString().contains("LEATHER_"))
 					{
 						Area a = new Area(i.getLocation(), 32);
+						
+						pps += 4;
+						NMSX.updateSelfArmor(i);
+						applySelf(i);
 						
 						if(a.getNearbyPlayers().length > 1)
 						{
@@ -124,6 +129,61 @@ public class StealthChameleon extends BasicAbility implements Monitorable
 		}
 	}
 	
+	public void applySelf(Player p)
+	{
+		if(p.getInventory().getBoots() != null && p.getInventory().getBoots().getType().equals(Material.LEATHER_BOOTS) && target.containsKey(p) && target.get(p).containsKey(p) && target.get(p).get(p).containsKey(EquipmentSlot.BOOTS))
+		{
+			Color c = target.get(p).get(p).get(EquipmentSlot.BOOTS);
+			ItemStack is = p.getInventory().getBoots().clone();
+			W.colorArmor(is, org.bukkit.Color.fromRGB(c.getRed(), c.getGreen(), c.getBlue()));
+			NMSX.setItem(p, 8, is);
+		}
+		
+		else
+		{
+			NMSX.setItem(p, 8, p.getInventory().getBoots());
+		}
+		
+		if(p.getInventory().getLeggings() != null && p.getInventory().getLeggings().getType().equals(Material.LEATHER_LEGGINGS) && target.containsKey(p) && target.get(p).containsKey(p) && target.get(p).get(p).containsKey(EquipmentSlot.LEGGINGS))
+		{
+			Color c = target.get(p).get(p).get(EquipmentSlot.LEGGINGS);
+			ItemStack is = p.getInventory().getLeggings().clone();
+			W.colorArmor(is, org.bukkit.Color.fromRGB(c.getRed(), c.getGreen(), c.getBlue()));
+			NMSX.setItem(p, 7, is);
+		}
+		
+		else
+		{
+			NMSX.setItem(p, 7, p.getInventory().getLeggings());
+		}
+		
+		if(p.getInventory().getChestplate() != null && p.getInventory().getChestplate().getType().equals(Material.LEATHER_CHESTPLATE) && target.containsKey(p) && target.get(p).containsKey(p) && target.get(p).get(p).containsKey(EquipmentSlot.CHESTPLATE))
+		{
+			Color c = target.get(p).get(p).get(EquipmentSlot.CHESTPLATE);
+			ItemStack is = p.getInventory().getChestplate().clone();
+			W.colorArmor(is, org.bukkit.Color.fromRGB(c.getRed(), c.getGreen(), c.getBlue()));
+			NMSX.setItem(p, 6, is);
+		}
+		
+		else
+		{
+			NMSX.setItem(p, 6, p.getInventory().getChestplate());
+		}
+		
+		if(p.getInventory().getHelmet() != null && p.getInventory().getHelmet().getType().equals(Material.LEATHER_HELMET) && target.containsKey(p) && target.get(p).containsKey(p) && target.get(p).get(p).containsKey(EquipmentSlot.HELMET))
+		{
+			Color c = target.get(p).get(p).get(EquipmentSlot.HELMET);
+			ItemStack is = p.getInventory().getHelmet().clone();
+			W.colorArmor(is, org.bukkit.Color.fromRGB(c.getRed(), c.getGreen(), c.getBlue()));
+			NMSX.setItem(p, 5, is);
+		}
+		
+		else
+		{
+			NMSX.setItem(p, 5, p.getInventory().getHelmet());
+		}
+	}
+	
 	@EventHandler
 	public void on(EquipmentUpdateEvent e)
 	{
@@ -140,37 +200,78 @@ public class StealthChameleon extends BasicAbility implements Monitorable
 		{
 			Player p = (Player) e.getEntity();
 			
-			if(isUnlocked(p))
+			if(isUnlocked(p) && isEnabled(p))
 			{
 				int level = (int) getLevel(p);
 				Color c = null;
 				
 				if(e.getItem() != null && e.getItem().getType().toString().contains("LEATHER_"))
 				{
-					if(e.getSlot().equals(EquipmentSlot.HELMET))
+					if(e.getItem().getType().toString().endsWith("_HELMET"))
 					{
-						c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 1.7, 0), VectorMath.direction(e.getViewer().getLocation().clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 1.7, 0)), 64);
+						if(e.getEntity().getEntityId() == e.getViewer().getEntityId())
+						{
+							Location k = e.getViewer().getLocation().add(VectorMath.reverse(e.getViewer().getLocation().getDirection().multiply(2)));
+							c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 1.7, 0), VectorMath.direction(k.clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 1.7, 0)), 64);
+						}
+						
+						else
+						{
+							c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 1.7, 0), VectorMath.direction(e.getViewer().getLocation().clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 1.7, 0)), 64);
+						}
 					}
 					
-					else if(e.getSlot().equals(EquipmentSlot.CHESTPLATE))
+					if(e.getItem().getType().toString().endsWith("_CHESTPLATE"))
 					{
-						c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 1.4, 0), VectorMath.direction(e.getViewer().getLocation().clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 1.4, 0)), 64);
+						if(e.getEntity().getEntityId() == e.getViewer().getEntityId())
+						{
+							Location k = e.getViewer().getLocation().add(VectorMath.reverse(e.getViewer().getLocation().getDirection().multiply(2)));
+							c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 1.4, 0), VectorMath.direction(k.clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 1.4, 0)), 64);
+						}
+						
+						else
+						{
+							c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 1.4, 0), VectorMath.direction(e.getViewer().getLocation().clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 1.4, 0)), 64);
+						}
 					}
 					
-					else if(e.getSlot().equals(EquipmentSlot.LEGGINGS))
+					if(e.getItem().getType().toString().endsWith("_LEGGINGS"))
 					{
-						c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 1, 0), VectorMath.direction(e.getViewer().getLocation().clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 1, 0)), 64);
+						if(e.getEntity().getEntityId() == e.getViewer().getEntityId())
+						{
+							Location k = e.getViewer().getLocation().add(VectorMath.reverse(e.getViewer().getLocation().getDirection().multiply(2)));
+							c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 1, 0), VectorMath.direction(k.clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 1, 0)), 64);
+						}
+						
+						else
+						{
+							c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 1, 0), VectorMath.direction(e.getViewer().getLocation().clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 1, 0)), 64);
+						}
 					}
 					
-					else if(e.getSlot().equals(EquipmentSlot.BOOTS))
+					if(e.getItem().getType().toString().endsWith("_BOOTS"))
 					{
-						c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 0.3, 0), VectorMath.direction(e.getViewer().getLocation().clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 0.3, 0)), 64);
+						if(e.getEntity().getEntityId() == e.getViewer().getEntityId())
+						{
+							Location k = e.getViewer().getLocation().add(VectorMath.reverse(e.getViewer().getLocation().getDirection().multiply(2)));
+							c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 0.3, 0), VectorMath.direction(k.clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 0.3, 0)), 64);
+						}
+						
+						else
+						{
+							c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 0.3, 0), VectorMath.direction(e.getViewer().getLocation().clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 0.3, 0)), 64);
+						}
 					}
 					
 					if(target.containsKey(p) && target.get(p).containsKey(e.getViewer()) && target.get(p).get(e.getViewer()).containsKey(e.getSlot()))
 					{
 						Color x = target.get(p).get(e.getViewer()).get(e.getSlot());
 						W.colorArmor(e.getItem(), org.bukkit.Color.fromRGB(x.getRed(), x.getGreen(), x.getBlue()));
+						
+						if(e.getViewer().getEntityId() == e.getEntity().getEntityId())
+						{
+							e.setCancelled(true);
+						}
 					}
 					
 					if(c == null)
