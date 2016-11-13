@@ -13,7 +13,7 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.world.MaterialBlock;
 
-@Ticked(55)
+@Ticked(70)
 public class SkillWoodCutting extends BasicSkill
 {
 	@Keyed("base")
