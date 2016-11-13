@@ -41,7 +41,7 @@ public class ArcheryPrecision extends BasicAbility
 		viewing = new GList<Player>();
 		maxLevel = 30;
 		level = 5;
-		levelStep = 1;
+		levelStep = 2;
 		upgradeCost = 1;
 		unlockCost = 3;
 	}
