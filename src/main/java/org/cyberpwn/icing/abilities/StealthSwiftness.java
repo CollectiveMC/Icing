@@ -10,6 +10,7 @@ import org.cyberpwn.icing.ability.BasicAbility;
 import org.cyberpwn.icing.skill.Skill;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
+import org.phantomapi.util.M;
 import org.phantomapi.world.MaterialBlock;
 import org.phantomapi.world.PE;
 
@@ -52,6 +53,11 @@ public class StealthSwiftness extends BasicAbility
 		}
 	}
 	
+	public String getV(int level)
+	{
+		return "Speed " + M.toRoman(level);
+	}
+	
 	public double getMitigation(int level)
 	{
 		return ((double) level / (double) getMaxLevel());
@@ -90,5 +96,23 @@ public class StealthSwiftness extends BasicAbility
 		}
 		
 		return C.LIGHT_PURPLE + F.pc(getMitigation(1)) + " " + getAbilityGraph(20, (double) getLevel(p) / (double) getMaxLevel(), F.pc(getMitigation((int) getLevel(p)))) + C.LIGHT_PURPLE + " " + F.pc(getMitigation(getMaxLevel())) + " Reduction";
+	}
+	
+	@Override
+	public String getGraphInitial()
+	{
+		return getV(1);
+	}
+	
+	@Override
+	public String getGraphMax()
+	{
+		return getV(getMaxLevel());
+	}
+	
+	@Override
+	public String getGraphCurrent(int level)
+	{
+		return getV(level);
 	}
 }
