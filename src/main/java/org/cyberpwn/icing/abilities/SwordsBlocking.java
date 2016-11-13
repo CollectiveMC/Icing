@@ -86,4 +86,22 @@ public class SwordsBlocking extends BasicAbility
 		
 		return C.LIGHT_PURPLE + F.f(getResistanceBonus(1), 1) + " " + getAbilityGraph(20, (double) getLevel(p) / (double) getMaxLevel(), F.f(getResistanceBonus((int) getLevel(p)), 1)) + C.LIGHT_PURPLE + " " + F.f(getResistanceBonus(getMaxLevel()), 1) + " Damage";
 	}
+	
+	@Override
+	public String getGraphInitial()
+	{
+		return F.pc(0.5 + getResistanceBonus(1));
+	}
+	
+	@Override
+	public String getGraphMax()
+	{
+		return F.pc(0.5 + getResistanceBonus(getMaxLevel()));
+	}
+	
+	@Override
+	public String getGraphCurrent(int level)
+	{
+		return F.pc(0.5 + getResistanceBonus(level));
+	}
 }
