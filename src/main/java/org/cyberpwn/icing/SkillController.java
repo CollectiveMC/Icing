@@ -542,51 +542,73 @@ public class SkillController extends ConfigurableController implements CommandLi
 				@Override
 				public void onClick(Player p, Click c, Window w)
 				{
-					if(i.isUnlocked(p))
+					if(c.equals(Click.RIGHT))
 					{
-						if(i.getLevel(p) < i.getMaxLevel() && i.getSkill().getShards(p) >= i.getUpgradeCost() && i.getSkill().getLevel(p) >= i.getMinimumUpgradeLevel(p))
+						if(i.isUnlocked(p))
 						{
-							i.addLevel(p);
-							i.getSkill().takeShards(p, i.getUpgradeCost());
+							if(i.isEnabled(p))
+							{
+								i.setEnabled(p, false);
+							}
 							
-							Notification n = new Notification();
-							Title t = new Title();
-							t.setTitle("   ");
-							t.setSubTitle(C.DARK_GRAY + "Improved " + C.AQUA + i.getSkill().fancyName() + " " + i.fancyName());
-							t.setAction(C.AQUA + i.getSkill().fancyName() + " " + i.fancyName() + " increased to level " + i.getLevel(p));
-							t.setFadeIn(0);
-							t.setStayTime(0);
-							t.setFadeOut(25);
-							n.setTitle(t);
-							n.setAudible(new GSound(Sound.FIREWORK_LARGE_BLAST2, 1f, 0.38f));
-							n.setPriority(Priority.LOW);
-							XP.q(p, n);
+							else
+							{
+								i.setEnabled(p, true);
+							}
+							
 							w.close();
 							showAbilities(p, s);
 						}
 					}
 					
-					else
+					else if(c.equals(Click.LEFT))
 					{
-						if(i.getLevel(p) < i.getMaxLevel() && i.getSkill().getShards(p) >= i.getUnlockCost() && i.getSkill().getLevel(p) >= i.getLevel())
+						if(i.isUnlocked(p))
 						{
-							i.addLevel(p);
-							i.getSkill().takeShards(p, i.getUnlockCost());
-							
-							Notification n = new Notification();
-							Title t = new Title();
-							t.setTitle("   ");
-							t.setSubTitle(C.DARK_GRAY + "Unlocked " + C.AQUA + i.getSkill().fancyName() + " " + i.fancyName());
-							t.setAction(C.AQUA + i.getSkill().fancyName() + " " + i.fancyName() + " unlocked!");
-							t.setFadeIn(0);
-							t.setStayTime(0);
-							t.setFadeOut(25);
-							n.setTitle(t);
-							n.setAudible(new GSound(Sound.FIREWORK_LARGE_BLAST2, 1f, 0.38f));
-							n.setPriority(Priority.LOW);
-							XP.q(p, n);
-							w.close();
-							showAbilities(p, s);
+							if(i.getLevel(p) < i.getMaxLevel() && i.getSkill().getShards(p) >= i.getUpgradeCost() && i.getSkill().getLevel(p) >= i.getMinimumUpgradeLevel(p))
+							{
+								i.addLevel(p);
+								i.getSkill().takeShards(p, i.getUpgradeCost());
+								
+								Notification n = new Notification();
+								Title t = new Title();
+								t.setTitle("   ");
+								t.setSubTitle(C.DARK_GRAY + "Improved " + C.AQUA + i.getSkill().fancyName() + " " + i.fancyName());
+								t.setAction(C.AQUA + i.getSkill().fancyName() + " " + i.fancyName() + " increased to level " + i.getLevel(p));
+								t.setFadeIn(0);
+								t.setStayTime(0);
+								t.setFadeOut(25);
+								n.setTitle(t);
+								n.setAudible(new GSound(Sound.FIREWORK_LARGE_BLAST2, 1f, 0.38f));
+								n.setPriority(Priority.LOW);
+								XP.q(p, n);
+								w.close();
+								showAbilities(p, s);
+							}
+						}
+						
+						else
+						{
+							if(i.getLevel(p) < i.getMaxLevel() && i.getSkill().getShards(p) >= i.getUnlockCost() && i.getSkill().getLevel(p) >= i.getLevel())
+							{
+								i.addLevel(p);
+								i.getSkill().takeShards(p, i.getUnlockCost());
+								
+								Notification n = new Notification();
+								Title t = new Title();
+								t.setTitle("   ");
+								t.setSubTitle(C.DARK_GRAY + "Unlocked " + C.AQUA + i.getSkill().fancyName() + " " + i.fancyName());
+								t.setAction(C.AQUA + i.getSkill().fancyName() + " " + i.fancyName() + " unlocked!");
+								t.setFadeIn(0);
+								t.setStayTime(0);
+								t.setFadeOut(25);
+								n.setTitle(t);
+								n.setAudible(new GSound(Sound.FIREWORK_LARGE_BLAST2, 1f, 0.38f));
+								n.setPriority(Priority.LOW);
+								XP.q(p, n);
+								w.close();
+								showAbilities(p, s);
+							}
 						}
 					}
 				}
@@ -594,14 +616,54 @@ public class SkillController extends ConfigurableController implements CommandLi
 			
 			e.addText(C.GRAY + i.getDescription());
 			
+			if(((Configurable) i).getCodeName().equals("chameleon"))
+			{
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "Each player sees different colors on you");
+				e.addText(C.WHITE + "depending on what they see behind you");
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "Boots dont work in 3rd person due to");
+				e.addText(C.WHITE + "Limitations in minecraft, however");
+				e.addText(C.WHITE + "Players looking at you will see it working.");
+				e.addText(C.WHITE + " ");
+			}
+			
 			if(i.isUnlocked(p))
 			{
 				e.setType(i.getMaterialBlock().getMaterial());
 				e.setMetadata(i.getMaterialBlock().getData());
 				e.setTitle(C.AQUA + i.fancyName() + " " + i.getLevel(p));
 				e.setCount((int) i.getLevel(p));
-				e.addText(C.GRAY + "Upgrade Cost: " + (i.getSkill().getShards(p) >= i.getUpgradeCost() ? C.LIGHT_PURPLE.toString() : C.RED.toString()) + i.getUpgradeCost() + " " + i.getSkill().fancyName() + " Shards");
-				e.addText(C.GRAY + "Upgrade Requires: " + (i.getSkill().getLevel(p) >= i.getMinimumUpgradeLevel(p) ? C.LIGHT_PURPLE.toString() : C.RED.toString()) + i.getSkill().fancyName() + " " + i.getMinimumUpgradeLevel(p));
+				
+				if(i.getLevel() < i.getMaxLevel())
+				{
+					e.addText(C.GRAY + "Upgrade Cost: " + (i.getSkill().getShards(p) >= i.getUpgradeCost() ? C.LIGHT_PURPLE.toString() : C.RED.toString()) + i.getUpgradeCost() + " " + i.getSkill().fancyName() + " Shards");
+					e.addText(C.GRAY + "Upgrade Requires: " + (i.getSkill().getLevel(p) >= i.getMinimumUpgradeLevel(p) ? C.LIGHT_PURPLE.toString() : C.RED.toString()) + i.getSkill().fancyName() + " " + i.getMinimumUpgradeLevel(p));
+				}
+				
+				else
+				{
+					e.addText(C.LIGHT_PURPLE + "MAX LEVEL");
+				}
+				
+				if(i.isEnabled(p))
+				{
+					Slot ss = new Slot(sl.getX(), sl.getY() - 1);
+					Element ee = new PhantomElement(Material.STAINED_GLASS_PANE, ss, C.GREEN + "Enabled");
+					ee.setMetadata((byte) 5);
+					w.addElement(ee);
+					e.addText(C.GREEN + "Enabled (right click to disable)");
+				}
+				
+				else
+				{
+					Slot ss = new Slot(sl.getX(), sl.getY() - 1);
+					Element ee = new PhantomElement(Material.STAINED_GLASS_PANE, ss, C.RED + "Disabled");
+					ee.setMetadata((byte) 14);
+					w.addElement(ee);
+					e.addText(C.RED + "Disabled (right click to enable)");
+				}
+				
 				e.addText(i.getStatGraph(p));
 			}
 			
