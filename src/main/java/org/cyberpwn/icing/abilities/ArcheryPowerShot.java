@@ -36,7 +36,7 @@ public class ArcheryPowerShot extends BasicAbility
 			{
 				Player p = (Player) a.getShooter();
 				
-				if(isUnlocked(p) && a.isCritical())
+				if(isUnlocked(p) && a.isCritical() && isEnabled(p))
 				{
 					int level = (int) getLevel(p);
 					double boost = getBoost(level);
