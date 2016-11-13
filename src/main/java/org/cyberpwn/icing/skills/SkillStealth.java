@@ -26,7 +26,7 @@ import org.phantomapi.util.M;
 import org.phantomapi.vfx.ParticleEffect;
 import org.phantomapi.world.MaterialBlock;
 
-@Ticked(100)
+@Ticked(70)
 public class SkillStealth extends BasicSkill
 {
 	@Keyed("dist-per-xps")
