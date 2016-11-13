@@ -38,7 +38,7 @@ public class SwordsBlocking extends BasicAbility
 			
 			if(p.isBlocking())
 			{
-				if(isUnlocked(p))
+				if(isUnlocked(p) && isEnabled(p))
 				{
 					int level = (int) getLevel(p);
 					e.setDamage(e.getDamage() - (e.getDamage() * (1.0 - getResistanceBonus(level))));
