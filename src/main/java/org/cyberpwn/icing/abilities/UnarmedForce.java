@@ -65,7 +65,7 @@ public class UnarmedForce extends BasicAbility
 	
 	public String getV(int level)
 	{
-		return getDamage(level) + 1.0 + " dmg";
+		return F.f(getDamage(level) + 1.0, 2) + " dmg";
 	}
 	
 	@Override
