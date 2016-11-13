@@ -101,4 +101,22 @@ public class LightArmorAcrobatics extends BasicAbility
 		
 		return C.LIGHT_PURPLE + F.pc(getMitigation(1)) + " " + getAbilityGraph(20, (double) getLevel(p) / (double) getMaxLevel(), F.pc(getMitigation((int) getLevel(p)))) + C.LIGHT_PURPLE + " " + F.pc(getMitigation(getMaxLevel())) + " Reduction";
 	}
+	
+	@Override
+	public String getGraphInitial()
+	{
+		return F.pc(getMitigation(1));
+	}
+	
+	@Override
+	public String getGraphMax()
+	{
+		return F.pc(getMitigation(getMaxLevel()));
+	}
+	
+	@Override
+	public String getGraphCurrent(int level)
+	{
+		return F.pc(getMitigation(level));
+	}
 }
