@@ -36,9 +36,12 @@ public class UnarmedForce extends BasicAbility
 		{
 			Player p = (Player) e.getDamager();
 			
-			if(p.getItemInHand() == null || p.getItemInHand().getType().equals(Material.AIR))
+			if(isUnlocked(p) && isEnabled(p))
 			{
-				e.setDamage(e.getDamage() + getDamage((int) getLevel(p)));
+				if(p.getItemInHand() == null || p.getItemInHand().getType().equals(Material.AIR))
+				{
+					e.setDamage(e.getDamage() + getDamage((int) getLevel(p)));
+				}
 			}
 		}
 	}
