@@ -46,7 +46,7 @@ public class FarmingTiller extends BasicAbility
 		{
 			Player p = e.getPlayer();
 			
-			if(isUnlocked(p))
+			if(isUnlocked(p) && isEnabled(e.getPlayer()))
 			{
 				till(p, e.getClickedBlock(), (int) getLevel(p));
 			}
