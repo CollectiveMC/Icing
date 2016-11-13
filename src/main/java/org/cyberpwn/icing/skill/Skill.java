@@ -25,6 +25,8 @@ public interface Skill
 	
 	public double getProgress(Player p);
 	
+	public double getBufferPercent(Player p);
+	
 	public long getXpLeft(Player p);
 	
 	public String fancyName();
@@ -34,6 +36,10 @@ public interface Skill
 	public void addReward(Player p, Integer r);
 	
 	public MaterialBlock getSkillMaterial();
+	
+	public double getPercentToShards(Player p, int needed);
+	
+	public double getPercentToLevel(Player p, int needed);
 	
 	public long getBuffer(Player player);
 	
