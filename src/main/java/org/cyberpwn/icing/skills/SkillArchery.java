@@ -17,7 +17,7 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.world.MaterialBlock;
 
-@Ticked(100)
+@Ticked(20)
 public class SkillArchery extends BasicSkill
 {
 	@Keyed("blocks-per-xp")
