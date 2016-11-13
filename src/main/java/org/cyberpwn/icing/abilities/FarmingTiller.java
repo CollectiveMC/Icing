@@ -30,8 +30,8 @@ public class FarmingTiller extends BasicAbility
 		maxLevel = 3;
 		level = 9;
 		levelStep = 6;
-		upgradeCost = 4;
-		unlockCost = 2;
+		upgradeCost = 3;
+		unlockCost = 6;
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
