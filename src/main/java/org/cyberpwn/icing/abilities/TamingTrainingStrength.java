@@ -30,7 +30,7 @@ public class TamingTrainingStrength extends BasicAbility
 		{
 			Player p = (Player) e.getOwner();
 			
-			if(isUnlocked(p))
+			if(isUnlocked(p) && isUnlocked(p))
 			{
 				e.getEntity().setMaxHealth(e.getEntity().getMaxHealth() + (e.getEntity().getMaxHealth() * getBoost((int) getLevel(p))));
 			}
