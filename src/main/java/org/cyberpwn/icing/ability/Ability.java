@@ -43,4 +43,10 @@ public interface Ability
 	public String getDescription();
 	
 	public int getMaxLevel();
+	
+	public String getGraphInitial();
+	
+	public String getGraphMax();
+	
+	public String getGraphCurrent(int level);
 }
