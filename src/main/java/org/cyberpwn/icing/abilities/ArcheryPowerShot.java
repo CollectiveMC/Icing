@@ -93,4 +93,22 @@ public class ArcheryPowerShot extends BasicAbility
 		
 		return C.LIGHT_PURPLE + F.pc(getBoost(1)) + getAbilityGraph(20, (double) getLevel(p) / (double) getMaxLevel(), F.pc(getBoost((int) getLevel(p)))) + C.LIGHT_PURPLE + " " + F.pc(getBoost(getMaxLevel()));
 	}
+	
+	@Override
+	public String getGraphInitial()
+	{
+		return F.pc(getBoost(1));
+	}
+	
+	@Override
+	public String getGraphMax()
+	{
+		return "100%";
+	}
+	
+	@Override
+	public String getGraphCurrent(int level)
+	{
+		return F.pc(getBoost(level));
+	}
 }
