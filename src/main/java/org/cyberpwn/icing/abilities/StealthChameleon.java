@@ -1,8 +1,10 @@
 package org.cyberpwn.icing.abilities;
 
 import java.awt.Color;
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -254,12 +256,12 @@ public class StealthChameleon extends BasicAbility implements Monitorable
 						if(e.getEntity().getEntityId() == e.getViewer().getEntityId())
 						{
 							Location k = e.getViewer().getLocation().add(VectorMath.reverse(e.getViewer().getLocation().getDirection().multiply(2)));
-							c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 0.3, 0), VectorMath.direction(k.clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 0.3, 0)), 64);
+							c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 0.5, 0), VectorMath.direction(k.clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 0.5, 0)), 64);
 						}
 						
 						else
 						{
-							c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 0.3, 0), VectorMath.direction(e.getViewer().getLocation().clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 0.3, 0)), 64);
+							c = Chromatic.getVisibleColor(e.getEntity().getLocation().clone().add(0, 0.7, 0), VectorMath.direction(e.getViewer().getLocation().clone().add(0, 1.7, 0), e.getEntity().getLocation().clone().add(0, 0.7, 0)), 64);
 						}
 					}
 					
@@ -276,7 +278,15 @@ public class StealthChameleon extends BasicAbility implements Monitorable
 					
 					if(c == null)
 					{
-						c = Color.BLACK;
+						if(isDay(p.getWorld()))
+						{
+							c = new Color(DyeColor.LIGHT_BLUE.getColor().getRed(), DyeColor.LIGHT_BLUE.getColor().getGreen(), DyeColor.LIGHT_BLUE.getColor().getBlue());
+						}
+						
+						else
+						{
+							c = Color.BLACK;
+						}
 					}
 					
 					else
@@ -345,6 +355,11 @@ public class StealthChameleon extends BasicAbility implements Monitorable
 		}
 		
 		t.stop();
+	}
+	
+	public boolean isDay(World world)
+	{
+		return world.getTime() < 12300 || world.getTime() > 23850;
 	}
 	
 	@Override
