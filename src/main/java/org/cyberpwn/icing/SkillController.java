@@ -12,7 +12,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.cyberpwn.icing.ability.Ability;
 import org.cyberpwn.icing.ability.AbilityDataController;
-import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.skill.Skill;
 import org.cyberpwn.icing.skill.SkillDataController;
 import org.cyberpwn.icing.skills.SkillArchery;
@@ -714,18 +713,21 @@ public class SkillController extends ConfigurableController implements CommandLi
 			{
 				e.setType(i.getMaterialBlock().getMaterial());
 				e.setMetadata(i.getMaterialBlock().getData());
-				e.setTitle(C.AQUA + i.fancyName() + " " + i.getLevel(p));
+				e.setTitle(C.GREEN + i.fancyName() + " " + i.getLevel(p));
 				e.setCount((int) i.getLevel(p));
 				
 				if(i.getLevel() < i.getMaxLevel())
 				{
-					e.addText(C.GRAY + "Upgrade Cost: " + (i.getSkill().getShards(p) >= i.getUpgradeCost() ? C.LIGHT_PURPLE.toString() : C.RED.toString()) + i.getUpgradeCost() + " " + i.getSkill().fancyName() + " Shards");
-					e.addText(C.GRAY + "Upgrade Requires: " + (i.getSkill().getLevel(p) >= i.getMinimumUpgradeLevel(p) ? C.LIGHT_PURPLE.toString() : C.RED.toString()) + i.getSkill().fancyName() + " " + i.getMinimumUpgradeLevel(p));
+					String sc = C.GRAY + (i.getSkill().getShards(p) >= i.getUpgradeCost() ? "" : "(" + F.pc(i.getSkill().getPercentToShards(p, i.getUpgradeCost())) + ")");
+					String lc = C.GRAY + (i.getSkill().getLevel(p) >= i.getMinimumUpgradeLevel(p) ? "" : "(" + F.pc(i.getSkill().getPercentToLevel(p, (int) i.getMinimumUpgradeLevel(p))) + ")");
+					
+					e.addText(C.GRAY + "Upgrade Cost: " + (i.getSkill().getShards(p) >= i.getUpgradeCost() ? C.GREEN.toString() : C.RED.toString()) + i.getUpgradeCost() + " " + i.getSkill().fancyName() + " Shards " + C.GRAY + sc);
+					e.addText(C.GRAY + "Upgrade Requires: " + (i.getSkill().getLevel(p) >= i.getMinimumUpgradeLevel(p) ? C.GREEN.toString() : C.RED.toString()) + i.getSkill().fancyName() + " " + i.getMinimumUpgradeLevel(p) + C.GRAY + " " + lc);
 				}
 				
 				else
 				{
-					e.addText(C.LIGHT_PURPLE + "MAX LEVEL");
+					e.addText(C.GREEN + "MAX LEVEL");
 				}
 				
 				if(i.isEnabled(p))
@@ -745,8 +747,8 @@ public class SkillController extends ConfigurableController implements CommandLi
 					w.addElement(ee);
 					e.addText(C.RED + "Disabled (right click to enable)");
 				}
-				
-				e.addText(i.getStatGraph(p));
+				e.addText(" ");
+				e.addText(getGraph((int) i.getLevel(p), i, 42));
 			}
 			
 			else
@@ -763,6 +765,36 @@ public class SkillController extends ConfigurableController implements CommandLi
 		w.setBackground(bg);
 		w.setViewport(3);
 		w.open();
+	}
+	
+	public String getLine(C cc, int len, double percent, String l, String r, String f)
+	{
+		String k = cc + "" + C.UNDERLINE + l;
+		len = len < l.length() + r.length() + f.length() ? l.length() + r.length() + f.length() + 6 : len;
+		int a = len - (l.length() + r.length() + f.length());
+		int b = (int) ((double) a * (double) percent);
+		int c = len - b;
+		return (percent == 0.0 ? ((k + C.DARK_GRAY + C.UNDERLINE + F.repeat(" ", c) + C.DARK_GRAY + C.UNDERLINE + r)) : (k + F.repeat(" ", b) + (percent == 1.0 ? r : (f + C.DARK_GRAY + C.UNDERLINE + F.repeat(" ", c) + C.DARK_GRAY + C.UNDERLINE + r))));
+	}
+	
+	public String getGraph(int level, Ability ability, int len)
+	{
+		return level == 1 ? getLine(C.GREEN, len, 0, ability.getGraphInitial(), ability.getGraphMax(), ability.getGraphCurrent(level)) : getLine(C.GREEN, len, ((int) (double) level / (double) ability.getMaxLevel()), ability.getGraphInitial(), ability.getGraphMax(), ability.getGraphCurrent(level));
+	}
+	
+	public String getGraph(Player p, Skill skill, int len)
+	{
+		return getLine(C.GREEN, len, skill.getProgress(p), skill.getLevel(p) + "", "" + (skill.getLevel(p) + 1), "");
+	}
+	
+	public String getGraphShards(Player p, Skill skill, int len)
+	{
+		return getLine(C.AQUA, len, skill.getBufferPercent(p), F.f(skill.getShards(p)), F.f(skill.getShards(p) + 1) + "", "");
+	}
+	
+	public String getGraph(Player p, int len)
+	{
+		return getLine(C.GREEN, len, XP.percentToNextLevel(XP.getXp(p)), F.f(XP.getLevelForXp(XP.getXp(p))) + "", "" + (F.f(XP.getLevelForXp(XP.getXp(p))) + 1), "");
 	}
 	
 	public void openSkillView(Player p)
@@ -810,10 +842,14 @@ public class SkillController extends ConfigurableController implements CommandLi
 					}
 				};
 				
-				pa.addText(C.GRAY + "XP: " + C.LIGHT_PURPLE + F.f(s.getXp(p)));
-				pa.addText(C.GREEN + F.f(s.getXp(p) - XP.getXpForLevel(s.getLevel(p))) + " XP " + C.GRAY + "/ " + C.RED + F.f(XP.getXpForLevel(s.getLevel(p) + 1) - XP.getXpForLevel(s.getLevel(p))) + " XP " + C.YELLOW + "(" + F.pc(s.getProgress(p)) + ")");
-				pa.addText(C.AQUA + "Contains " + F.f(Icing.getInst().getSk().getSkillDataController().get(p).getSkillPoints(((BasicSkill) s).getCodeName())) + " Shards");
-				pa.addText(getGraph(18, XP.percentToNextLevel(s.getXp(p))));
+				pa.addText(C.GRAY + "XP: " + C.WHITE + F.f(s.getXp(p)));
+				pa.addText(C.WHITE + F.f(s.getXp(p) - XP.getXpForLevel(s.getLevel(p))) + " XP " + C.GRAY + "/ " + C.WHITE + F.f(XP.getXpForLevel(s.getLevel(p) + 1) - XP.getXpForLevel(s.getLevel(p))) + " XP " + C.GRAY + "(" + F.pc(s.getProgress(p)) + ")");
+				pa.addText(" ");
+				pa.addText(C.GRAY + "\u2771 " + v.fancyName() + " Shards");
+				pa.addText(getGraphShards(p, v, 32));
+				pa.addText(" ");
+				pa.addText(C.GRAY + "\u2771 Progress");
+				pa.addText(getGraph(p, v, 32));
 				w.addElement(pa);
 				ix.add(1);
 			}
