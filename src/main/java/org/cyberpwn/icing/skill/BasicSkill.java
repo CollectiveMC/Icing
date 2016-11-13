@@ -117,6 +117,12 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 	}
 	
 	@Override
+	public double getBufferPercent(Player p)
+	{
+		return (double) getBuffer(p) / 4096.0;
+	}
+	
+	@Override
 	public long getBuffer(Player player)
 	{
 		return Icing.inst().getSk().getSkillDataController().get(player).getSkillBuff(getCodeName());
@@ -162,6 +168,22 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 	public double getProgress(Player p)
 	{
 		return XP.percentToNextLevel(getXp(p));
+	}
+	
+	@Override
+	public double getPercentToShards(Player p, int needed)
+	{
+		double has = (getShards(p) * 4096) + (getBuffer(p));
+		double needs = 4096.0 * needed;
+		return has / needs;
+	}
+	
+	@Override
+	public double getPercentToLevel(Player p, int needed)
+	{
+		double has = getXp(p);
+		double needs = XP.getXpForLevel(needed);
+		return has / needs;
 	}
 	
 	@Override
