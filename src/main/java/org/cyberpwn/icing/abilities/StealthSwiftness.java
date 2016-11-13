@@ -29,7 +29,7 @@ public class StealthSwiftness extends BasicAbility
 	@EventHandler
 	public void on(PlayerToggleSneakEvent e)
 	{
-		if(isUnlocked(e.getPlayer()))
+		if(isUnlocked(e.getPlayer()) && isEnabled(e.getPlayer()))
 		{
 			if(e.isSneaking())
 			{
