@@ -7,7 +7,6 @@ import org.phantomapi.util.C;
 public class Icing extends Ghost implements TagProvider
 {
 	private static Icing inst;
-	private BoostController bc;
 	private CakeController cc;
 	private XPController xp;
 	private SkillController sk;
@@ -16,12 +15,10 @@ public class Icing extends Ghost implements TagProvider
 	public void preStart()
 	{
 		inst = this;
-		bc = new BoostController(this);
 		cc = new CakeController(this);
 		xp = new XPController(this);
 		sk = new SkillController(this);
 		
-		register(bc);
 		register(cc);
 		register(xp);
 		register(sk);
@@ -65,11 +62,6 @@ public class Icing extends Ghost implements TagProvider
 	public static Icing getInst()
 	{
 		return inst;
-	}
-	
-	public BoostController getBc()
-	{
-		return bc;
 	}
 	
 	public CakeController getCc()
