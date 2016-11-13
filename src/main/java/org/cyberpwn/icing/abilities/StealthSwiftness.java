@@ -1,5 +1,6 @@
 package org.cyberpwn.icing.abilities;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,7 +31,7 @@ public class StealthSwiftness extends BasicAbility
 	@EventHandler
 	public void on(PlayerToggleSneakEvent e)
 	{
-		if(isUnlocked(e.getPlayer()) && isEnabled(e.getPlayer()))
+		if(isUnlocked(e.getPlayer()) && isEnabled(e.getPlayer()) && !e.getPlayer().isFlying() && !e.getPlayer().getGameMode().equals(GameMode.CREATIVE))
 		{
 			if(e.isSneaking())
 			{
