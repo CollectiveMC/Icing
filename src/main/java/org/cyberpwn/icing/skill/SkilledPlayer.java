@@ -42,6 +42,21 @@ public class SkilledPlayer extends ConfigurableObject
 		setSkill(skill, xp + getSkill(skill));
 	}
 	
+	public void setEnabled(String skill, boolean enabled)
+	{
+		getConfiguration().set(skill + "-e", enabled);
+	}
+	
+	public boolean isEnabled(String skill)
+	{
+		if(!getConfiguration().contains(skill + "-e"))
+		{
+			return true;
+		}
+		
+		return getConfiguration().getBoolean(skill + "-e");
+	}
+	
 	public long getSkill(String skill)
 	{
 		if(getConfiguration().contains(skill))
