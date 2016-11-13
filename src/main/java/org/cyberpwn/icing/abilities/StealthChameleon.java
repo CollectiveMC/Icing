@@ -43,8 +43,8 @@ public class StealthChameleon extends BasicAbility implements Monitorable
 		target = new GMap<Player, GMap<Player, GMap<EquipmentSlot, Color>>>();
 		maxLevel = 12;
 		level = 12;
-		levelStep = 2;
-		upgradeCost = 6;
+		levelStep = 6;
+		upgradeCost = 9;
 		unlockCost = 12;
 		perf = 0;
 		pps = 0;
