@@ -8,6 +8,10 @@ public interface Ability
 {
 	public boolean isUnlocked(Player p);
 	
+	public boolean isEnabled(Player p);
+	
+	public void setEnabled(Player p, boolean e);
+	
 	public long getLevel(Player p);
 	
 	public void addLevel(Player p);
