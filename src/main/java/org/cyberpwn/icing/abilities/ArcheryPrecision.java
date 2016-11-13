@@ -169,4 +169,22 @@ public class ArcheryPrecision extends BasicAbility
 		
 		return C.LIGHT_PURPLE + F.f(getRange(1)) + "m " + getAbilityGraph(20, (double) getLevel(p) / (double) getMaxLevel(), F.f(getRange((int) getLevel(p))) + "m") + C.LIGHT_PURPLE + " " + F.f(getRange(getMaxLevel())) + "m";
 	}
+	
+	@Override
+	public String getGraphInitial()
+	{
+		return getRange(1) + "m";
+	}
+	
+	@Override
+	public String getGraphMax()
+	{
+		return getRange(getMaxLevel()) + "m";
+	}
+	
+	@Override
+	public String getGraphCurrent(int level)
+	{
+		return getRange(level) + "m";
+	}
 }
