@@ -386,4 +386,22 @@ public class StealthChameleon extends BasicAbility implements Monitorable
 		
 		return "Perf: " + C.LIGHT_PURPLE + F.fd(a.getAverage(), 2) + " ms" + " " + C.DARK_GRAY + " Ray: " + C.LIGHT_PURPLE + (F.f(rr * 20)) + C.DARK_GRAY + " Outbound: " + C.LIGHT_PURPLE + F.f(pps * 20) + "/s";
 	}
+	
+	@Override
+	public String getGraphInitial()
+	{
+		return "255 \u03A9";
+	}
+	
+	@Override
+	public String getGraphMax()
+	{
+		return F.f((255 * getMaxLevel())) + " \u03A9";
+	}
+	
+	@Override
+	public String getGraphCurrent(int level)
+	{
+		return F.f((255 * level)) + " \u03A9";
+	}
 }
