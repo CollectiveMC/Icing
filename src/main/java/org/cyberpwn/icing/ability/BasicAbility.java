@@ -155,4 +155,16 @@ public abstract class BasicAbility extends ConfigurableController implements Abi
 	{
 		return maxLevel;
 	}
+	
+	@Override
+	public boolean isEnabled(Player p)
+	{
+		return Icing.inst().getSk().getAbilityDataController().get(p).isEnabled(getCodeName());
+	}
+	
+	@Override
+	public void setEnabled(Player p, boolean e)
+	{
+		Icing.inst().getSk().getAbilityDataController().get(p).setEnabled(getCodeName(), e);
+	}
 }
