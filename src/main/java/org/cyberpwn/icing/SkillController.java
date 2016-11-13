@@ -622,9 +622,91 @@ public class SkillController extends ConfigurableController implements CommandLi
 				e.addText(C.WHITE + "Each player sees different colors on you");
 				e.addText(C.WHITE + "depending on what they see behind you");
 				e.addText(C.WHITE + " ");
-				e.addText(C.WHITE + "Boots dont work in 3rd person due to");
-				e.addText(C.WHITE + "Limitations in minecraft, however");
-				e.addText(C.WHITE + "Players looking at you will see it working.");
+				e.addText(C.WHITE + "Leveling up this ability increases the speed");
+				e.addText(C.WHITE + "at which you blend in with your surroundings");
+				e.addText(C.WHITE + " ");
+			}
+			
+			if(((Configurable) i).getCodeName().equals("swiftness"))
+			{
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "While crouching, your will move faster");
+				e.addText(C.WHITE + "along with the added fov boost");
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "Pro Tip: Try looking around corners while");
+				e.addText(C.WHITE + "sneaking. You may see someone you diddnt before.");
+				e.addText(C.WHITE + " ");
+			}
+			
+			if(((Configurable) i).getCodeName().equals("block"))
+			{
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "By default, swords block 50% damage. This ");
+				e.addText(C.WHITE + "ability allows you to block up to 75% damage.");
+				e.addText(C.WHITE + " ");
+			}
+			
+			if(((Configurable) i).getCodeName().equals("training strength"))
+			{
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "By taiming animals with this ability, you");
+				e.addText(C.WHITE + "train them better. Wolves deal more damage.");
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "Pro Tip: Bring some wolves to your next fight.");
+				e.addText(C.WHITE + " ");
+			}
+			
+			if(((Configurable) i).getCodeName().equals("force"))
+			{
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "By improving your fist and swing, you can");
+				e.addText(C.WHITE + "punch a deafing blow.");
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "Leveling up this ability increases your damage.");
+				e.addText(C.WHITE + "max level is near 6.5 hearts of damage.");
+				e.addText(C.WHITE + " ");
+			}
+			
+			if(((Configurable) i).getCodeName().equals("precision"))
+			{
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "Upon aiming your next shot, you will see");
+				e.addText(C.WHITE + "a distance and target of what you are aiming at");
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "Leveling up this ability increases the scanning");
+				e.addText(C.WHITE + "range");
+				e.addText(C.WHITE + " ");
+			}
+			
+			if(((Configurable) i).getCodeName().equals("tiller"))
+			{
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "This ability allows a hoe to till up to 7x7");
+				e.addText(C.WHITE + "b;pcls at a given time.");
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "Pro Tip: Right click and drag to literally shred");
+				e.addText(C.WHITE + "the land of grass to soil");
+				e.addText(C.WHITE + " ");
+			}
+			
+			if(((Configurable) i).getCodeName().equals("acrobatics"))
+			{
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "This ability reduces fall damage and other");
+				e.addText(C.WHITE + "ambient damage causes");
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "Note: Mobs and Players still deal full damage.");
+				e.addText(C.WHITE + " ");
+			}
+			
+			if(((Configurable) i).getCodeName().equals("power shot"))
+			{
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "This ability increases the speed of");
+				e.addText(C.WHITE + "arrows shot.");
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "Leading targets becomes easier and the arrow");
+				e.addText(C.WHITE + "can reach it's destination quicker");
 				e.addText(C.WHITE + " ");
 			}
 			
