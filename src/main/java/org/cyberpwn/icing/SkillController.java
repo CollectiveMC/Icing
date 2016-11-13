@@ -650,7 +650,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 			{
 				e.addText(C.WHITE + " ");
 				e.addText(C.WHITE + "By taiming animals with this ability, you");
-				e.addText(C.WHITE + "train them better. Wolves deal more damage.");
+				e.addText(C.WHITE + "train them better. They have more health.");
 				e.addText(C.WHITE + " ");
 				e.addText(C.WHITE + "Pro Tip: Bring some wolves to your next fight.");
 				e.addText(C.WHITE + " ");
