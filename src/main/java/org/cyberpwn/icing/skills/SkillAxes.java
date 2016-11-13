@@ -14,7 +14,7 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.world.MaterialBlock;
 
-@Ticked(200)
+@Ticked(40)
 public class SkillAxes extends BasicSkill
 {
 	@Keyed("xp-per-hp")
