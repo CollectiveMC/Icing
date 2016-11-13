@@ -205,7 +205,7 @@ public class SkillStealth extends BasicSkill
 			
 			if(vm.get(e.getPlayer()) > base)
 			{
-				addReward(e.getPlayer(), 111111111);
+				addReward(e.getPlayer(), 1);
 				vm.remove(e.getPlayer());
 			}
 		}
