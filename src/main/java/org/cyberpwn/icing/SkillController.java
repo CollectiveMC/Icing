@@ -716,7 +716,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 				e.setTitle(C.GREEN + i.fancyName() + " " + i.getLevel(p));
 				e.setCount((int) i.getLevel(p));
 				
-				if(i.getLevel() < i.getMaxLevel())
+				if(i.getLevel(p) < i.getMaxLevel())
 				{
 					String sc = C.GRAY + (i.getSkill().getShards(p) >= i.getUpgradeCost() ? "" : "(" + F.pc(i.getSkill().getPercentToShards(p, i.getUpgradeCost())) + ")");
 					String lc = C.GRAY + (i.getSkill().getLevel(p) >= i.getMinimumUpgradeLevel(p) ? "" : "(" + F.pc(i.getSkill().getPercentToLevel(p, (int) i.getMinimumUpgradeLevel(p))) + ")");
@@ -727,7 +727,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 				
 				else
 				{
-					e.addText(C.GREEN + "MAX LEVEL");
+					e.addText(" ");
 				}
 				
 				if(i.isEnabled(p))
