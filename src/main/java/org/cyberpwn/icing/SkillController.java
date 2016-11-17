@@ -354,7 +354,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 			}
 			
 			b += (Math.random() * 0.1);
-			b -= (xpp.getDiscredit() * (b * 2));
+			b -= xpp.getDiscredit();
 			
 			if(xpp.getDiscredit() > 0)
 			{
