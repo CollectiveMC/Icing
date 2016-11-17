@@ -17,6 +17,7 @@ import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
 import org.phantomapi.util.D;
 import org.phantomapi.util.F;
+import org.phantomapi.util.Inventories;
 import org.phantomapi.util.M;
 import org.phantomapi.vfx.ParticleEffect;
 
@@ -52,6 +53,21 @@ public class XP
 				n.setAudible(new GSound(Sound.WITHER_DEATH, 1f, 1.98f));
 				n.setPriority(Priority.LOW);
 				q(player, n);
+				
+				if(levelNext > 5 && levelNext % 5 == 0)
+				{
+					ItemStack is = Icing.inst().getXp().createBoost((int) (1200), 0.005 * level);
+					
+					if(Inventories.hasSpace(player.getInventory()))
+					{
+						player.getInventory().addItem(is);
+					}
+					
+					else
+					{
+						player.getWorld().dropItemNaturally(player.getLocation(), is);
+					}
+				}
 			}
 		}
 	}
