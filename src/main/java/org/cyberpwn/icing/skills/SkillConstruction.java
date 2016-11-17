@@ -6,9 +6,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
+import org.bukkit.inventory.ItemStack;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
@@ -17,6 +18,7 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.ControllerMessage;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GMap;
+import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.Players;
 import org.phantomapi.world.MaterialBlock;
 
@@ -56,8 +58,23 @@ public class SkillConstruction extends BasicSkill
 		
 	}
 	
+	public int getAmount(Player player)
+	{
+		int amt = 0;
+		
+		for(ItemStack is : player.getInventory().getContents())
+		{
+			if(is != null && !is.getType().equals(Material.AIR))
+			{
+				amt += is.getAmount();
+			}
+		}
+		
+		return amt;
+	}
+	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void on(InventoryClickEvent e)
+	public void on(CraftItemEvent e)
 	{
 		if(e.isCancelled())
 		{
@@ -68,8 +85,6 @@ public class SkillConstruction extends BasicSkill
 		{
 			if(e.getSlotType().equals(SlotType.RESULT))
 			{
-				
-				int amt = e.getCurrentItem().getAmount();
 				Player p = (Player) e.getWhoClicked();
 				
 				if(p.getGameMode().equals(GameMode.CREATIVE))
@@ -77,8 +92,19 @@ public class SkillConstruction extends BasicSkill
 					return;
 				}
 				
-				addReward(p, base * amt);
-				XP.dropRandom(p.getLocation());
+				int amta = getAmount((Player) e.getWhoClicked());
+				
+				new TaskLater()
+				{
+					@Override
+					public void run()
+					{
+						int amtb = getAmount((Player) e.getWhoClicked());
+						int amt = amtb - amta;
+						addReward(p, base * amt);
+						XP.dropRandom(p.getLocation());
+					}
+				};
 			}
 		}
 	}
