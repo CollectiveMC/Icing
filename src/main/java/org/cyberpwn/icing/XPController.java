@@ -71,6 +71,7 @@ public class XPController extends ConfigurableController implements CommandListe
 	{
 		if(!e.isCancelled())
 		{
+			e.setXp((long) (e.getXp() * (1.0 * getXpDataController().get(e.getPlayer()).getDiscredit())));
 			e.setXp((long) (e.getXp() + (e.getXp() * XP.getBoost(e.getPlayer()))));
 			
 			if(e.getXp() < 0)
