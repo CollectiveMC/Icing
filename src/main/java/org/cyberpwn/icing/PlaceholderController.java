@@ -21,6 +21,11 @@ public class PlaceholderController extends PlaceholderHook
 			return F.f(XP.getLevelForXp(XP.getXp(p)));
 		}
 		
+		if(q.equalsIgnoreCase("x_stealth_multiplier"))
+		{
+			return F.pc(Icing.inst().getSk().getStealthBm(p));
+		}
+		
 		if(q.equalsIgnoreCase("x_boost"))
 		{
 			return F.pc(XP.getBoost(p));
