@@ -1,5 +1,7 @@
 package org.cyberpwn.icing.skills;
 
+import java.util.UUID;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -9,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.util.Vector;
+import org.cyberpwn.icing.abilities.StealthChameleon;
 import org.cyberpwn.icing.abilities.StealthSwiftness;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XP;
@@ -18,11 +21,8 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.event.PlayerDamagePlayerEvent;
 import org.phantomapi.event.PlayerKillPlayerEvent;
-import org.phantomapi.event.PlayerMoveBlockEvent;
 import org.phantomapi.event.PlayerMovePositionEvent;
 import org.phantomapi.lang.GMap;
-import org.phantomapi.util.M;
-import org.phantomapi.vfx.ParticleEffect;
 import org.phantomapi.world.MaterialBlock;
 
 @Ticked(70)
@@ -46,12 +46,17 @@ public class SkillStealth extends BasicSkill
 	@Keyed("initial-multiple")
 	public double initialm = 2;
 	
+	@Keyed("initial-bm")
+	public double bminit = 32.64;
+	
 	private GMap<Player, Integer> vm;
+	private GMap<UUID, Double> bm;
 	
 	public SkillStealth(Controllable parentController)
 	{
 		super(parentController, "stealth", XPReason.STEALTH);
 		vm = new GMap<Player, Integer>();
+		bm = new GMap<UUID, Double>();
 	}
 	
 	@Override
@@ -64,6 +69,14 @@ public class SkillStealth extends BasicSkill
 	public void onTick()
 	{
 		popRewardMap();
+		
+		for(UUID i : bm.k())
+		{
+			if(Bukkit.getPlayer(i) != null)
+			{
+				bm.put(i, bm.get(i) >= bminit ? bminit : bm.get(i) + (0.12 * Math.random()));
+			}
+		}
 	}
 	
 	@Override
@@ -167,15 +180,6 @@ public class SkillStealth extends BasicSkill
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void on(PlayerMoveBlockEvent e)
-	{
-		if(M.r(0.7) && e.getPlayer().getLocation().subtract(0, 1, 0).getBlock().getType().isSolid() && !e.getPlayer().isSneaking())
-		{
-			ParticleEffect.FOOTSTEP.display(0, 1, e.getPlayer().getLocation().subtract(0, 1, 0).getBlock().getLocation().add(Math.random() - 0.5, 1.02, Math.random() - 0.5), 32);
-		}
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(PlayerMovePositionEvent e)
 	{
 		if(e.isCancelled())
@@ -208,11 +212,62 @@ public class SkillStealth extends BasicSkill
 				vm.remove(e.getPlayer());
 			}
 		}
+		
+		if(e.getPlayer().getRemainingAir() < e.getPlayer().getMaximumAir() && e.getPlayer().getLocation().getBlock().getType().toString().contains("WATER") && e.getPlayer().getLocation().add(0, 1, 0).getBlock().getType().toString().contains("WATER") && a.distanceSquared(b) > 0.003)
+		{
+			if(!vm.containsKey(e.getPlayer()))
+			{
+				vm.put(e.getPlayer(), 0);
+			}
+			
+			vm.put(e.getPlayer(), vm.get(e.getPlayer()) + 1);
+			
+			if(vm.get(e.getPlayer()) > base)
+			{
+				addReward(e.getPlayer(), (int) (3.0 * ((double) (e.getPlayer().getMaximumAir() - e.getPlayer().getRemainingAir()) / (double) e.getPlayer().getMaximumAir())));
+				vm.remove(e.getPlayer());
+			}
+		}
 	}
 	
 	@Override
 	public void createControllers()
 	{
 		register(new StealthSwiftness(this));
+		register(new StealthChameleon(this));
+	}
+	
+	@Override
+	public void addReward(Player p, Integer r)
+	{
+		if(!bm.containsKey(p.getUniqueId()))
+		{
+			bm.put(p.getUniqueId(), bminit);
+		}
+		
+		if(bm.get(p.getUniqueId()) < 1.0)
+		{
+			bm.put(p.getUniqueId(), 1.0);
+		}
+		
+		r = (int) (r * bm.get(p.getUniqueId()));
+		bm.put(p.getUniqueId(), bm.get(p.getUniqueId()) - (((double) r) / 25));
+		
+		if(bm.get(p.getUniqueId()) < 1.0)
+		{
+			bm.put(p.getUniqueId(), 1.0);
+		}
+		
+		super.addReward(p, r);
+	}
+	
+	public double getBm(Player p)
+	{
+		if(!bm.containsKey(p.getUniqueId()))
+		{
+			return 1.0;
+		}
+		
+		return bm.get(p.getUniqueId());
 	}
 }
