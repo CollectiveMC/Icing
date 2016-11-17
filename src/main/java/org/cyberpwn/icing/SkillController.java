@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.cyberpwn.icing.ability.Ability;
 import org.cyberpwn.icing.ability.AbilityDataController;
@@ -44,6 +45,7 @@ import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Controller;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.currency.ExperienceCurrency;
+import org.phantomapi.ext.Protocol;
 import org.phantomapi.gui.Click;
 import org.phantomapi.gui.Element;
 import org.phantomapi.gui.Guis;
@@ -59,6 +61,7 @@ import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
 import org.phantomapi.nms.NMSX;
 import org.phantomapi.sfx.Audio;
+import org.phantomapi.sync.TaskLater;
 import org.phantomapi.text.MessageBuilder;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
@@ -119,6 +122,19 @@ public class SkillController extends ConfigurableController implements CommandLi
 	{
 		lastInteractionBlock.remove(e.getPlayer());
 		lastInteractionPlace.remove(e.getPlayer());
+	}
+	
+	@EventHandler
+	public void on(PlayerJoinEvent e)
+	{
+		new TaskLater(25)
+		{
+			@Override
+			public void run()
+			{
+				Icing.inst().getXp().getXpDataController().get(e.getPlayer()).discred(0.22);
+			}
+		};
 	}
 	
 	public XPPlayer getXpp(Player p)
@@ -621,6 +637,15 @@ public class SkillController extends ConfigurableController implements CommandLi
 				e.addText(C.WHITE + "Each player sees different colors on you");
 				e.addText(C.WHITE + "depending on what they see behind you");
 				e.addText(C.WHITE + " ");
+				
+				if(Protocol.getProtocol(p).getVersion() > 47)
+				{
+					e.addText(C.YELLOW + "" + C.BOLD + "WARINING! You are on " + Protocol.getProtocol(p).getName() + "!");
+					e.addText(C.GOLD + "" + C.BOLD + "" + C.UNDERLINE + "TURN DOWN PLAYER SOUNDS IN YOUR SETTINGS");
+					e.addText(C.GOLD + "" + C.BOLD + "" + C.UNDERLINE + "BEFORE PUTTING ON LEATHER ARMOR");
+					e.addText(C.WHITE + " ");
+				}
+				
 				e.addText(C.WHITE + "Leveling up this ability increases the speed");
 				e.addText(C.WHITE + "at which you blend in with your surroundings");
 				e.addText(C.WHITE + " ");
@@ -753,8 +778,11 @@ public class SkillController extends ConfigurableController implements CommandLi
 			
 			else
 			{
-				e.addText(C.GRAY + "Unlock Cost: " + (i.getSkill().getShards(p) >= i.getUnlockCost() ? C.LIGHT_PURPLE.toString() : C.RED.toString()) + i.getUpgradeCost() + " " + i.getSkill().fancyName() + " Shards");
-				e.addText(C.GRAY + "Unlock Requires: " + (i.getSkill().getLevel(p) >= i.getLevel() ? C.LIGHT_PURPLE.toString() : C.RED.toString()) + i.getSkill().fancyName() + " " + i.getMinimumUpgradeLevel(p));
+				String sc = C.GRAY + (i.getSkill().getShards(p) >= i.getUpgradeCost() ? "" : "(" + F.pc(i.getSkill().getPercentToShards(p, i.getUpgradeCost())) + ")");
+				String lc = C.GRAY + (i.getSkill().getLevel(p) >= i.getMinimumUpgradeLevel(p) ? "" : "(" + F.pc(i.getSkill().getPercentToLevel(p, (int) i.getMinimumUpgradeLevel(p))) + ")");
+				
+				e.addText(C.GRAY + "Upgrade Cost: " + (i.getSkill().getShards(p) >= i.getUpgradeCost() ? C.GREEN.toString() : C.RED.toString()) + i.getUpgradeCost() + " " + i.getSkill().fancyName() + " Shards " + C.GRAY + sc);
+				e.addText(C.GRAY + "Upgrade Requires: " + (i.getSkill().getLevel(p) >= i.getMinimumUpgradeLevel(p) ? C.GREEN.toString() : C.RED.toString()) + i.getSkill().fancyName() + " " + i.getMinimumUpgradeLevel(p) + C.GRAY + " " + lc);
 			}
 			
 			w.addElement(e);
@@ -955,5 +983,18 @@ public class SkillController extends ConfigurableController implements CommandLi
 	public GList<Skill> getSkills()
 	{
 		return skills;
+	}
+	
+	public double getStealthBm(Player p)
+	{
+		for(Skill i : getSkills())
+		{
+			if(i.name().equals("stealth"))
+			{
+				return ((SkillStealth) i).getBm(p);
+			}
+		}
+		
+		return 1.0;
 	}
 }
