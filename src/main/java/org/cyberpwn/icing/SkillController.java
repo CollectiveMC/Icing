@@ -779,6 +779,18 @@ public class SkillController extends ConfigurableController implements CommandLi
 				e.addText(C.WHITE + " ");
 			}
 			
+			if(((Configurable) i).getCodeName().equals("heat resistance"))
+			{
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "This ability reduces the amount of time you");
+				e.addText(C.WHITE + "stay on fire. It cools you off faster the");
+				e.addText(C.WHITE + "hotter you actually are.");
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "Upgrading this ability increases the speed");
+				e.addText(C.WHITE + "at which you will cool off from fire.");
+				e.addText(C.WHITE + " ");
+			}
+			
 			if(i.isUnlocked(p))
 			{
 				e.setType(i.getMaterialBlock().getMaterial());
