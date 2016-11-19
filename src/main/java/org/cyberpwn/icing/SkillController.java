@@ -173,7 +173,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 		
 		if(lastInteractionPickup.containsKey(p) && lastInteractionPickup.get(p).equals(b))
 		{
-			getXpp(p).discred(0.008);
+			getXpp(p).discred(0.018);
 		}
 		
 		lastInteractionPickup.put(p, b);
@@ -711,6 +711,25 @@ public class SkillController extends ConfigurableController implements CommandLi
 				e.addText(C.WHITE + " ");
 			}
 			
+			if(((Configurable) i).getCodeName().equals("nuker"))
+			{
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "Increases your dig speed while breaking");
+				e.addText(C.WHITE + "this and that.");
+				e.addText(C.WHITE + " ");
+			}
+			
+			if(((Configurable) i).getCodeName().equals("respiration"))
+			{
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "Increases the amount of time underwater");
+				e.addText(C.WHITE + "without drowning.");
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "Upgrading this ability increases the");
+				e.addText(C.WHITE + "air bubbles you have.");
+				e.addText(C.WHITE + " ");
+			}
+			
 			if(((Configurable) i).getCodeName().equals("training strength"))
 			{
 				e.addText(C.WHITE + " ");
@@ -725,7 +744,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 			{
 				e.addText(C.WHITE + " ");
 				e.addText(C.WHITE + "Increases the max range you can pick up");
-				e.addText(C.WHITE + "items from to 3.5 blocks. Where as the");
+				e.addText(C.WHITE + "items to 3.5 blocks. Where as the");
 				e.addText(C.WHITE + "normal range is 1.5 blocks.");
 				e.addText(C.WHITE + " ");
 				e.addText(C.WHITE + "Leveling up this ability increases the range");
@@ -964,6 +983,42 @@ public class SkillController extends ConfigurableController implements CommandLi
 			if(sender.isPlayer())
 			{
 				openSkillView(sender.getPlayer());
+			}
+		}
+		
+		else if(cmd.getArgs().length >= 2 && cmd.getArgs()[0].equalsIgnoreCase("show"))
+		{
+			String skx = "";
+			
+			for(int i = 1; i < cmd.getArgs().length; i++)
+			{
+				skx += cmd.getArgs()[i];
+			}
+			
+			skx.trim();
+			
+			for(String i : Icing.inst().getSk().getSkillDataController().get(sender.getPlayer()).getKnownSkills())
+			{
+				if(skx.equalsIgnoreCase(i))
+				{
+					Skill s = null;
+					
+					for(Skill j : skills)
+					{
+						if(((Configurable) j).getCodeName().equals(i))
+						{
+							s = j;
+							break;
+						}
+					}
+					
+					if(s != null)
+					{
+						showAbilities(sender.getPlayer(), s);
+					}
+					
+					break;
+				}
 			}
 		}
 		
