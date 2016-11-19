@@ -104,9 +104,9 @@ public class XPPlayer extends ConfigurableObject
 	{
 		discredit += (amt * getBoost()) > amt ? (amt * getBoost()) : amt;
 		
-		if(discredit > 20)
+		if(discredit > 7)
 		{
-			discredit = 20;
+			discredit = 7;
 		}
 	}
 	
