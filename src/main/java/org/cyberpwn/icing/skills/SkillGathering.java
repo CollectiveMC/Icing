@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.cyberpwn.icing.abilities.GatheringScavenger;
 import org.cyberpwn.icing.abilities.GatheringSnatching;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XP;
@@ -150,5 +151,6 @@ public class SkillGathering extends BasicSkill
 	public void createControllers()
 	{
 		register(new GatheringSnatching(this));
+		register(new GatheringScavenger(this));
 	}
 }
