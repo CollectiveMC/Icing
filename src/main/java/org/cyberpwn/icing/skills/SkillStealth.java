@@ -12,6 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.util.Vector;
 import org.cyberpwn.icing.abilities.StealthChameleon;
+import org.cyberpwn.icing.abilities.StealthRespiration;
 import org.cyberpwn.icing.abilities.StealthSwiftness;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XP;
@@ -235,6 +236,7 @@ public class SkillStealth extends BasicSkill
 	{
 		register(new StealthSwiftness(this));
 		register(new StealthChameleon(this));
+		register(new StealthRespiration(this));
 	}
 	
 	@Override
