@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.cyberpwn.icing.abilities.ExcavationNuker;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
@@ -91,6 +92,6 @@ public class SkillExcavation extends BasicSkill
 	@Override
 	public void createControllers()
 	{
-		
+		register(new ExcavationNuker(this));
 	}
 }
