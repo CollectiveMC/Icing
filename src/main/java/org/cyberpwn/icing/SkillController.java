@@ -703,6 +703,14 @@ public class SkillController extends ConfigurableController implements CommandLi
 				e.addText(C.WHITE + " ");
 			}
 			
+			if(((Configurable) i).getCodeName().equals("looting"))
+			{
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "Increases the amount of dropped items from ");
+				e.addText(C.WHITE + "mobs you kill. Max level drops up to 3x");
+				e.addText(C.WHITE + " ");
+			}
+			
 			if(((Configurable) i).getCodeName().equals("training strength"))
 			{
 				e.addText(C.WHITE + " ");
