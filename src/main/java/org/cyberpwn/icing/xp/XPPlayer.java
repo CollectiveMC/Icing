@@ -102,7 +102,7 @@ public class XPPlayer extends ConfigurableObject
 	
 	public void discred(double amt)
 	{
-		discredit += (amt * getBoost()) > amt ? (amt * getBoost()) : amt;
+		discredit += amt;
 		
 		if(discredit > 7)
 		{
