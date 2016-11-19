@@ -18,6 +18,8 @@ import org.phantomapi.lang.GMap;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.Priority;
 import org.phantomapi.lang.Title;
+import org.phantomapi.text.RTX;
+import org.phantomapi.text.SYM;
 import org.phantomapi.util.C;
 
 public abstract class BasicSkill extends ConfigurableController implements Skill
@@ -114,6 +116,12 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 			n.setPriority(Priority.LOW);
 			XP.q(p, n);
 			XP.giveXp(p, nextLevel * 30, XPReason.SKILL_PROGRESSION);
+			
+			RTX rtx = new RTX();
+			rtx.addText("" + SYM.SYMBOL_SNOWFLAKE, C.GRAY);
+			rtx.addText(" " + fancyName() + " " + nextLevel, C.GREEN);
+			rtx.addTextFireCommand(" (click)", "/sk show " + getCodeName(), C.GRAY);
+			rtx.tellRawTo(p);
 		}
 	}
 	
