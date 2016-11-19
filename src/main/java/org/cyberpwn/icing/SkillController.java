@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.cyberpwn.icing.ability.Ability;
 import org.cyberpwn.icing.ability.AbilityDataController;
@@ -24,6 +25,7 @@ import org.cyberpwn.icing.skills.SkillEnchanting;
 import org.cyberpwn.icing.skills.SkillExcavation;
 import org.cyberpwn.icing.skills.SkillFarming;
 import org.cyberpwn.icing.skills.SkillFishing;
+import org.cyberpwn.icing.skills.SkillGathering;
 import org.cyberpwn.icing.skills.SkillHeavyArmor;
 import org.cyberpwn.icing.skills.SkillLightArmor;
 import org.cyberpwn.icing.skills.SkillMining;
@@ -63,6 +65,7 @@ import org.phantomapi.nms.NMSX;
 import org.phantomapi.sfx.Audio;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.text.MessageBuilder;
+import org.phantomapi.text.SYM;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.FinalInteger;
@@ -76,6 +79,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 	private GList<Skill> skills;
 	private GMap<Player, Block> lastInteractionBlock;
 	private GMap<Player, Block> lastInteractionEntity;
+	private GMap<Player, Block> lastInteractionPickup;
 	private GMap<Player, GList<Block>> lastInteractionPlace;
 	
 	public SkillController(Controllable parentController)
@@ -103,6 +107,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 		skills.add(new SkillFishing(this));
 		skills.add(new SkillUnarmed(this));
 		skills.add(new SkillStealth(this));
+		skills.add(new SkillGathering(this));
 		
 		register(abilityDataController);
 		register(skillDataController);
@@ -114,6 +119,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 		
 		lastInteractionBlock = new GMap<Player, Block>();
 		lastInteractionEntity = new GMap<Player, Block>();
+		lastInteractionPickup = new GMap<Player, Block>();
 		lastInteractionPlace = new GMap<Player, GList<Block>>();
 	}
 	
@@ -122,6 +128,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 	{
 		lastInteractionBlock.remove(e.getPlayer());
 		lastInteractionPlace.remove(e.getPlayer());
+		lastInteractionPickup.remove(e.getPlayer());
 	}
 	
 	@EventHandler
@@ -157,6 +164,21 @@ public class SkillController extends ConfigurableController implements CommandLi
 		lastInteractionBlock.put(p, b);
 	}
 	
+	public void interactPickup(Player p, Block b)
+	{
+		if(p.getGameMode().equals(GameMode.CREATIVE))
+		{
+			return;
+		}
+		
+		if(lastInteractionPickup.containsKey(p) && lastInteractionPickup.get(p).equals(b))
+		{
+			getXpp(p).discred(0.008);
+		}
+		
+		lastInteractionPickup.put(p, b);
+	}
+	
 	public void interactEntity(Player p, Block b)
 	{
 		if(p.getGameMode().equals(GameMode.CREATIVE))
@@ -166,7 +188,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 		
 		if(lastInteractionEntity.containsKey(p) && lastInteractionEntity.get(p).equals(b))
 		{
-			getXpp(p).discred(0.02);
+			getXpp(p).discred(0.01);
 		}
 		
 		lastInteractionEntity.put(p, b);
@@ -200,6 +222,17 @@ public class SkillController extends ConfigurableController implements CommandLi
 				getXpp(e.getPlayer()).discred(0.03);
 			}
 		}
+	}
+	
+	@EventHandler
+	public void on(PlayerPickupItemEvent e)
+	{
+		if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE))
+		{
+			return;
+		}
+		
+		interactPickup(e.getPlayer(), e.getPlayer().getLocation().getBlock());
 	}
 	
 	@EventHandler
@@ -370,12 +403,12 @@ public class SkillController extends ConfigurableController implements CommandLi
 			
 			if(Phantom.instance().isBungeecord())
 			{
-				NMSX.sendTabTitle(i, C.AQUA + "" + C.BOLD + "Glacial" + C.DARK_AQUA + "" + C.BOLD + "Realms\n" + C.AQUA + C.BOLD + F.f(Phantom.getNetworkCount()) + " Online" + C.DARK_AQUA + C.BOLD + " (" + F.f(Phantom.instance().onlinePlayers().size()) + " on " + Phantom.getBungeeNameName() + ") " + ping(i), C.GREEN + "" + C.UNDERLINE + F.f(XP.getLevelForXp(XP.getXp(i))) + " " + getGraph(20, XP.percentToNextLevel(XP.getXp(i))) + " " + F.f(XP.getLevelForXp(XP.getXp(i)) + 1) + "\n\n" + C.RESET + C.GREEN + C.BOLD + F.f(XP.xpToNextLevel(XP.getXp(i))) + " XP" + C.DARK_GRAY + " to level " + C.GREEN + C.BOLD + F.f(XP.getLevelForXp(XP.getXp(i)) + 1));
+				NMSX.sendTabTitle(i, C.AQUA + "" + C.BOLD + "Glacial" + C.DARK_AQUA + "" + C.BOLD + "Realms\n" + C.AQUA + C.BOLD + F.f(Phantom.getNetworkCount()) + " Online" + C.DARK_AQUA + C.BOLD + " (" + F.f(Phantom.instance().onlinePlayers().size()) + " on " + Phantom.getBungeeNameName() + ") " + ping(i) + "\n", "\n" + C.GREEN + "" + C.UNDERLINE + F.f(XP.getLevelForXp(XP.getXp(i))) + " " + getGraph(32, XP.percentToNextLevel(XP.getXp(i))) + " " + F.f(XP.getLevelForXp(XP.getXp(i)) + 1) + "\n\n" + C.RESET + C.GREEN + C.BOLD + F.f(XP.xpToNextLevel(XP.getXp(i))) + " XP" + C.DARK_GRAY + " to level " + C.GREEN + C.BOLD + F.f(XP.getLevelForXp(XP.getXp(i)) + 1) + "\n" + C.GREEN + SYM.SYMBOL_VOLTAGE + C.GREEN + C.BOLD + " " + F.pc(XP.getBoost(i)) + " " + C.GOLD + SYM.SYMBOL_WARNING + " " + C.GOLD + C.BOLD + F.pc(xpp.getDiscredit()));
 			}
 			
 			else
 			{
-				NMSX.sendTabTitle(i, C.AQUA + "" + C.BOLD + "Glacial" + C.DARK_AQUA + "" + C.BOLD + "Realms\n" + C.AQUA + C.BOLD + F.f(Phantom.instance().onlinePlayers().size()) + " Online " + ping(i), C.GREEN + "" + C.UNDERLINE + F.f(XP.getLevelForXp(XP.getXp(i))) + " " + getGraph(20, XP.percentToNextLevel(XP.getXp(i))) + " " + F.f(XP.getLevelForXp(XP.getXp(i)) + 1) + "\n\n" + C.RESET + C.GREEN + C.BOLD + F.f(XP.xpToNextLevel(XP.getXp(i))) + " XP" + C.DARK_GRAY + " to level " + C.GREEN + C.BOLD + F.f(XP.getLevelForXp(XP.getXp(i)) + 1));
+				NMSX.sendTabTitle(i, C.AQUA + "" + C.BOLD + "Glacial" + C.DARK_AQUA + "" + C.BOLD + "Realms\n" + C.AQUA + C.BOLD + F.f(Phantom.instance().onlinePlayers().size()) + " Online " + ping(i) + "\n", "\n" + C.GREEN + "" + C.UNDERLINE + F.f(XP.getLevelForXp(XP.getXp(i))) + " " + getGraph(32, XP.percentToNextLevel(XP.getXp(i))) + " " + F.f(XP.getLevelForXp(XP.getXp(i)) + 1) + "\n\n" + C.RESET + C.GREEN + C.BOLD + F.f(XP.xpToNextLevel(XP.getXp(i))) + " XP" + C.DARK_GRAY + " to level " + C.GREEN + C.BOLD + F.f(XP.getLevelForXp(XP.getXp(i)) + 1) + "\n" + C.GREEN + SYM.SYMBOL_VOLTAGE + C.GREEN + C.BOLD + " " + F.pc(XP.getBoost(i)) + " " + C.GOLD + SYM.SYMBOL_WARNING + " " + C.GOLD + C.BOLD + F.pc(xpp.getDiscredit()));
 			}
 		}
 	}
@@ -677,6 +710,18 @@ public class SkillController extends ConfigurableController implements CommandLi
 				e.addText(C.WHITE + "train them better. They have more health.");
 				e.addText(C.WHITE + " ");
 				e.addText(C.WHITE + "Pro Tip: Bring some wolves to your next fight.");
+				e.addText(C.WHITE + " ");
+			}
+			
+			if(((Configurable) i).getCodeName().equals("snatching"))
+			{
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "Increases the max range you can pick up");
+				e.addText(C.WHITE + "items from to 3.5 blocks. Where as the");
+				e.addText(C.WHITE + "normal range is 1.5 blocks.");
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "Leveling up this ability increases the range");
+				e.addText(C.WHITE + "of which you can pick up items.");
 				e.addText(C.WHITE + " ");
 			}
 			
