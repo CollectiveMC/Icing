@@ -1,6 +1,7 @@
-package org.cyberpwn.icing.xp;
+package org.cyberpwn.icing.event;
 
 import org.bukkit.entity.Player;
+import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.event.CancellablePhantomEvent;
 
 public class XPEvent extends CancellablePhantomEvent

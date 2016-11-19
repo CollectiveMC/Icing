@@ -5,6 +5,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.cyberpwn.icing.Icing;
+import org.cyberpwn.icing.event.XPEvent;
 import org.phantomapi.Phantom;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GSound;
