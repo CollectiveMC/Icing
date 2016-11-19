@@ -1,7 +1,6 @@
 package org.cyberpwn.icing.abilities;
 
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -11,7 +10,6 @@ import org.cyberpwn.icing.ability.BasicAbility;
 import org.cyberpwn.icing.skill.Skill;
 import org.phantomapi.clust.Comment;
 import org.phantomapi.clust.Keyed;
-import org.phantomapi.lang.GSound;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.world.MaterialBlock;
@@ -59,7 +57,6 @@ public class LightArmorAcrobatics extends BasicAbility
 					double fd = splitDamage * v;
 					
 					e.setDamage(e.getDamage() - (fd * getMitigation((int) getLevel(p))));
-					new GSound(Sound.HORSE_ARMOR, 1f, 0.7f).play(p.getLocation());
 				}
 			}
 			
@@ -84,7 +81,6 @@ public class LightArmorAcrobatics extends BasicAbility
 					double fd = splitDamage * v;
 					
 					e.setDamage(e.getDamage() - (fd * (getMitigation((int) getLevel(p)) / 2)));
-					new GSound(Sound.HORSE_ARMOR, 1f, (float) (0.4 + Math.random() * 0.4)).play(p.getLocation());
 				}
 			}
 		}
