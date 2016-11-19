@@ -711,6 +711,14 @@ public class SkillController extends ConfigurableController implements CommandLi
 				e.addText(C.WHITE + " ");
 			}
 			
+			if(((Configurable) i).getCodeName().equals("scavenger"))
+			{
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "Increases the drop chance of items from");
+				e.addText(C.WHITE + "leaves and tall grass.");
+				e.addText(C.WHITE + " ");
+			}
+			
 			if(((Configurable) i).getCodeName().equals("nuker"))
 			{
 				e.addText(C.WHITE + " ");
