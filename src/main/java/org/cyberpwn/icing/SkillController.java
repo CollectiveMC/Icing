@@ -759,7 +759,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 			{
 				e.addText(C.WHITE + " ");
 				e.addText(C.WHITE + "This ability allows a hoe to till up to 7x7");
-				e.addText(C.WHITE + "b;pcls at a given time.");
+				e.addText(C.WHITE + "blocks at a given time.");
 				e.addText(C.WHITE + " ");
 				e.addText(C.WHITE + "Pro Tip: Right click and drag to literally shred");
 				e.addText(C.WHITE + "the land of grass to soil");
