@@ -38,7 +38,7 @@ public class PlaceholderController extends PlaceholderHook
 		
 		if(q.equalsIgnoreCase("x_boost_time"))
 		{
-			return new GTime(Icing.inst().getSk().getXpp(p).getBoosterTicks() * 50).to();
+			return new GTime(Math.abs(Icing.inst().getSk().getXpp(p).getBoosterTicks() * 50)).to();
 		}
 		
 		if(q.equalsIgnoreCase("x_discred"))

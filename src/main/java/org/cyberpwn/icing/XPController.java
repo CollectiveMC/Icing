@@ -326,7 +326,7 @@ public class XPController extends ConfigurableController implements CommandListe
 	
 	public boolean isBoost(ItemStack is)
 	{
-		if(is.getType().equals(Material.GOLDEN_APPLE))
+		if(is.getType().equals(Material.GOLDEN_APPLE) && is.hasItemMeta())
 		{
 			ItemMeta im = is.getItemMeta();
 			
