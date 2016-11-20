@@ -18,14 +18,14 @@ public class SkillDataController extends DataController<SkilledPlayer, Player>
 	public SkilledPlayer onLoad(Player identifier)
 	{
 		SkilledPlayer sp = new SkilledPlayer(identifier);
-		loadMysql(sp);
+		readRedis(sp);
 		return sp;
 	}
 	
 	@Override
 	public void onSave(Player identifier)
 	{
-		saveMysql(cache.get(identifier));
+		saveRedis(cache.get(identifier));
 	}
 	
 	@Override

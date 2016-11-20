@@ -2,10 +2,10 @@ package org.cyberpwn.icing.skill;
 
 import org.bukkit.entity.Player;
 import org.phantomapi.clust.ConfigurableObject;
-import org.phantomapi.clust.Tabled;
+import org.phantomapi.clust.Redis;
 import org.phantomapi.lang.GList;
 
-@Tabled("ice_skill_player")
+@Redis("i.s")
 public class SkilledPlayer extends ConfigurableObject
 {
 	private Player player;

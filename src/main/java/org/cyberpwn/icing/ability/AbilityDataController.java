@@ -1,6 +1,9 @@
 package org.cyberpwn.icing.ability;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.phantomapi.clust.DataController;
 import org.phantomapi.construct.Controllable;
 
@@ -15,14 +18,14 @@ public class AbilityDataController extends DataController<AblePlayer, Player>
 	public AblePlayer onLoad(Player identifier)
 	{
 		AblePlayer sp = new AblePlayer(identifier);
-		loadMysql(sp);
+		readRedis(sp);
 		return sp;
 	}
 	
 	@Override
 	public void onSave(Player identifier)
 	{
-		saveMysql(cache.get(identifier));
+		saveRedis(cache.get(identifier));
 	}
 	
 	@Override
@@ -40,4 +43,15 @@ public class AbilityDataController extends DataController<AblePlayer, Player>
 		saveAll();
 	}
 	
+	@EventHandler
+	public void on(PlayerQuitEvent e)
+	{
+		save(e.getPlayer());
+	}
+	
+	@EventHandler
+	public void on(PlayerJoinEvent e)
+	{
+		load(e.getPlayer());
+	}
 }

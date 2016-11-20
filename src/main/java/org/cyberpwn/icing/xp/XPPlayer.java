@@ -3,9 +3,9 @@ package org.cyberpwn.icing.xp;
 import org.bukkit.entity.Player;
 import org.phantomapi.clust.ConfigurableObject;
 import org.phantomapi.clust.Keyed;
-import org.phantomapi.clust.Tabled;
+import org.phantomapi.clust.Redis;
 
-@Tabled("ice_xp_player")
+@Redis("i.x")
 public class XPPlayer extends ConfigurableObject
 {
 	private Player player;

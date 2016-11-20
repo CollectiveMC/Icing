@@ -2,10 +2,10 @@ package org.cyberpwn.icing.ability;
 
 import org.bukkit.entity.Player;
 import org.phantomapi.clust.ConfigurableObject;
-import org.phantomapi.clust.Tabled;
+import org.phantomapi.clust.Redis;
 import org.phantomapi.lang.GList;
 
-@Tabled("ice_ability_player")
+@Redis("i.a")
 public class AblePlayer extends ConfigurableObject
 {
 	private Player player;

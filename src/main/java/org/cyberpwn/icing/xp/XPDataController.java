@@ -18,14 +18,14 @@ public class XPDataController extends DataController<XPPlayer, Player>
 	public XPPlayer onLoad(Player identifier)
 	{
 		XPPlayer xpp = new XPPlayer(identifier);
-		loadMysql(xpp);
+		readRedis(xpp);
 		return xpp;
 	}
 	
 	@Override
 	public void onSave(Player identifier)
 	{
-		saveMysql(cache.get(identifier));
+		saveRedis(cache.get(identifier));
 	}
 	
 	@Override
