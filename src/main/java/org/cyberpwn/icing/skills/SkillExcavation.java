@@ -69,6 +69,11 @@ public class SkillExcavation extends BasicSkill
 			return;
 		}
 		
+		if(!XP.isReady(e.getPlayer()))
+		{
+			return;
+		}
+		
 		if(!exc.containsKey(e.getPlayer()))
 		{
 			exc.put(e.getPlayer(), 0);

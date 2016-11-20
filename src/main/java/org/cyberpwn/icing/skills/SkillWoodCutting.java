@@ -56,6 +56,11 @@ public class SkillWoodCutting extends BasicSkill
 			return;
 		}
 		
+		if(!XP.isReady(e.getPlayer()))
+		{
+			return;
+		}
+		
 		if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE))
 		{
 			return;

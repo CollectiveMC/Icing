@@ -11,6 +11,7 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.cyberpwn.icing.ability.BasicAbility;
 import org.cyberpwn.icing.skill.Skill;
+import org.cyberpwn.icing.xp.XP;
 import org.phantomapi.clust.Comment;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.lang.GList;
@@ -51,6 +52,11 @@ public class ArcheryPrecision extends BasicAbility
 	{
 		if(e.getEntity().getShooter() instanceof Player)
 		{
+			if(!XP.isReady((Player) e.getEntity().getShooter()))
+			{
+				return;
+			}
+			
 			viewing.remove((Player) e.getEntity().getShooter());
 		}
 	}
@@ -58,6 +64,11 @@ public class ArcheryPrecision extends BasicAbility
 	@EventHandler
 	public void on(PlayerInteractEvent e)
 	{
+		if(!XP.isReady(e.getPlayer()))
+		{
+			return;
+		}
+		
 		if(e.getAction().equals(Action.RIGHT_CLICK_AIR) && e.getPlayer().getItemInHand() != null && e.getPlayer().getItemInHand().getType().equals(Material.BOW) && isEnabled(e.getPlayer()) && isUnlocked(e.getPlayer()))
 		{
 			if(viewing.contains(e.getPlayer()))

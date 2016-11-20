@@ -54,6 +54,11 @@ public class SkillTaming extends BasicSkill
 		
 		try
 		{
+			if(!XP.isReady((Player) e.getOwner()))
+			{
+				return;
+			}
+			
 			if(((Player) e.getOwner()).getGameMode().equals(GameMode.CREATIVE))
 			{
 				return;

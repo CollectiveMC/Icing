@@ -70,9 +70,19 @@ public class SkillCombat extends BasicSkill
 				Player p = (Player) e.getEntity();
 				Player d = null;
 				
+				if(!XP.isReady(p))
+				{
+					return;
+				}
+				
 				if(e.getDamager() instanceof Player)
 				{
 					d = (Player) e.getDamager();
+					
+					if(!XP.isReady(d))
+					{
+						return;
+					}
 					
 					if(d.getGameMode().equals(GameMode.CREATIVE))
 					{
@@ -83,6 +93,11 @@ public class SkillCombat extends BasicSkill
 				else if(e.getDamager() instanceof Arrow)
 				{
 					d = (Player) ((Arrow) e.getDamager()).getShooter();
+					
+					if(!XP.isReady(d))
+					{
+						return;
+					}
 					
 					if(d.getGameMode().equals(GameMode.CREATIVE))
 					{
@@ -122,6 +137,16 @@ public class SkillCombat extends BasicSkill
 		{
 			Player p = e.getEntity();
 			Player d = e.getEntity().getKiller();
+			
+			if(!XP.isReady(p))
+			{
+				return;
+			}
+			
+			if(!XP.isReady(d))
+			{
+				return;
+			}
 			
 			if(p == d || p == null || d == null)
 			{

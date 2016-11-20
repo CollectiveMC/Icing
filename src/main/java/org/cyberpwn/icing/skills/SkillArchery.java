@@ -71,6 +71,11 @@ public class SkillArchery extends BasicSkill
 			{
 				Player p = (Player) a.getShooter();
 				
+				if(!XP.isReady(p))
+				{
+					return;
+				}
+				
 				if(p.getGameMode().equals(GameMode.CREATIVE))
 				{
 					return;

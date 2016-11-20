@@ -162,6 +162,11 @@ public class XPController extends ConfigurableController implements CommandListe
 		{
 			if(sender.isPlayer())
 			{
+				if(!XP.isReady(sender.getPlayer()))
+				{
+					return true;
+				}
+				
 				XPPlayer xpp = Icing.inst().getXp().getXpDataController().get(sender.getPlayer());
 				sender.sendMessage("XP: " + C.GREEN + F.f(XP.getXp(sender.getPlayer())));
 				sender.sendMessage("Boost: " + C.GREEN + "+ " + F.pc(XP.getBoost(sender.getPlayer())) + " " + C.RED + "(Discred: " + F.pc(xpp.getDiscredit()) + ")");
@@ -511,6 +516,12 @@ public class XPController extends ConfigurableController implements CommandListe
 	{
 		if(e.getItem() != null && isBoost(e.getItem()))
 		{
+			if(!XP.isReady(e.getPlayer()))
+			{
+				e.setCancelled(true);
+				return;
+			}
+			
 			int ticks = getTicks(e.getItem());
 			double boost = getBoost(e.getItem());
 			XPPlayer xpp = Icing.inst().getXp().getXpDataController().get(e.getPlayer());
@@ -545,6 +556,12 @@ public class XPController extends ConfigurableController implements CommandListe
 		
 		if(e.getItem() != null && isSkiller(e.getItem()))
 		{
+			if(!XP.isReady(e.getPlayer()))
+			{
+				e.setCancelled(true);
+				return;
+			}
+			
 			String skill = getSkiller(e.getItem());
 			int level = getLevels(e.getItem());
 			SkilledPlayer sk = Icing.getInst().getSk().getSkillDataController().get(e.getPlayer());

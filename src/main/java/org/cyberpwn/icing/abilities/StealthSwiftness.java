@@ -9,6 +9,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.cyberpwn.icing.ability.BasicAbility;
 import org.cyberpwn.icing.skill.Skill;
+import org.cyberpwn.icing.xp.XP;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.M;
@@ -31,6 +32,11 @@ public class StealthSwiftness extends BasicAbility
 	@EventHandler
 	public void on(PlayerToggleSneakEvent e)
 	{
+		if(!XP.isReady(e.getPlayer()))
+		{
+			return;
+		}
+		
 		if(isUnlocked(e.getPlayer()) && isEnabled(e.getPlayer()) && !e.getPlayer().isFlying() && !e.getPlayer().getGameMode().equals(GameMode.CREATIVE))
 		{
 			if(e.isSneaking())

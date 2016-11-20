@@ -62,6 +62,11 @@ public class SkillEnchanting extends BasicSkill
 			return;
 		}
 		
+		if(!XP.isReady(e.getEnchanter()))
+		{
+			return;
+		}
+		
 		if(e.getEnchanter().getGameMode().equals(GameMode.CREATIVE))
 		{
 			return;

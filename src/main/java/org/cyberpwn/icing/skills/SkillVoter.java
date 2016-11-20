@@ -47,6 +47,12 @@ public class SkillVoter extends BasicSkill
 		if(message.contains("e.player"))
 		{
 			Player p = Players.getPlayer(message.getString("e.player"));
+			
+			if(!XP.isReady(p))
+			{
+				return message;
+			}
+			
 			addReward(p, base);
 			XP.dropRandom(p.getLocation());
 		}

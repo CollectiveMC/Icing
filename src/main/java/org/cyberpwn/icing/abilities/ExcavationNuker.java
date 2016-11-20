@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.cyberpwn.icing.ability.BasicAbility;
 import org.cyberpwn.icing.skill.Skill;
+import org.cyberpwn.icing.xp.XP;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.world.MaterialBlock;
@@ -27,6 +28,11 @@ public class ExcavationNuker extends BasicAbility
 	@EventHandler
 	public void on(PlayerInteractEvent e)
 	{
+		if(!XP.isReady(e.getPlayer()))
+		{
+			return;
+		}
+		
 		if(isUnlocked(e.getPlayer()))
 		{
 			if(isEnabled(e.getPlayer()))

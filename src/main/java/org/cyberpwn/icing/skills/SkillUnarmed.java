@@ -56,6 +56,11 @@ public class SkillUnarmed extends BasicSkill
 		{
 			Player p = (Player) e.getDamager();
 			
+			if(!XP.isReady(p))
+			{
+				return;
+			}
+			
 			if(p.getGameMode().equals(GameMode.CREATIVE))
 			{
 				return;

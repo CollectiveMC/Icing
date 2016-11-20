@@ -168,6 +168,11 @@ public class XP
 		Phantom.queueNotification(p, n);
 	}
 	
+	public static boolean isReady(Player p)
+	{
+		return !Icing.inst().getSk().getLocks().contains(p);
+	}
+	
 	public static void printLeveling(int maxLevel)
 	{
 		long vxp = getXpForLevel(1);

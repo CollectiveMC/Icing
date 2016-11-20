@@ -9,6 +9,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.cyberpwn.icing.ability.BasicAbility;
 import org.cyberpwn.icing.skill.Skill;
+import org.cyberpwn.icing.xp.XP;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
@@ -35,6 +36,11 @@ public class ExcavationScavenger extends BasicAbility
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(BlockBreakEvent e)
 	{
+		if(!XP.isReady(e.getPlayer()))
+		{
+			return;
+		}
+		
 		if(isUnlocked(e.getPlayer()) && isEnabled(e.getPlayer()))
 		{
 			if(e.isCancelled())

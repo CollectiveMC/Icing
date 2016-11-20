@@ -104,6 +104,16 @@ public class SkillStealth extends BasicSkill
 		Player d = e.getDamager();
 		Player v = e.getPlayer();
 		
+		if(!XP.isReady(d))
+		{
+			return;
+		}
+		
+		if(!XP.isReady(v))
+		{
+			return;
+		}
+		
 		Vector a = d.getLocation().getDirection();
 		Vector b = v.getLocation().getDirection();
 		
@@ -123,6 +133,16 @@ public class SkillStealth extends BasicSkill
 	{
 		Player d = e.getDamager();
 		Player v = e.getPlayer();
+		
+		if(!XP.isReady(d))
+		{
+			return;
+		}
+		
+		if(!XP.isReady(v))
+		{
+			return;
+		}
 		
 		Vector a = d.getLocation().getDirection();
 		Vector b = v.getLocation().getDirection();
@@ -153,6 +173,11 @@ public class SkillStealth extends BasicSkill
 			if(a.getShooter() instanceof Player)
 			{
 				Player p = (Player) a.getShooter();
+				
+				if(!XP.isReady(p))
+				{
+					return;
+				}
 				
 				if(p.getGameMode().equals(GameMode.CREATIVE))
 				{
@@ -190,6 +215,11 @@ public class SkillStealth extends BasicSkill
 		}
 		
 		if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE))
+		{
+			return;
+		}
+		
+		if(!XP.isReady(e.getPlayer()))
 		{
 			return;
 		}

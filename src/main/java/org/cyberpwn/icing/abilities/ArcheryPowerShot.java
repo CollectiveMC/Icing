@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.cyberpwn.icing.ability.BasicAbility;
 import org.cyberpwn.icing.skill.Skill;
+import org.cyberpwn.icing.xp.XP;
 import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
@@ -35,6 +36,11 @@ public class ArcheryPowerShot extends BasicAbility
 			if(a.getShooter() instanceof Player)
 			{
 				Player p = (Player) a.getShooter();
+				
+				if(!XP.isReady(p))
+				{
+					return;
+				}
 				
 				if(isUnlocked(p) && a.isCritical() && isEnabled(p))
 				{

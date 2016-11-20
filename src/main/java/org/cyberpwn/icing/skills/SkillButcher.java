@@ -51,6 +51,11 @@ public class SkillButcher extends BasicSkill
 		{
 			Player p = e.getEntity().getKiller();
 			
+			if(!XP.isReady(p))
+			{
+				return;
+			}
+			
 			if(p.getGameMode().equals(GameMode.CREATIVE))
 			{
 				return;

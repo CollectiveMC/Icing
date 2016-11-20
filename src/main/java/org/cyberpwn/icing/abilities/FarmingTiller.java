@@ -11,6 +11,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.cyberpwn.icing.ability.BasicAbility;
 import org.cyberpwn.icing.skill.Skill;
+import org.cyberpwn.icing.xp.XP;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.nms.NMSX;
@@ -37,6 +38,11 @@ public class FarmingTiller extends BasicAbility
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void on(PlayerInteractEvent e)
 	{
+		if(!XP.isReady(e.getPlayer()))
+		{
+			return;
+		}
+		
 		if(e.isCancelled())
 		{
 			return;

@@ -55,6 +55,11 @@ public class SkillAxes extends BasicSkill
 		{
 			Player p = (Player) e.getDamager();
 			
+			if(!XP.isReady(p))
+			{
+				return;
+			}
+			
 			XP.dropRandom(p.getLocation());
 			
 			if(p.getItemInHand() != null && p.getItemInHand().getType().toString().contains("_AXE"))

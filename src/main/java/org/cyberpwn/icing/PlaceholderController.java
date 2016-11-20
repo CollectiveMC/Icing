@@ -13,36 +13,71 @@ public class PlaceholderController extends PlaceholderHook
 	{
 		if(q.equalsIgnoreCase("x_xp"))
 		{
+			if(!XP.isReady(p))
+			{
+				return "???";
+			}
+			
 			return F.f(XP.getXp(p));
 		}
 		
 		if(q.equalsIgnoreCase("x_level"))
 		{
+			if(!XP.isReady(p))
+			{
+				return "???";
+			}
+			
 			return F.f(XP.getLevelForXp(XP.getXp(p)));
 		}
 		
 		if(q.equalsIgnoreCase("x_stealth_multiplier"))
 		{
+			if(!XP.isReady(p))
+			{
+				return "???";
+			}
+			
 			return F.pc(Icing.inst().getSk().getStealthBm(p));
 		}
 		
 		if(q.equalsIgnoreCase("x_boost"))
 		{
+			if(!XP.isReady(p))
+			{
+				return "???";
+			}
+			
 			return F.pc(XP.getBoost(p));
 		}
 		
 		if(q.equalsIgnoreCase("x_boost_amt"))
 		{
+			if(!XP.isReady(p))
+			{
+				return "???";
+			}
+			
 			return F.pc(Icing.inst().getSk().getXpp(p).getBoosterAmount());
 		}
 		
 		if(q.equalsIgnoreCase("x_boost_time"))
 		{
+			if(!XP.isReady(p))
+			{
+				return "???";
+			}
+			
 			return new GTime(Math.abs(Icing.inst().getSk().getXpp(p).getBoosterTicks() * 50)).to();
 		}
 		
 		if(q.equalsIgnoreCase("x_discred"))
 		{
+			if(!XP.isReady(p))
+			{
+				return "???";
+			}
+			
 			return F.pc(Icing.inst().getSk().getXpp(p).getDiscredit());
 		}
 		

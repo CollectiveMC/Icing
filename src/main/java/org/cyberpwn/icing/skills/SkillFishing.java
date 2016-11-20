@@ -53,6 +53,11 @@ public class SkillFishing extends BasicSkill
 		
 		Player p = e.getPlayer();
 		
+		if(!XP.isReady(p))
+		{
+			return;
+		}
+		
 		if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE))
 		{
 			return;

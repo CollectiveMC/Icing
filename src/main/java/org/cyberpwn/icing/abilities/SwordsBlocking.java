@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.cyberpwn.icing.ability.BasicAbility;
 import org.cyberpwn.icing.skill.Skill;
+import org.cyberpwn.icing.xp.XP;
 import org.phantomapi.clust.Comment;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.util.C;
@@ -35,6 +36,11 @@ public class SwordsBlocking extends BasicAbility
 		if(e.getEntity() instanceof Player)
 		{
 			Player p = (Player) e.getEntity();
+			
+			if(!XP.isReady(p))
+			{
+				return;
+			}
 			
 			if(p.isBlocking())
 			{

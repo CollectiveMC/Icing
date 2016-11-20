@@ -80,6 +80,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 	private GMap<Player, Block> lastInteractionEntity;
 	private GMap<Player, Block> lastInteractionPickup;
 	private GMap<Player, GList<Block>> lastInteractionPlace;
+	private GList<Player> locks;
 	
 	public SkillController(Controllable parentController)
 	{
@@ -119,6 +120,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 		lastInteractionEntity = new GMap<Player, Block>();
 		lastInteractionPickup = new GMap<Player, Block>();
 		lastInteractionPlace = new GMap<Player, GList<Block>>();
+		locks = new GList<Player>();
 	}
 	
 	@EventHandler
@@ -132,11 +134,14 @@ public class SkillController extends ConfigurableController implements CommandLi
 	@EventHandler
 	public void on(PlayerJoinEvent e)
 	{
-		new TaskLater(25)
+		locks.add(e.getPlayer());
+		
+		new TaskLater(100)
 		{
 			@Override
 			public void run()
 			{
+				locks.remove(e.getPlayer());
 				Icing.inst().getXp().getXpDataController().get(e.getPlayer()).discred(0.22);
 			}
 		};
@@ -277,6 +282,11 @@ public class SkillController extends ConfigurableController implements CommandLi
 	{
 		for(Player i : onlinePlayers())
 		{
+			if(locks.contains(i))
+			{
+				continue;
+			}
+			
 			XPPlayer xpp = Icing.inst().getXp().getXpDataController().get(i);
 			double b = 0;
 			
@@ -917,6 +927,11 @@ public class SkillController extends ConfigurableController implements CommandLi
 	
 	public void openSkillView(Player p)
 	{
+		if(!XP.isReady(p))
+		{
+			return;
+		}
+		
 		Window w = new PhantomWindow(C.GREEN + "Skills", p)
 		{
 			@Override
@@ -1135,5 +1150,15 @@ public class SkillController extends ConfigurableController implements CommandLi
 		}
 		
 		return 1.0;
+	}
+	
+	public GList<Player> getLocks()
+	{
+		return locks;
+	}
+	
+	public void setLocks(GList<Player> locks)
+	{
+		this.locks = locks;
 	}
 }

@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.cyberpwn.icing.ability.BasicAbility;
 import org.cyberpwn.icing.skill.Skill;
+import org.cyberpwn.icing.xp.XP;
 import org.phantomapi.chromatic.Chromatic;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.event.EquipmentUpdateEvent;
@@ -93,6 +94,11 @@ public class StealthChameleon extends BasicAbility implements Monitorable
 		
 		for(Player i : onlinePlayers())
 		{
+			if(!XP.isReady(i))
+			{
+				continue;
+			}
+			
 			if(isUnlocked(i) && isEnabled(i))
 			{
 				for(ItemStack j : i.getInventory().getArmorContents())
@@ -201,6 +207,11 @@ public class StealthChameleon extends BasicAbility implements Monitorable
 		if(e.getEntity() instanceof Player)
 		{
 			Player p = (Player) e.getEntity();
+			
+			if(!XP.isReady(p))
+			{
+				return;
+			}
 			
 			if(isUnlocked(p) && isEnabled(p))
 			{

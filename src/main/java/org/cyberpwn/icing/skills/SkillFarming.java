@@ -57,6 +57,11 @@ public class SkillFarming extends BasicSkill
 			return;
 		}
 		
+		if(!XP.isReady(e.getPlayer()))
+		{
+			return;
+		}
+		
 		if(e.getItem() != null && e.getItem().getType().equals(Material.INK_SACK) && e.getItem().getData().getData() == 15)
 		{
 			if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
@@ -80,6 +85,11 @@ public class SkillFarming extends BasicSkill
 	public void on(BlockBreakEvent e)
 	{
 		if(e.isCancelled())
+		{
+			return;
+		}
+		
+		if(!XP.isReady(e.getPlayer()))
 		{
 			return;
 		}

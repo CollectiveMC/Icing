@@ -56,6 +56,11 @@ public class SkillLightArmor extends BasicSkill
 		{
 			Player p = (Player) e.getEntity();
 			
+			if(!XP.isReady(p))
+			{
+				return;
+			}
+			
 			int v = 0;
 			
 			for(ItemStack i : p.getInventory().getArmorContents())

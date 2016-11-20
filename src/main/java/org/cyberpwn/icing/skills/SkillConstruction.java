@@ -87,6 +87,11 @@ public class SkillConstruction extends BasicSkill
 			{
 				Player p = (Player) e.getWhoClicked();
 				
+				if(!XP.isReady(p))
+				{
+					return;
+				}
+				
 				if(p.getGameMode().equals(GameMode.CREATIVE))
 				{
 					return;
@@ -113,6 +118,11 @@ public class SkillConstruction extends BasicSkill
 	public void on(BlockPlaceEvent e)
 	{
 		if(e.isCancelled())
+		{
+			return;
+		}
+		
+		if(!XP.isReady(e.getPlayer()))
 		{
 			return;
 		}

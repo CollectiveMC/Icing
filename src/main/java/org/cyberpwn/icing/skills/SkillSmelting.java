@@ -60,6 +60,11 @@ public class SkillSmelting extends BasicSkill
 				int amt = e.getCurrentItem().getAmount();
 				Player p = (Player) e.getWhoClicked();
 				
+				if(!XP.isReady(p))
+				{
+					return;
+				}
+				
 				if(p.getGameMode().equals(GameMode.CREATIVE))
 				{
 					return;

@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.cyberpwn.icing.ability.BasicAbility;
 import org.cyberpwn.icing.skill.Skill;
+import org.cyberpwn.icing.xp.XP;
 import org.phantomapi.event.PlayerMoveBlockEvent;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
@@ -26,6 +27,11 @@ public class StealthRespiration extends BasicAbility
 	@EventHandler
 	public void on(PlayerMoveBlockEvent e)
 	{
+		if(!XP.isReady(e.getPlayer()))
+		{
+			return;
+		}
+		
 		if(isUnlocked(e.getPlayer()))
 		{
 			if(isEnabled(e.getPlayer()))

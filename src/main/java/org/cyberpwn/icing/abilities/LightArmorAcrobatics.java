@@ -8,6 +8,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.cyberpwn.icing.ability.BasicAbility;
 import org.cyberpwn.icing.skill.Skill;
+import org.cyberpwn.icing.xp.XP;
 import org.phantomapi.clust.Comment;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.util.C;
@@ -39,6 +40,11 @@ public class LightArmorAcrobatics extends BasicAbility
 			if(e.getCause().equals(DamageCause.FALL))
 			{
 				Player p = (Player) e.getEntity();
+				
+				if(!XP.isReady(p))
+				{
+					return;
+				}
 				
 				if(isUnlocked(p) && isEnabled(p))
 				{

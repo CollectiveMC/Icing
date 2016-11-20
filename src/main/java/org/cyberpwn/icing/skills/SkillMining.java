@@ -63,6 +63,11 @@ public class SkillMining extends BasicSkill
 			return;
 		}
 		
+		if(!XP.isReady(e.getPlayer()))
+		{
+			return;
+		}
+		
 		if(e.isCancelled())
 		{
 			return;

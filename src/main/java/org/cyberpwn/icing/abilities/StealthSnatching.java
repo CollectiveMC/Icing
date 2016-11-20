@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.cyberpwn.icing.ability.BasicAbility;
 import org.cyberpwn.icing.skill.Skill;
+import org.cyberpwn.icing.xp.XP;
 import org.phantomapi.construct.Ticked;
 import org.phantomapi.lang.GList;
 import org.phantomapi.lang.GSound;
@@ -42,6 +43,11 @@ public class StealthSnatching extends BasicAbility
 	{
 		for(Player i : new GList<Player>(onlinePlayers()).shuffleCopy())
 		{
+			if(!XP.isReady(i))
+			{
+				continue;
+			}
+			
 			if(isEnabled(i) && isUnlocked(i) && i.isSneaking())
 			{
 				double range = getRange((int) getLevel(i));

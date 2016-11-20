@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.cyberpwn.icing.ability.BasicAbility;
 import org.cyberpwn.icing.skill.Skill;
+import org.cyberpwn.icing.xp.XP;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.lang.GList;
 import org.phantomapi.util.C;
@@ -40,6 +41,11 @@ public class ButcherLooting extends BasicAbility
 		if(e.getEntity().getKiller() != null)
 		{
 			Player p = e.getEntity().getKiller();
+			
+			if(!XP.isReady(p))
+			{
+				return;
+			}
 			
 			if(isUnlocked(p) && isEnabled(p) && !p.getGameMode().equals(GameMode.CREATIVE))
 			{
