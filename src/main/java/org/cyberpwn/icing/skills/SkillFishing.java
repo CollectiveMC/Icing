@@ -73,7 +73,7 @@ public class SkillFishing extends BasicSkill
 	@Override
 	public MaterialBlock getSkillMaterial()
 	{
-		return new MaterialBlock(Material.DIAMOND_AXE);
+		return new MaterialBlock(Material.FISHING_ROD);
 	}
 	
 	@Override

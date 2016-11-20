@@ -25,7 +25,6 @@ import org.cyberpwn.icing.skills.SkillEnchanting;
 import org.cyberpwn.icing.skills.SkillExcavation;
 import org.cyberpwn.icing.skills.SkillFarming;
 import org.cyberpwn.icing.skills.SkillFishing;
-import org.cyberpwn.icing.skills.SkillGathering;
 import org.cyberpwn.icing.skills.SkillHeavyArmor;
 import org.cyberpwn.icing.skills.SkillLightArmor;
 import org.cyberpwn.icing.skills.SkillMining;
@@ -107,7 +106,6 @@ public class SkillController extends ConfigurableController implements CommandLi
 		skills.add(new SkillFishing(this));
 		skills.add(new SkillUnarmed(this));
 		skills.add(new SkillStealth(this));
-		skills.add(new SkillGathering(this));
 		
 		register(abilityDataController);
 		register(skillDataController);
@@ -751,12 +749,12 @@ public class SkillController extends ConfigurableController implements CommandLi
 			if(((Configurable) i).getCodeName().equals("snatching"))
 			{
 				e.addText(C.WHITE + " ");
-				e.addText(C.WHITE + "Increases the max range you can pick up");
-				e.addText(C.WHITE + "items to 3.5 blocks. Where as the");
-				e.addText(C.WHITE + "normal range is 1.5 blocks.");
+				e.addText(C.WHITE + "Snatches items nearby instantly while");
+				e.addText(C.WHITE + "you are sneaking. The max range");
+				e.addText(C.WHITE + "is about 3.5 blocks.");
 				e.addText(C.WHITE + " ");
 				e.addText(C.WHITE + "Leveling up this ability increases the range");
-				e.addText(C.WHITE + "of which you can pick up items.");
+				e.addText(C.WHITE + "of which you can snatch items.");
 				e.addText(C.WHITE + " ");
 			}
 			
@@ -1111,6 +1109,19 @@ public class SkillController extends ConfigurableController implements CommandLi
 	public GList<Skill> getSkills()
 	{
 		return skills;
+	}
+	
+	public Skill getSkill(String skill)
+	{
+		for(Skill i : skills)
+		{
+			if(((Configurable) i).getCodeName().equalsIgnoreCase(skill))
+			{
+				return i;
+			}
+		}
+		
+		return null;
 	}
 	
 	public double getStealthBm(Player p)

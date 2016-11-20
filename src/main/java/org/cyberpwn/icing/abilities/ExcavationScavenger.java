@@ -16,12 +16,12 @@ import org.phantomapi.util.F;
 import org.phantomapi.util.M;
 import org.phantomapi.world.MaterialBlock;
 
-public class GatheringScavenger extends BasicAbility
+public class ExcavationScavenger extends BasicAbility
 {
 	@Keyed("max-chance")
 	public double maxPercent = 0.48;
 	
-	public GatheringScavenger(Skill parent)
+	public ExcavationScavenger(Skill parent)
 	{
 		super(parent, "scavenger");
 		

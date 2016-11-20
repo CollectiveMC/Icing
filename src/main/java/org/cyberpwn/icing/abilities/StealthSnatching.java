@@ -1,6 +1,7 @@
 package org.cyberpwn.icing.abilities;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -8,19 +9,23 @@ import org.bukkit.inventory.ItemStack;
 import org.cyberpwn.icing.ability.BasicAbility;
 import org.cyberpwn.icing.skill.Skill;
 import org.phantomapi.construct.Ticked;
+import org.phantomapi.lang.GList;
+import org.phantomapi.lang.GSound;
 import org.phantomapi.nms.NMSX;
+import org.phantomapi.sync.TaskLater;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.Inventories;
 import org.phantomapi.world.Area;
 import org.phantomapi.world.MaterialBlock;
 
-@Ticked(5)
-public class GatheringSnatching extends BasicAbility
+@Ticked(0)
+public class StealthSnatching extends BasicAbility
 {
 	public double maxRange = 2.0;
+	private GList<Integer> holds;
 	
-	public GatheringSnatching(Skill parent)
+	public StealthSnatching(Skill parent)
 	{
 		super(parent, "snatching");
 		
@@ -29,14 +34,15 @@ public class GatheringSnatching extends BasicAbility
 		levelStep = 4;
 		upgradeCost = 3;
 		unlockCost = 1;
+		holds = new GList<Integer>();
 	}
 	
 	@Override
 	public void onTick()
 	{
-		for(Player i : onlinePlayers())
+		for(Player i : new GList<Player>(onlinePlayers()).shuffleCopy())
 		{
-			if(isEnabled(i) && isUnlocked(i))
+			if(isEnabled(i) && isUnlocked(i) && i.isSneaking())
 			{
 				double range = getRange((int) getLevel(i));
 				Area a = new Area(i.getLocation(), range);
@@ -44,16 +50,23 @@ public class GatheringSnatching extends BasicAbility
 				
 				for(Entity j : a.getNearbyEntities())
 				{
-					if(j instanceof Item)
+					if(j instanceof Item && !holds.contains(j.getEntityId()))
 					{
 						double dist = j.getLocation().distanceSquared(i.getLocation());
 						
-						if(dist > 1.5 * 1.5 && dist < range * range && j.getTicksLived() > 30)
+						if(dist < range * range && i.isSneaking())
 						{
 							ItemStack is = ((Item) j).getItemStack().clone();
 							
 							if(Inventories.hasSpace(i.getInventory(), is))
 							{
+								holds.add(j.getEntityId());
+								
+								if(i.isSneaking())
+								{
+									new GSound(Sound.HORSE_ARMOR, 1f, (float) (1.0 + (Math.random() / 3))).play(i.getLocation());
+								}
+								
 								i.getInventory().addItem(is);
 								
 								for(Player k : ap.getNearbyPlayers())
@@ -62,6 +75,17 @@ public class GatheringSnatching extends BasicAbility
 								}
 								
 								j.remove();
+								
+								int id = j.getEntityId();
+								
+								new TaskLater()
+								{
+									@Override
+									public void run()
+									{
+										holds.remove(new Integer(id));
+									}
+								};
 							}
 						}
 					}
