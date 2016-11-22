@@ -14,6 +14,7 @@ import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Keyed;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.construct.Ticked;
+import org.phantomapi.util.Inventories;
 import org.phantomapi.world.MaterialBlock;
 
 @Ticked(20)
@@ -70,8 +71,11 @@ public class SkillSmelting extends BasicSkill
 					return;
 				}
 				
-				addReward(p, base * amt);
-				XP.dropRandom(p.getLocation());
+				if(Inventories.hasSpace(p.getInventory()))
+				{
+					addReward(p, base * amt);
+					XP.dropRandom(p.getLocation());
+				}
 			}
 		}
 	}
