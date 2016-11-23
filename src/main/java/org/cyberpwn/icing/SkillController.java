@@ -585,6 +585,15 @@ public class SkillController extends ConfigurableController implements CommandLi
 			public void onClose(Window w, Player p)
 			{
 				new GSound(Sound.FIREWORK_LARGE_BLAST2, 1f, 0.1f).play(p);
+				
+				new TaskLater(1)
+				{
+					@Override
+					public void run()
+					{
+						openSkillView(p);
+					}
+				};
 			}
 		};
 		
