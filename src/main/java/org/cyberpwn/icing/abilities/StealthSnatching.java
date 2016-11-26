@@ -48,7 +48,7 @@ public class StealthSnatching extends BasicAbility
 				continue;
 			}
 			
-			if(isEnabled(i) && isUnlocked(i) && i.isSneaking())
+			if(isEnabled(i) && isUnlocked(i) && i.isSneaking() && !i.isDead())
 			{
 				double range = getRange((int) getLevel(i));
 				Area a = new Area(i.getLocation(), range);
