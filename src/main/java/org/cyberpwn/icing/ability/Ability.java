@@ -49,4 +49,6 @@ public interface Ability
 	public String getGraphMax();
 	
 	public String getGraphCurrent(int level);
+	
+	public boolean isAllowed();
 }

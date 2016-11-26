@@ -17,6 +17,10 @@ public abstract class BasicAbility extends ConfigurableController implements Abi
 	@Keyed("ability.level")
 	public int level = 1;
 	
+	@Comment("If you ever want to disable fun")
+	@Keyed("ability.allow")
+	public boolean allowed = true;
+	
 	@Comment("The max level this ability can have (absolute max is 64)")
 	@Keyed("ability.max")
 	public int maxLevel = 64;
@@ -41,6 +45,11 @@ public abstract class BasicAbility extends ConfigurableController implements Abi
 	@Override
 	public boolean isUnlocked(Player p)
 	{
+		if(!allowed)
+		{
+			return false;
+		}
+		
 		return Icing.getInst().getSk().getAbilityDataController().get(p).getUnlockedAbilities().contains(getCodeName());
 	}
 	
@@ -166,5 +175,11 @@ public abstract class BasicAbility extends ConfigurableController implements Abi
 	public void setEnabled(Player p, boolean e)
 	{
 		Icing.inst().getSk().getAbilityDataController().get(p).setEnabled(getCodeName(), e);
+	}
+	
+	@Override
+	public boolean isAllowed()
+	{
+		return allowed;
 	}
 }
