@@ -6,6 +6,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.cyberpwn.icing.abilities.MiningShredding;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
@@ -129,6 +130,6 @@ public class SkillMining extends BasicSkill
 	@Override
 	public void createControllers()
 	{
-		
+		register(new MiningShredding(this));
 	}
 }

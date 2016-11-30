@@ -820,6 +820,26 @@ public class SkillController extends ConfigurableController implements CommandLi
 				e.addText(C.WHITE + " ");
 			}
 			
+			if(((Configurable) i).getCodeName().equals("shredding"))
+			{
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "This ability shreds ore veins when mining");
+				e.addText(C.WHITE + "clusters of ores.");
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "Try using the stealth ability snatching with this.");
+				e.addText(C.WHITE + " ");
+			}
+			
+			if(((Configurable) i).getCodeName().equals("shatter"))
+			{
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "This ability damages the enemy armor quicker");
+				e.addText(C.WHITE + "as you gain strength with your axe skill.");
+				e.addText(C.WHITE + " ");
+				e.addText(C.WHITE + "This ability is destructive to enemy armor.");
+				e.addText(C.WHITE + " ");
+			}
+			
 			if(((Configurable) i).getCodeName().equals("power shot"))
 			{
 				e.addText(C.WHITE + " ");
