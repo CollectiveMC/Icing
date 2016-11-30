@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.cyberpwn.icing.abilities.AxesShatter;
 import org.cyberpwn.icing.skill.BasicSkill;
 import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
@@ -83,6 +84,6 @@ public class SkillAxes extends BasicSkill
 	@Override
 	public void createControllers()
 	{
-		
+		register(new AxesShatter(this));
 	}
 }
