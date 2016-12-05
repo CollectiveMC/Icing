@@ -25,6 +25,11 @@ public class XP
 {
 	public static void giveXp(Player player, long xp, XPReason reason)
 	{
+		if(getBoost(player) < -1)
+		{
+			return;
+		}
+		
 		XPEvent e = new XPEvent(player, xp, reason);
 		Icing.inst().callEvent(e);
 		
