@@ -60,7 +60,7 @@ public class StealthSnatching extends BasicAbility
 					{
 						double dist = j.getLocation().distanceSquared(i.getLocation());
 						
-						if(dist < range * range && i.isSneaking())
+						if(dist > 2.0 && dist < range * range && i.isSneaking() && j.getTicksLived() > 5)
 						{
 							ItemStack is = ((Item) j).getItemStack().clone();
 							
