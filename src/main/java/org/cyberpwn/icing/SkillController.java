@@ -35,10 +35,10 @@ import org.cyberpwn.icing.skills.SkillTaming;
 import org.cyberpwn.icing.skills.SkillUnarmed;
 import org.cyberpwn.icing.skills.SkillWoodCutting;
 import org.cyberpwn.icing.xp.XP;
-import org.cyberpwn.icing.xp.XPPlayer;
 import org.phantomapi.Phantom;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurableController;
+import org.phantomapi.clust.PD;
 import org.phantomapi.command.CommandListener;
 import org.phantomapi.command.PhantomCommand;
 import org.phantomapi.command.PhantomCommandSender;
@@ -70,7 +70,7 @@ import org.phantomapi.util.F;
 import org.phantomapi.util.FinalInteger;
 import org.phantomapi.util.Players;
 
-@Ticked(20)
+@Ticked(200)
 public class SkillController extends ConfigurableController implements CommandListener
 {
 	private SkillDataController skillDataController;
@@ -142,14 +142,9 @@ public class SkillController extends ConfigurableController implements CommandLi
 			public void run()
 			{
 				locks.remove(e.getPlayer());
-				Icing.inst().getXp().getXpDataController().get(e.getPlayer()).discred(0.22);
+				XP.discred(e.getPlayer(), 0.10);
 			}
 		};
-	}
-	
-	public XPPlayer getXpp(Player p)
-	{
-		return Icing.inst().getXp().getXpDataController().get(p);
 	}
 	
 	public void interactBlock(Player p, Block b)
@@ -161,7 +156,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 		
 		if(lastInteractionBlock.containsKey(p) && lastInteractionBlock.get(p).equals(b))
 		{
-			getXpp(p).discred(0.03);
+			XP.discred(p, 0.03);
 		}
 		
 		lastInteractionBlock.put(p, b);
@@ -176,7 +171,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 		
 		if(lastInteractionPickup.containsKey(p) && lastInteractionPickup.get(p).equals(b))
 		{
-			getXpp(p).discred(0.018);
+			XP.discred(p, 0.018);
 		}
 		
 		lastInteractionPickup.put(p, b);
@@ -191,7 +186,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 		
 		if(lastInteractionEntity.containsKey(p) && lastInteractionEntity.get(p).equals(b))
 		{
-			getXpp(p).discred(0.01);
+			XP.discred(p, 0.01);
 		}
 		
 		lastInteractionEntity.put(p, b);
@@ -222,7 +217,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 		{
 			if(lastInteractionPlace.get(e.getPlayer()).contains(e.getBlock()))
 			{
-				getXpp(e.getPlayer()).discred(0.03);
+				XP.discred(e.getPlayer(), 0.03);
 			}
 		}
 	}
@@ -287,7 +282,6 @@ public class SkillController extends ConfigurableController implements CommandLi
 				continue;
 			}
 			
-			XPPlayer xpp = Icing.inst().getXp().getXpDataController().get(i);
 			double b = 0;
 			
 			if(i.getTicksLived() / 20 > 120)
@@ -343,33 +337,35 @@ public class SkillController extends ConfigurableController implements CommandLi
 			if(i.hasPermission("boost.a"))
 			{
 				b += 0.05;
-				b += (Math.random() * 0.05);
 			}
 			
 			if(i.hasPermission("boost.b"))
 			{
 				b += 0.1;
-				b += (Math.random() * 0.1);
 			}
 			
 			if(i.hasPermission("boost.c"))
 			{
 				b += 0.15;
-				b += (Math.random() * 0.15);
 			}
 			
 			if(i.hasPermission("boost.d"))
 			{
 				b += 0.2;
-				b += (Math.random() * 0.2);
 			}
 			
-			if(xpp.getBoosterTicks() > 0)
+			if(PD.get(i).getConfiguration().getInt("i.x.bt") > 0)
 			{
-				xpp.setBoosterTicks(xpp.getBoosterTicks() - 20);
-				b += xpp.getBoosterAmount();
+				PD.get(i).getConfiguration().set("i.x.bt", PD.get(i).getConfiguration().getInt("i.x.bt") - 200);
 				
-				if(xpp.getBoosterTicks() <= 0)
+				if(PD.get(i).getConfiguration().getDouble("i.x.ba") == null)
+				{
+					PD.get(i).getConfiguration().set("i.x.ba", 0.0);
+				}
+				
+				b += PD.get(i).getConfiguration().getDouble("i.x.ba");
+				
+				if(PD.get(i).getConfiguration().getInt("i.x.bt") <= 0)
 				{
 					Notification n = new Notification();
 					Title t = new Title();
@@ -390,33 +386,37 @@ public class SkillController extends ConfigurableController implements CommandLi
 			
 			else
 			{
-				xpp.setBoosterTicks(0);
-				xpp.setBoosterAmount(0);
+				PD.get(i).getConfiguration().set("i.x.bt", 0);
+				PD.get(i).getConfiguration().set("i.x.ba", 0);
 			}
 			
-			b += (Math.random() * 0.1);
-			b -= xpp.getDiscredit();
-			
-			if(xpp.getDiscredit() > 0)
+			if(PD.get(i).getConfiguration().getDouble("i.x.d") == null)
 			{
-				xpp.setDiscredit(xpp.getDiscredit() - (Math.random() * 0.012));
+				PD.get(i).getConfiguration().set("i.x.d", 0.0);
 			}
 			
-			if(xpp.getDiscredit() < 0)
+			b -= PD.get(i).getConfiguration().getDouble("i.x.d");
+			
+			if(PD.get(i).getConfiguration().getDouble("i.x.d") > 0)
 			{
-				xpp.setDiscredit(0);
+				PD.get(i).getConfiguration().set("i.x.d", PD.get(i).getConfiguration().getDouble("i.x.d") - ((Math.random() * 0.012)) * 10);
+			}
+			
+			if(PD.get(i).getConfiguration().getDouble("i.x.d") < 0)
+			{
+				PD.get(i).getConfiguration().set("i.x.d", 0);
 			}
 			
 			XP.setBoost(i, b);
 			
 			if(Phantom.instance().isBungeecord())
 			{
-				NMSX.sendTabTitle(i, C.AQUA + "" + C.BOLD + "Glacial" + C.DARK_AQUA + "" + C.BOLD + "Realms\n" + C.AQUA + C.BOLD + F.f(Phantom.getNetworkCount()) + " Online" + C.DARK_AQUA + C.BOLD + " (" + F.f(Phantom.instance().onlinePlayers().size()) + " on " + Phantom.getBungeeNameName() + ") " + ping(i) + "\n", "\n" + C.GREEN + "" + C.UNDERLINE + F.f(XP.getLevelForXp(XP.getXp(i))) + " " + getGraph(32, XP.percentToNextLevel(XP.getXp(i))) + " " + F.f(XP.getLevelForXp(XP.getXp(i)) + 1) + "\n\n" + C.RESET + C.GREEN + C.BOLD + F.f(XP.xpToNextLevel(XP.getXp(i))) + " XP" + C.DARK_GRAY + " to level " + C.GREEN + C.BOLD + F.f(XP.getLevelForXp(XP.getXp(i)) + 1) + "\n" + C.GREEN + SYM.SYMBOL_VOLTAGE + C.GREEN + C.BOLD + " " + F.pc(XP.getBoost(i)) + " " + C.GOLD + SYM.SYMBOL_WARNING + " " + C.GOLD + C.BOLD + F.pc(xpp.getDiscredit()));
+				NMSX.sendTabTitle(i, C.AQUA + "" + C.BOLD + "Glacial" + C.DARK_AQUA + "" + C.BOLD + "Realms\n" + C.AQUA + C.BOLD + F.f(Phantom.getNetworkCount()) + " Online" + C.DARK_AQUA + C.BOLD + " (" + F.f(Phantom.instance().onlinePlayers().size()) + " on " + Phantom.getBungeeNameName() + ") " + ping(i) + "\n", "\n" + C.GREEN + "" + C.UNDERLINE + F.f(XP.getLevelForXp(XP.getXp(i))) + " " + getGraph(32, XP.percentToNextLevel(XP.getXp(i))) + " " + F.f(XP.getLevelForXp(XP.getXp(i)) + 1) + "\n\n" + C.RESET + C.GREEN + C.BOLD + F.f(XP.xpToNextLevel(XP.getXp(i))) + " XP" + C.DARK_GRAY + " to level " + C.GREEN + C.BOLD + F.f(XP.getLevelForXp(XP.getXp(i)) + 1) + "\n" + C.GREEN + SYM.SYMBOL_VOLTAGE + C.GREEN + C.BOLD + " " + F.pc(XP.getBoost(i)) + " " + C.GOLD + SYM.SYMBOL_WARNING + " " + C.GOLD + C.BOLD + F.pc(PD.get(i).getConfiguration().getDouble("i.x.d")));
 			}
 			
 			else
 			{
-				NMSX.sendTabTitle(i, C.AQUA + "" + C.BOLD + "Glacial" + C.DARK_AQUA + "" + C.BOLD + "Realms\n" + C.AQUA + C.BOLD + F.f(Phantom.instance().onlinePlayers().size()) + " Online " + ping(i) + "\n", "\n" + C.GREEN + "" + C.UNDERLINE + F.f(XP.getLevelForXp(XP.getXp(i))) + " " + getGraph(32, XP.percentToNextLevel(XP.getXp(i))) + " " + F.f(XP.getLevelForXp(XP.getXp(i)) + 1) + "\n\n" + C.RESET + C.GREEN + C.BOLD + F.f(XP.xpToNextLevel(XP.getXp(i))) + " XP" + C.DARK_GRAY + " to level " + C.GREEN + C.BOLD + F.f(XP.getLevelForXp(XP.getXp(i)) + 1) + "\n" + C.GREEN + SYM.SYMBOL_VOLTAGE + C.GREEN + C.BOLD + " " + F.pc(XP.getBoost(i)) + " " + C.GOLD + SYM.SYMBOL_WARNING + " " + C.GOLD + C.BOLD + F.pc(xpp.getDiscredit()));
+				NMSX.sendTabTitle(i, C.AQUA + "" + C.BOLD + "Glacial" + C.DARK_AQUA + "" + C.BOLD + "Realms\n" + C.AQUA + C.BOLD + F.f(Phantom.instance().onlinePlayers().size()) + " Online " + ping(i) + "\n", "\n" + C.GREEN + "" + C.UNDERLINE + F.f(XP.getLevelForXp(XP.getXp(i))) + " " + getGraph(32, XP.percentToNextLevel(XP.getXp(i))) + " " + F.f(XP.getLevelForXp(XP.getXp(i)) + 1) + "\n\n" + C.RESET + C.GREEN + C.BOLD + F.f(XP.xpToNextLevel(XP.getXp(i))) + " XP" + C.DARK_GRAY + " to level " + C.GREEN + C.BOLD + F.f(XP.getLevelForXp(XP.getXp(i)) + 1) + "\n" + C.GREEN + SYM.SYMBOL_VOLTAGE + C.GREEN + C.BOLD + " " + F.pc(XP.getBoost(i)) + " " + C.GOLD + SYM.SYMBOL_WARNING + " " + C.GOLD + C.BOLD + F.pc(PD.get(i).getConfiguration().getDouble("i.x.d")));
 			}
 		}
 	}

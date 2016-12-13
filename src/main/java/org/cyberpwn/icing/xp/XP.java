@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.cyberpwn.icing.Icing;
 import org.cyberpwn.icing.event.XPEvent;
 import org.phantomapi.Phantom;
+import org.phantomapi.clust.PD;
 import org.phantomapi.gui.Notification;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.lang.Priority;
@@ -41,7 +42,7 @@ public class XP
 			}
 			
 			long level = getLevelForXp(getXp(player));
-			Icing.inst().getXp().getXpDataController().get(player).setXp(e.getXp() + getXp(player));
+			PD.get(player).getConfiguration().set("i.x.x", e.getXp() + getXp(player));
 			long levelNext = getLevelForXp(getXp(player));
 			
 			if(levelNext > level)
@@ -102,6 +103,18 @@ public class XP
 		};
 	}
 	
+	public static void discred(Player p, double amt)
+	{
+		double discredit = PD.get(p).getConfiguration().getDouble("i.x.d") + amt;
+		
+		if(discredit > 7)
+		{
+			discredit = 7;
+		}
+		
+		PD.get(p).getConfiguration().set("i.x.d", discredit);
+	}
+	
 	public static void dropRandom(Location l)
 	{
 		if(M.r(0.0001))
@@ -114,22 +127,22 @@ public class XP
 	
 	public static long getXp(Player player)
 	{
-		return Icing.inst().getXp().getXpDataController().get(player).getXp();
+		return PD.get(player).getConfiguration().getLong("i.x.x");
 	}
 	
 	public static void setXp(Player player, long xp)
 	{
-		Icing.inst().getXp().getXpDataController().get(player).setXp(xp);
+		PD.get(player).getConfiguration().set("i.x.x", xp);
 	}
 	
 	public static double getBoost(Player player)
 	{
-		return Icing.inst().getXp().getXpDataController().get(player).getBoost();
+		return PD.get(player).getConfiguration().getDouble("i.x.b");
 	}
 	
 	public static void setBoost(Player player, double boost)
 	{
-		Icing.inst().getXp().getXpDataController().get(player).setBoost(boost);
+		PD.get(player).getConfiguration().set("i.x.b", boost);
 	}
 	
 	public static double percentToNextLevel(long xp)
@@ -165,7 +178,7 @@ public class XP
 	
 	public static void q(Player p, Notification n)
 	{
-		if(Icing.getInst().getSk().getXpp(p).isStfu())
+		if(PD.get(p).getConfiguration().getBoolean("i.x.s"))
 		{
 			return;
 		}

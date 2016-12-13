@@ -2,6 +2,7 @@ package org.cyberpwn.icing;
 
 import org.bukkit.entity.Player;
 import org.cyberpwn.icing.xp.XP;
+import org.phantomapi.clust.PD;
 import org.phantomapi.lang.GTime;
 import org.phantomapi.placeholder.PlaceholderHook;
 import org.phantomapi.util.F;
@@ -58,7 +59,7 @@ public class PlaceholderController extends PlaceholderHook
 				return "???";
 			}
 			
-			return F.pc(Icing.inst().getSk().getXpp(p).getBoosterAmount());
+			return F.pc(PD.get(p).getConfiguration().getDouble("i.x.ba"));
 		}
 		
 		if(q.equalsIgnoreCase("x_boost_time"))
@@ -68,7 +69,7 @@ public class PlaceholderController extends PlaceholderHook
 				return "???";
 			}
 			
-			return new GTime(Math.abs(Icing.inst().getSk().getXpp(p).getBoosterTicks() * 50)).to();
+			return new GTime(Math.abs(PD.get(p).getConfiguration().getInt("i.x.bt") * 50)).to();
 		}
 		
 		if(q.equalsIgnoreCase("x_discred"))
@@ -78,7 +79,7 @@ public class PlaceholderController extends PlaceholderHook
 				return "???";
 			}
 			
-			return F.pc(Icing.inst().getSk().getXpp(p).getDiscredit());
+			return F.pc(PD.get(p).getConfiguration().getDouble("i.x.d"));
 		}
 		
 		return null;

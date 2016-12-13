@@ -10,6 +10,7 @@ import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.Configurable;
 import org.phantomapi.clust.ConfigurableController;
+import org.phantomapi.clust.PD;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.currency.Transaction;
 import org.phantomapi.gui.Notification;
@@ -67,7 +68,7 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 			return;
 		}
 		
-		aam = (long) (aam - (aam * Icing.getInst().getXp().getXpDataController().get(p).getDiscredit()));
+		aam = (long) (aam - (aam * PD.get(p).getConfiguration().getDouble("i.x.d")));
 		long amt = (long) (aam + (aam * XP.getBoost(p)));
 		
 		if(amt <= 0)
