@@ -14,9 +14,9 @@ import org.cyberpwn.icing.skill.Skill;
 import org.cyberpwn.icing.skill.SkilledPlayer;
 import org.cyberpwn.icing.xp.XP;
 import org.cyberpwn.icing.xp.XPDataController;
-import org.cyberpwn.icing.xp.XPPlayer;
 import org.cyberpwn.icing.xp.XPReason;
 import org.phantomapi.clust.ConfigurableController;
+import org.phantomapi.clust.PD;
 import org.phantomapi.command.CommandListener;
 import org.phantomapi.command.PhantomCommand;
 import org.phantomapi.command.PhantomCommandSender;
@@ -154,8 +154,8 @@ public class XPController extends ConfigurableController implements CommandListe
 		
 		if(cmd.getArgs().length == 1 && cmd.getArgs()[0].equalsIgnoreCase("stfu"))
 		{
-			Icing.getInst().getSk().getXpp(sender.getPlayer()).setStfu(!Icing.getInst().getSk().getXpp(sender.getPlayer()).isStfu());
-			sender.sendMessage("Silent: " + Icing.getInst().getSk().getXpp(sender.getPlayer()).isStfu());
+			PD.get(sender.getPlayer()).getConfiguration().set("i.x.s", !PD.get(sender.getPlayer()).getConfiguration().getBoolean("i.x.s"));
+			sender.sendMessage("Silent: " + PD.get(sender.getPlayer()).getConfiguration().getBoolean("i.x.s"));
 		}
 		
 		if(cmd.getArgs().length == 0)
@@ -167,10 +167,9 @@ public class XPController extends ConfigurableController implements CommandListe
 					return true;
 				}
 				
-				XPPlayer xpp = Icing.inst().getXp().getXpDataController().get(sender.getPlayer());
 				sender.sendMessage("XP: " + C.GREEN + F.f(XP.getXp(sender.getPlayer())));
-				sender.sendMessage("Boost: " + C.GREEN + "+ " + F.pc(XP.getBoost(sender.getPlayer())) + " " + C.RED + "(Discred: " + F.pc(xpp.getDiscredit()) + ")");
-				sender.sendMessage("Booster Time Left: " + C.GREEN + new GTime(50 * xpp.getBoosterTicks()).to("left"));
+				sender.sendMessage("Boost: " + C.GREEN + "+ " + F.pc(XP.getBoost(sender.getPlayer())) + " " + C.RED + "(Discred: " + F.pc(PD.get(sender.getPlayer()).getConfiguration().getDouble("i.x.d")) + ")");
+				sender.sendMessage("Booster Time Left: " + C.GREEN + new GTime(50 * PD.get(sender.getPlayer()).getConfiguration().getInt("i.x.bt")).to("left"));
 				sender.sendMessage("Level: " + C.GREEN + "+ " + F.f(XP.getLevelForXp(XP.getXp(sender.getPlayer()))));
 				sender.sendMessage("XP For Level Up: " + C.GREEN + "+ " + F.f(XP.xpToNextLevel(XP.getXp(sender.getPlayer()))));
 				sender.sendMessage("XP Percent Level Up: " + C.GREEN + "+ " + F.pc(XP.percentToNextLevel(XP.getXp(sender.getPlayer()))));
@@ -524,13 +523,13 @@ public class XPController extends ConfigurableController implements CommandListe
 			
 			int ticks = getTicks(e.getItem());
 			double boost = getBoost(e.getItem());
-			XPPlayer xpp = Icing.inst().getXp().getXpDataController().get(e.getPlayer());
-			xpp.setBoosterTicks(xpp.getBoosterTicks() + ticks);
-			xpp.setBoosterAmount(xpp.getBoosterAmount() + boost);
+			
+			PD.get(e.getPlayer()).getConfiguration().set("i.x.bt", ticks + PD.get(e.getPlayer()).getConfiguration().getInt("i.x.bt"));
+			PD.get(e.getPlayer()).getConfiguration().set("i.x.ba", boost + PD.get(e.getPlayer()).getConfiguration().getDouble("i.x.ba"));
 			Notification n = new Notification();
 			Title t = new Title();
-			t.setTitle(C.DARK_GRAY + "+ " + C.GREEN + F.pc(xpp.getBoosterAmount()));
-			t.setSubTitle(C.DARK_GRAY + "XP Boost increased by " + C.GREEN + F.pc(xpp.getBoosterAmount()) + C.DARK_GRAY + " for " + C.GOLD + new GTime(50 * xpp.getBoosterTicks()).to());
+			t.setTitle(C.DARK_GRAY + "+ " + C.GREEN + F.pc(PD.get(e.getPlayer()).getConfiguration().getDouble("i.x.ba")));
+			t.setSubTitle(C.DARK_GRAY + "XP Boost increased by " + C.GREEN + F.pc(PD.get(e.getPlayer()).getConfiguration().getDouble("i.x.ba")) + C.DARK_GRAY + " for " + C.GOLD + new GTime(50 * PD.get(e.getPlayer()).getConfiguration().getInt("i.x.bt")).to());
 			t.setAction("  .  ");
 			t.setFadeIn(3);
 			t.setFadeOut(80);
