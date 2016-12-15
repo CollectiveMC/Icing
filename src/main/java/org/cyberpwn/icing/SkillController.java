@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -77,7 +76,6 @@ public class SkillController extends ConfigurableController implements CommandLi
 	private AbilityDataController abilityDataController;
 	private GList<Skill> skills;
 	private GMap<Player, Block> lastInteractionBlock;
-	private GMap<Player, Block> lastInteractionEntity;
 	private GMap<Player, Block> lastInteractionPickup;
 	private GMap<Player, GList<Block>> lastInteractionPlace;
 	private GList<Player> locks;
@@ -117,7 +115,6 @@ public class SkillController extends ConfigurableController implements CommandLi
 		}
 		
 		lastInteractionBlock = new GMap<Player, Block>();
-		lastInteractionEntity = new GMap<Player, Block>();
 		lastInteractionPickup = new GMap<Player, Block>();
 		lastInteractionPlace = new GMap<Player, GList<Block>>();
 		locks = new GList<Player>();
@@ -175,32 +172,6 @@ public class SkillController extends ConfigurableController implements CommandLi
 		}
 		
 		lastInteractionPickup.put(p, b);
-	}
-	
-	public void interactEntity(Player p, Block b)
-	{
-		if(p.getGameMode().equals(GameMode.CREATIVE))
-		{
-			return;
-		}
-		
-		if(lastInteractionEntity.containsKey(p) && lastInteractionEntity.get(p).equals(b))
-		{
-			XP.discred(p, 0.01);
-		}
-		
-		lastInteractionEntity.put(p, b);
-	}
-	
-	@EventHandler
-	public void on(EntityDamageByEntityEvent e)
-	{
-		if(e.getDamager() instanceof Player)
-		{
-			Player p = (Player) e.getDamager();
-			
-			interactEntity(p, e.getEntity().getLocation().getBlock());
-		}
 	}
 	
 	@EventHandler
