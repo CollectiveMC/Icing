@@ -239,6 +239,11 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 	{
 		for(Player i : rewardCache.k())
 		{
+			if(i == null)
+			{
+				continue;
+			}
+			
 			if(rewardCache.get(i) <= 0)
 			{
 				continue;
