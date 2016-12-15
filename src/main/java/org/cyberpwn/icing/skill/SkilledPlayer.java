@@ -2,6 +2,8 @@ package org.cyberpwn.icing.skill;
 
 import org.bukkit.entity.Player;
 import org.phantomapi.clust.ConfigurableObject;
+import org.phantomapi.clust.DataCluster;
+import org.phantomapi.clust.PD;
 import org.phantomapi.clust.Redis;
 import org.phantomapi.lang.GList;
 
@@ -13,6 +15,8 @@ public class SkilledPlayer extends ConfigurableObject
 	public SkilledPlayer(Player player)
 	{
 		super(player.getUniqueId().toString());
+		
+		this.player = player;
 	}
 	
 	public Player getPlayer()
@@ -20,11 +24,16 @@ public class SkilledPlayer extends ConfigurableObject
 		return player;
 	}
 	
+	public DataCluster cc()
+	{
+		return PD.get(player).getConfiguration().crop("i.s");
+	}
+	
 	public GList<String> getKnownSkills()
 	{
 		GList<String> skills = new GList<String>();
 		
-		for(String i : getConfiguration().keys())
+		for(String i : cc().keys())
 		{
 			skills.add(i);
 		}
@@ -34,7 +43,7 @@ public class SkilledPlayer extends ConfigurableObject
 	
 	public void setSkill(String skill, long xp)
 	{
-		getConfiguration().set(skill, xp);
+		PD.get(player).getConfiguration().set("i.s." + skill, xp);
 	}
 	
 	public void addSkill(String skill, long xp)
@@ -49,19 +58,19 @@ public class SkilledPlayer extends ConfigurableObject
 	
 	public boolean isEnabled(String skill)
 	{
-		if(!getConfiguration().contains(skill + "-e"))
+		if(!cc().contains(skill + "-e"))
 		{
 			return true;
 		}
 		
-		return getConfiguration().getBoolean(skill + "-e");
+		return cc().getBoolean(skill + "-e");
 	}
 	
 	public long getSkill(String skill)
 	{
-		if(getConfiguration().contains(skill))
+		if(cc().contains(skill))
 		{
-			return getConfiguration().getLong(skill);
+			return cc().getLong(skill);
 		}
 		
 		return 0;
@@ -69,7 +78,7 @@ public class SkilledPlayer extends ConfigurableObject
 	
 	public void setSkillPoints(String skill, long amt)
 	{
-		getConfiguration().set(skill + "-p", amt);
+		PD.get(player).getConfiguration().set("i.s." + skill + "-p", amt);
 	}
 	
 	public void addSkillPoints(String skill, long amt)
@@ -84,9 +93,9 @@ public class SkilledPlayer extends ConfigurableObject
 	
 	public long getSkillPoints(String skill)
 	{
-		if(getConfiguration().contains(skill + "-p"))
+		if(cc().contains(skill + "-p"))
 		{
-			return getConfiguration().getLong(skill + "-p");
+			return cc().getLong(skill + "-p");
 		}
 		
 		return 0;
@@ -94,7 +103,7 @@ public class SkilledPlayer extends ConfigurableObject
 	
 	public void setSkillBuff(String skill, long amt)
 	{
-		getConfiguration().set(skill + "-b", amt);
+		PD.get(player).getConfiguration().set("i.s." + skill + "-b", amt);
 	}
 	
 	public void addSkillBuff(String skill, long amt)
@@ -109,9 +118,9 @@ public class SkilledPlayer extends ConfigurableObject
 	
 	public long getSkillBuff(String skill)
 	{
-		if(getConfiguration().contains(skill + "-b"))
+		if(cc().contains(skill + "-b"))
 		{
-			return getConfiguration().getLong(skill + "-b");
+			return cc().getLong(skill + "-b");
 		}
 		
 		return 0;
