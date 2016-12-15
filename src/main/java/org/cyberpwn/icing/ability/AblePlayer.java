@@ -2,6 +2,8 @@ package org.cyberpwn.icing.ability;
 
 import org.bukkit.entity.Player;
 import org.phantomapi.clust.ConfigurableObject;
+import org.phantomapi.clust.DataCluster;
+import org.phantomapi.clust.PD;
 import org.phantomapi.clust.Redis;
 import org.phantomapi.lang.GList;
 
@@ -13,6 +15,8 @@ public class AblePlayer extends ConfigurableObject
 	public AblePlayer(Player player)
 	{
 		super(player.getUniqueId().toString());
+		
+		this.player = player;
 	}
 	
 	public Player getPlayer()
@@ -20,11 +24,16 @@ public class AblePlayer extends ConfigurableObject
 		return player;
 	}
 	
+	public DataCluster cc()
+	{
+		return PD.get(player).getConfiguration().crop("i.a");
+	}
+	
 	public GList<String> getUnlockedAbilities()
 	{
 		GList<String> abilities = new GList<String>();
 		
-		for(String i : getConfiguration().keys())
+		for(String i : cc().keys())
 		{
 			abilities.add(i);
 		}
@@ -34,7 +43,7 @@ public class AblePlayer extends ConfigurableObject
 	
 	public void setAbilityLevel(String ability, long level)
 	{
-		getConfiguration().set(ability, level);
+		PD.get(player).getConfiguration().set("i.a." + ability, level);
 	}
 	
 	public void addAbilityLevel(String ability, long level)
@@ -44,9 +53,9 @@ public class AblePlayer extends ConfigurableObject
 	
 	public long getAbilityLevel(String ability)
 	{
-		if(getConfiguration().contains(ability))
+		if(cc().contains(ability))
 		{
-			return getConfiguration().getLong(ability);
+			return cc().getLong(ability);
 		}
 		
 		return 0;
@@ -54,16 +63,16 @@ public class AblePlayer extends ConfigurableObject
 	
 	public boolean isEnabled(String codeName)
 	{
-		if(!getConfiguration().contains(codeName + "-e"))
+		if(!cc().contains(codeName + "-e"))
 		{
 			return true;
 		}
 		
-		return getConfiguration().getBoolean(codeName + "-e");
+		return cc().getBoolean(codeName + "-e");
 	}
 	
 	public void setEnabled(String codeName, boolean e)
 	{
-		getConfiguration().set(codeName + "-e", e);
+		PD.get(player).getConfiguration().set("i.a." + codeName + "-e", e);
 	}
 }
