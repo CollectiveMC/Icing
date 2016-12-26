@@ -39,7 +39,7 @@ public class StealthSwiftness extends BasicAbility
 		
 		if(isUnlocked(e.getPlayer()) && isEnabled(e.getPlayer()) && !e.getPlayer().isFlying() && !e.getPlayer().getGameMode().equals(GameMode.CREATIVE))
 		{
-			if(e.isSneaking())
+			if(e.isSneaking() && !e.getPlayer().isFlying())
 			{
 				if(!e.getPlayer().hasPotionEffect(PotionEffectType.SPEED))
 				{
