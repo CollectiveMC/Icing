@@ -10,6 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import org.cyberpwn.icing.ability.BasicAbility;
 import org.cyberpwn.icing.skill.Skill;
 import org.cyberpwn.icing.xp.XP;
+import org.phantomapi.clust.Comment;
+import org.phantomapi.clust.Keyed;
 import org.phantomapi.lang.GSound;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
@@ -19,6 +21,14 @@ import org.phantomapi.world.MaterialBlock;
 
 public class AxesShatter extends BasicAbility
 {
+	@Comment("Damage to armor is as follows\nLEVEL * MULT. If the entropy matches up to at least one piece of armor that is.\nSince the max level is 4 and the default mult is 4, 16 max damage per piece per hit. (ignoring entropy)")
+	@Keyed("level-mult")
+	public int levelMult = 4;
+	
+	@Comment("Damage entropy is the amount of damage spread\nIf it is higher than 1.0, than 100% of the damage will be spread across all armor pieces\nIf it is at or below 0.0, no damage will ever be taken to armor.")
+	@Keyed("damage-entropy")
+	public double ent = 0.4;
+	
 	public AxesShatter(Skill parent)
 	{
 		super(parent, "shatter");
@@ -62,9 +72,9 @@ public class AxesShatter extends BasicAbility
 					
 					for(ItemStack is : p.getInventory().getArmorContents())
 					{
-						if(M.r(0.4))
+						if(M.r(ent))
 						{
-							Items.damage(is, (int) (Math.random() * (level * 4)));
+							Items.damage(is, (int) (Math.random() * (level * levelMult)));
 						}
 					}
 					
