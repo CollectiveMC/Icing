@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.cyberpwn.icing.ability.BasicAbility;
@@ -29,9 +30,14 @@ public class AxesShatter extends BasicAbility
 		unlockCost = 4;
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void on(EntityDamageByEntityEvent e)
 	{
+		if(e.isCancelled())
+		{
+			return;
+		}
+		
 		if(e.getEntity() instanceof Player)
 		{
 			Player p = (Player) e.getEntity();
