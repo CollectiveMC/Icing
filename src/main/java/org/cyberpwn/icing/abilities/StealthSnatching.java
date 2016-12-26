@@ -18,6 +18,7 @@ import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.Inventories;
 import org.phantomapi.world.Area;
+import org.phantomapi.world.Blocks;
 import org.phantomapi.world.MaterialBlock;
 
 @Ticked(0)
@@ -64,7 +65,7 @@ public class StealthSnatching extends BasicAbility
 						{
 							ItemStack is = ((Item) j).getItemStack().clone();
 							
-							if(Inventories.hasSpace(i.getInventory(), is))
+							if(Inventories.hasSpace(i.getInventory(), is) && Blocks.canModify(i, j.getLocation().getBlock()))
 							{
 								holds.add(j.getEntityId());
 								
