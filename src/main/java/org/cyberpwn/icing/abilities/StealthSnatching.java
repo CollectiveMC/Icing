@@ -71,7 +71,7 @@ public class StealthSnatching extends BasicAbility
 								
 								if(i.isSneaking())
 								{
-									new GSound(Sound.HORSE_ARMOR, 1f, (float) (1.0 + (Math.random() / 3))).play(i.getLocation());
+									new GSound(Sound.ENTITY_HORSE_ARMOR, 1f, (float) (1.0 + (Math.random() / 3))).play(i.getLocation());
 								}
 								
 								i.getInventory().addItem(is);

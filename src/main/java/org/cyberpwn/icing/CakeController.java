@@ -125,14 +125,14 @@ public class CakeController extends CommandController
 			@Override
 			public boolean onClick(Element element, Player p)
 			{
-				new GSound(Sound.CLICK, 1f, 1.5f).play(p);
+				new GSound(Sound.UI_BUTTON_CLICK, 1f, 1.5f).play(p);
 				return true;
 			}
 			
 			@Override
 			public void onClose(Window w, Player p)
 			{
-				new GSound(Sound.WITHER_SPAWN, 0.54f, 1f).play(p);
+				new GSound(Sound.ENTITY_WITHER_SPAWN, 0.54f, 1f).play(p);
 			}
 		};
 		
@@ -159,14 +159,15 @@ public class CakeController extends CommandController
 						@Override
 						public boolean onClick(Element element, Player p)
 						{
-							new GSound(Sound.CLICK, 1f, 1.5f).play(p);
+							new GSound(Sound.UI_BUTTON_CLICK, 1f, 1.5f).play(p);
+							
 							return true;
 						}
 						
 						@Override
 						public void onClose(Window w, Player p)
 						{
-							new GSound(Sound.WITHER_SPAWN, 0.54f, 1f).play(p);
+							new GSound(Sound.ENTITY_WITHER_SPAWN, 0.54f, 1f).play(p);
 						}
 					};
 					

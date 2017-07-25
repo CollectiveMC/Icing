@@ -37,7 +37,6 @@ import org.phantomapi.util.Players;
 public class XPController extends ConfigurableController implements CommandListener
 {
 	private XPDataController xpDataController;
-	private PlaceholderController pc;
 	
 	public XPController(Controllable parentController)
 	{
@@ -46,9 +45,6 @@ public class XPController extends ConfigurableController implements CommandListe
 		xpDataController = new XPDataController(this);
 		
 		register(xpDataController);
-		
-		pc = new PlaceholderController();
-		pc.hook();
 	}
 	
 	@Override
@@ -60,7 +56,7 @@ public class XPController extends ConfigurableController implements CommandListe
 	@Override
 	public void onStop()
 	{
-		pc.unhook();
+		
 	}
 	
 	public XPDataController getXpDataController()
@@ -91,7 +87,7 @@ public class XPController extends ConfigurableController implements CommandListe
 			t.setFadeOut(8);
 			t.setStayTime(0);
 			Audio a = new Audio();
-			a.add(new GSound(Sound.SUCCESSFUL_HIT, 1f, 1.95f));
+			a.add(new GSound(Sound.ENTITY_ARROW_HIT_PLAYER, 1f, 1.95f));
 			n.setAudible(a);
 			n.setTitle(t);
 			n.setPriority(Priority.LOW);
@@ -535,7 +531,7 @@ public class XPController extends ConfigurableController implements CommandListe
 			t.setFadeOut(80);
 			t.setStayTime(40);
 			Audio a = new Audio();
-			a.add(new GSound(Sound.EXPLODE, 1f, 1.95f));
+			a.add(new GSound(Sound.ENTITY_GENERIC_EXPLODE, 1f, 1.95f));
 			n.setAudible(a);
 			n.setTitle(t);
 			n.setPriority(Priority.LOW);
@@ -565,7 +561,7 @@ public class XPController extends ConfigurableController implements CommandListe
 			int level = getLevels(e.getItem());
 			SkilledPlayer sk = Icing.getInst().getSk().getSkillDataController().get(e.getPlayer());
 			
-			new GSound(Sound.EXPLODE, 1f, 1.95f).play(e.getPlayer());
+			new GSound(Sound.ENTITY_GENERIC_EXPLODE, 1f, 1.95f).play(e.getPlayer());
 			
 			if(skill.equalsIgnoreCase("all"))
 			{

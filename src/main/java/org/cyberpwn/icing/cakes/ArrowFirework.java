@@ -50,7 +50,7 @@ public class ArrowFirework extends ArrowCake
 	{
 		if(a.isCritical())
 		{
-			new GSound(Sound.FIREWORK_LAUNCH, 1f, 1.5f).play(shooter.getLocation());
+			new GSound(Sound.ENTITY_FIREWORK_LAUNCH, 1f, 1.5f).play(shooter.getLocation());
 		}
 	}
 }

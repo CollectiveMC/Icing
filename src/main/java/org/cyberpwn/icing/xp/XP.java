@@ -56,7 +56,7 @@ public class XP
 				t.setStayTime(0);
 				t.setFadeOut(25);
 				n.setTitle(t);
-				n.setAudible(new GSound(Sound.WITHER_DEATH, 1f, 1.98f));
+				n.setAudible(new GSound(Sound.ENTITY_WITHER_DEATH, 1f, 1.98f));
 				n.setPriority(Priority.LOW);
 				q(player, n);
 			}
@@ -72,7 +72,7 @@ public class XP
 			@Override
 			public void run()
 			{
-				Audible a = new GSound(Sound.FIREWORK_LARGE_BLAST);
+				Audible a = new GSound(Sound.ENTITY_FIREWORK_LARGE_BLAST);
 				a.setPitch(0.1f + ix[0]);
 				a.setVolume(ix[0]);
 				a = new MFADistortion(12, 1.0f).distort(a);
@@ -90,7 +90,7 @@ public class XP
 						@Override
 						public void run()
 						{
-							Audible a = new GSound(Sound.WITHER_DEATH);
+							Audible a = new GSound(Sound.ENTITY_WITHER_DEATH);
 							p.getWorld().strikeLightningEffect(p.getLocation());
 							a.setPitch(0.7f);
 							a = new MFADistortion(4, 1.8f).distort(a);

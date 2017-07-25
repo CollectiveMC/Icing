@@ -89,7 +89,7 @@ public class FarmingTiller extends BasicAbility
 					{
 						q.set(b.getLocation(), Material.SOIL);
 						q.flush();
-						new GSound(Sound.DIG_GRAVEL, 1f, 0.5f).play(b.getLocation());
+						new GSound(Sound.BLOCK_GRAVEL_PLACE, 1f, 0.5f).play(b.getLocation());
 						NMSX.breakParticles(b.getLocation().add(0.5, 1, 0.5), Material.SOIL, 12);
 					}
 				}

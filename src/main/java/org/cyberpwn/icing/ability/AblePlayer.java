@@ -4,10 +4,10 @@ import org.bukkit.entity.Player;
 import org.phantomapi.clust.ConfigurableObject;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.PD;
-import org.phantomapi.clust.Redis;
+import org.phantomapi.clust.Tabled;
 import org.phantomapi.lang.GList;
 
-@Redis("i.a")
+@Tabled("i.a")
 public class AblePlayer extends ConfigurableObject
 {
 	private Player player;

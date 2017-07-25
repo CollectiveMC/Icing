@@ -6,8 +6,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.phantomapi.clust.ConfigurableObject;
 import org.phantomapi.clust.DataController;
 import org.phantomapi.clust.PD;
-import org.phantomapi.clust.REDISREM;
 import org.phantomapi.clust.REM;
+import org.phantomapi.clust.SQLREM;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.sync.TaskLater;
 
@@ -22,13 +22,13 @@ public class XPDataController extends DataController<ConfigurableObject, Player>
 	public XPPlayer onLoad(Player identifier)
 	{
 		XPPlayer xpp = new XPPlayer(identifier);
-		REM rem = new REDISREM();
+		REM rem = new SQLREM();
 		
 		try
 		{
 			if(rem.exists(xpp))
 			{
-				readRedis(xpp);
+				loadMysql(xpp);
 				PD.get(identifier).getConfiguration().set("i.x.x", xpp.xp);
 				PD.get(identifier).getConfiguration().set("i.x.b", xpp.boost);
 				PD.get(identifier).getConfiguration().set("i.x.bt", xpp.boosterTicks);

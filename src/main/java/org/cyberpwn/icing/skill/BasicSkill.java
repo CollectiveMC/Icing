@@ -101,7 +101,7 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 			t.setStayTime(0);
 			t.setFadeOut(25);
 			n.setTitle(t);
-			n.setAudible(new GSound(Sound.ORB_PICKUP, 1f, 0.38f));
+			n.setAudible(new GSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 0.38f));
 			n.setPriority(Priority.LOW);
 			XP.q(p, n);
 			XP.giveXp(p, nextLevel * 30, XPReason.SKILL_PROGRESSION);
@@ -118,7 +118,7 @@ public abstract class BasicSkill extends ConfigurableController implements Skill
 			t.setStayTime(0);
 			t.setFadeOut(20);
 			n.setTitle(t);
-			n.setAudible(new GSound(Sound.LEVEL_UP, 1f, 1.98f));
+			n.setAudible(new GSound(Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.98f));
 			n.setPriority(Priority.LOW);
 			XP.q(p, n);
 			XP.giveXp(p, nextLevel * 30, XPReason.SKILL_PROGRESSION);

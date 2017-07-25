@@ -67,7 +67,7 @@ import org.phantomapi.text.SYM;
 import org.phantomapi.util.C;
 import org.phantomapi.util.F;
 import org.phantomapi.util.FinalInteger;
-import org.phantomapi.util.Players;
+import org.phantomapi.util.P;
 
 @Ticked(200)
 public class SkillController extends ConfigurableController implements CommandListener
@@ -347,7 +347,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 					t.setFadeOut(80);
 					t.setStayTime(40);
 					Audio a = new Audio();
-					a.add(new GSound(Sound.EXPLODE, 1f, 1.95f));
+					a.add(new GSound(Sound.ENTITY_GENERIC_EXPLODE, 1f, 1.95f));
 					n.setAudible(a);
 					n.setTitle(t);
 					n.setPriority(Priority.LOW);
@@ -548,14 +548,14 @@ public class SkillController extends ConfigurableController implements CommandLi
 			@Override
 			public boolean onClick(Element element, Player p)
 			{
-				new GSound(Sound.CLICK, 1f, 1.6f).play(p);
+				new GSound(Sound.UI_BUTTON_CLICK, 1f, 1.6f).play(p);
 				return true;
 			}
 			
 			@Override
 			public void onClose(Window w, Player p)
 			{
-				new GSound(Sound.FIREWORK_LARGE_BLAST2, 1f, 0.1f).play(p);
+				new GSound(Sound.ENTITY_FIREWORK_LARGE_BLAST_FAR, 1f, 0.1f).play(p);
 				
 				new TaskLater(1)
 				{
@@ -615,7 +615,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 								t.setStayTime(0);
 								t.setFadeOut(25);
 								n.setTitle(t);
-								n.setAudible(new GSound(Sound.FIREWORK_LARGE_BLAST2, 1f, 0.38f));
+								n.setAudible(new GSound(Sound.ENTITY_FIREWORK_LARGE_BLAST_FAR, 1f, 0.38f));
 								n.setPriority(Priority.LOW);
 								XP.q(p, n);
 								w.close();
@@ -639,7 +639,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 								t.setStayTime(0);
 								t.setFadeOut(25);
 								n.setTitle(t);
-								n.setAudible(new GSound(Sound.FIREWORK_LARGE_BLAST2, 1f, 0.38f));
+								n.setAudible(new GSound(Sound.ENTITY_FIREWORK_LARGE_BLAST_FAR, 1f, 0.38f));
 								n.setPriority(Priority.LOW);
 								XP.q(p, n);
 								w.close();
@@ -937,14 +937,14 @@ public class SkillController extends ConfigurableController implements CommandLi
 			@Override
 			public boolean onClick(Element element, Player p)
 			{
-				new GSound(Sound.CLICK, 1f, 1.6f).play(p);
+				new GSound(Sound.UI_BUTTON_CLICK, 1f, 1.6f).play(p);
 				return true;
 			}
 			
 			@Override
 			public void onClose(Window w, Player p)
 			{
-				new GSound(Sound.FIREWORK_LARGE_BLAST2, 1f, 0.1f).play(p);
+				new GSound(Sound.ENTITY_FIREWORK_LARGE_BLAST_FAR, 1f, 0.1f).play(p);
 			}
 		};
 		
@@ -1055,7 +1055,7 @@ public class SkillController extends ConfigurableController implements CommandLi
 			
 			if(cmd.getArgs().length > 1)
 			{
-				Player p = Players.getPlayer(cmd.getArgs()[1]);
+				Player p = P.getPlayer(cmd.getArgs()[1]);
 				
 				if(p == null)
 				{

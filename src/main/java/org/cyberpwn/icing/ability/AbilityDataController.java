@@ -5,8 +5,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.phantomapi.clust.DataController;
 import org.phantomapi.clust.PD;
-import org.phantomapi.clust.REDISREM;
 import org.phantomapi.clust.REM;
+import org.phantomapi.clust.SQLREM;
 import org.phantomapi.construct.Controllable;
 import org.phantomapi.sync.TaskLater;
 
@@ -22,13 +22,13 @@ public class AbilityDataController extends DataController<AblePlayer, Player>
 	{
 		AblePlayer sp = new AblePlayer(identifier);
 		
-		REM rem = new REDISREM();
+		REM rem = new SQLREM();
 		
 		try
 		{
 			if(rem.exists(sp))
 			{
-				readRedis(sp);
+				loadMysql(sp);
 				PD.get(identifier).getConfiguration().add(sp.getConfiguration().copy(), "i.a.");
 				
 				new TaskLater()

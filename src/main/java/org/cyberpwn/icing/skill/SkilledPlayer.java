@@ -4,10 +4,10 @@ import org.bukkit.entity.Player;
 import org.phantomapi.clust.ConfigurableObject;
 import org.phantomapi.clust.DataCluster;
 import org.phantomapi.clust.PD;
-import org.phantomapi.clust.Redis;
+import org.phantomapi.clust.Tabled;
 import org.phantomapi.lang.GList;
 
-@Redis("i.s")
+@Tabled("i.s")
 public class SkilledPlayer extends ConfigurableObject
 {
 	private Player player;
@@ -53,7 +53,7 @@ public class SkilledPlayer extends ConfigurableObject
 	
 	public void setEnabled(String skill, boolean enabled)
 	{
-		getConfiguration().set(skill + "-e", enabled);
+		PD.get(player).getConfiguration().set("i.s." + skill + "-e", enabled);
 	}
 	
 	public boolean isEnabled(String skill)

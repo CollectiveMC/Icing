@@ -22,7 +22,7 @@ public class TeleportPhantom extends TeleportCake
 	{
 		ParticleEffect.SMOKE_NORMAL.display(0.1f, 32, p.getLocation().clone().add(0, 0.8, 0), 64);
 		ParticleEffect.LAVA.display(0.1f, 32, p.getLocation().clone().add(0, 0.8, 0), 64);
-		new MFADistortion(4, 1.8f).distort(new GSound(Sound.BAT_TAKEOFF, 1f, 0.4f)).play(p.getLocation());
-		new GSound(Sound.EXPLODE, 1f, 0.8f).play(p.getLocation());
+		new MFADistortion(4, 1.8f).distort(new GSound(Sound.ENTITY_BAT_TAKEOFF, 1f, 0.4f)).play(p.getLocation());
+		new GSound(Sound.ENTITY_GENERIC_EXPLODE, 1f, 0.8f).play(p.getLocation());
 	}
 }

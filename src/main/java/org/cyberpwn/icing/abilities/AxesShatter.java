@@ -81,25 +81,25 @@ public class AxesShatter extends BasicAbility
 					if(Items.isBroken(p.getInventory().getHelmet()))
 					{
 						p.getInventory().setHelmet(new ItemStack(Material.AIR));
-						new GSound(Sound.ITEM_BREAK).play(p.getLocation());
+						new GSound(Sound.ENTITY_ITEM_BREAK).play(p.getLocation());
 					}
 					
 					if(Items.isBroken(p.getInventory().getChestplate()))
 					{
 						p.getInventory().setChestplate(new ItemStack(Material.AIR));
-						new GSound(Sound.ITEM_BREAK).play(p.getLocation());
+						new GSound(Sound.ENTITY_ITEM_BREAK).play(p.getLocation());
 					}
 					
 					if(Items.isBroken(p.getInventory().getLeggings()))
 					{
 						p.getInventory().setLeggings(new ItemStack(Material.AIR));
-						new GSound(Sound.ITEM_BREAK).play(p.getLocation());
+						new GSound(Sound.ENTITY_ITEM_BREAK).play(p.getLocation());
 					}
 					
 					if(Items.isBroken(p.getInventory().getBoots()))
 					{
 						p.getInventory().setBoots(new ItemStack(Material.AIR));
-						new GSound(Sound.ITEM_BREAK).play(p.getLocation());
+						new GSound(Sound.ENTITY_ITEM_BREAK).play(p.getLocation());
 					}
 				}
 			}

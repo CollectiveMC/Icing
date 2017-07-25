@@ -42,4 +42,10 @@ public class SkillCurrency implements Currency
 	{
 		return "";
 	}
+	
+	@Override
+	public String getId()
+	{
+		return "skill";
+	}
 }
